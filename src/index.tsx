@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import { createRoot } from 'react-dom/client';
 
-const App: React.FC = () => {
+const App: FC = () => {
   return <div>Hello, world!</div>;
 };
 
