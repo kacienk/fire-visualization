@@ -1,6 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
+// enable live-reload of the electron app in development mode
+const electronReload = require('electron-reload');
+
 let mainWindow;
 
 function createWindow() {
@@ -12,7 +15,19 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+  switch (process.env.MODE) {
+    case 'production':
+      console.log('Starting app from a production build in the "dist" directory');
+      mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+      break;
+    case 'development':
+      console.log('Starting app as a development server on PORT: 8080 - app window will open shortly');
+      mainWindow.loadURL('http://localhost:8080/index.html');
+      break;
+    default:
+      console.error(`Unknown run mode specified: ${process.env.MODE}`);
+      break;
+  }
 }
 
 app.whenReady().then(createWindow);
