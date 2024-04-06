@@ -18,7 +18,7 @@ const AntIcons = Loadable(lazily(() => import('../pages/components-overview/AntI
 
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
+export const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
@@ -57,5 +57,3 @@ const MainRoutes = {
     },
   ],
 };
-
-export default MainRoutes;

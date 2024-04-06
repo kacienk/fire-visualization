@@ -36,6 +36,6 @@ export const menu = createSlice({
 
 export type Menu = typeof menu;
 
-export default menu.reducer;
+export const { reducer } = menu;
 
 export const { activeItem, activeComponent, openDrawer, openComponentDrawer } = menu.actions;

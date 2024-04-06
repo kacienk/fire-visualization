@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 
 // project import
-import menu from './menu';
+import { menu } from './menu';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 

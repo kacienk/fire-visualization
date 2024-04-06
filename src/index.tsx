@@ -1,10 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter, Routes } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './store';
 import { ScrollTop } from './components/ScrollTop';
-import ThemeCustomization from './themes';
+import { ThemeCustomization } from './themes';
+import { Routes } from './routes';
 
 const App = () => {
   return (

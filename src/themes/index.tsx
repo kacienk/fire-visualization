@@ -15,7 +15,7 @@ type ThemeCustomizationProps = {
   children: ReactNode;
 };
 
-export default function ThemeCustomization({ children }: ThemeCustomizationProps) {
+export const ThemeCustomization = ({ children }: ThemeCustomizationProps) => {
   const theme = Palette('light');
   const themeTypography = Typography(`'Public Sans', sans-serif`);
 
@@ -56,4 +56,4 @@ export default function ThemeCustomization({ children }: ThemeCustomizationProps
       </ThemeProvider>
     </StyledEngineProvider>
   );
-}
+};

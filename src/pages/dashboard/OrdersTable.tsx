@@ -167,7 +167,7 @@ const OrderStatus = ({ status }: { status: number }) => {
 
 // ==============================|| ORDER TABLE ||============================== //
 
-export default function OrderTable() {
+export const OrderTable = () => {
   const [order] = useState<SortDirection>('asc');
   const [orderBy] = useState('trackingNo');
   const [selected] = useState<number[]>([]);
@@ -262,4 +262,4 @@ export default function OrderTable() {
       </TableContainer>
     </Box>
   );
-}
+};

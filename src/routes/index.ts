@@ -1,10 +1,10 @@
 import { useRoutes } from 'react-router-dom';
 
 // project import
-import MainRoutes from './MainRoutes';
+import { MainRoutes } from './MainRoutes';
 
 // ==============================|| ROUTING RENDER ||============================== //
 
-export default function ThemeRoutes() {
+export const Routes = () => {
   return useRoutes([MainRoutes]);
-}
+};
