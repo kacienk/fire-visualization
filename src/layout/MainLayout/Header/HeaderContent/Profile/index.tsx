@@ -26,7 +26,7 @@ import { ProfileTab } from './ProfileTab';
 import { SettingTab } from './SettingTab';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
+import avatar1 from '../../../../../../assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 type TabPanelProps = {
