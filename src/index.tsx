@@ -4,7 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './store';
 import { ScrollTop } from './components/ScrollTop';
-import { ThemeCustomization } from './themes';
+import { ThemeCustomization } from './themes/ThemeCustomization';
 import { Routes } from './routes';
 
 const App = () => {

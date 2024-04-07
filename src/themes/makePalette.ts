@@ -1,10 +1,19 @@
-import { PalettesProps } from '@ant-design/colors';
+// material-ui
+import { Palette } from '@mui/material/styles';
+import { Color, PaletteMode } from '@mui/material';
 
-// ==============================|| PRESET THEME - THEME SELECTOR ||============================== //
+// third-party
+import { PalettesProps, presetPalettes } from '@ant-design/colors';
 
-export const Theme = (colors: PalettesProps) => {
+import { DeepPartial } from '../types/DeepPartial';
+
+// ==============================|| DEFAULT THEME - PALETTE  ||============================== //
+
+const makePaletteColors = (
+  colors: PalettesProps,
+): Pick<Palette, 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' | 'grey'> => {
   const { blue, red, gold, cyan, green, grey } = colors;
-  const greyColors = {
+  const greyColors: Color = {
     0: grey[0],
     50: grey[1],
     100: grey[2],
@@ -53,7 +62,7 @@ export const Theme = (colors: PalettesProps) => {
       A100: greyColors[0],
       A200: greyColors.A400,
       A300: greyColors.A700,
-      contrastText: greyColors[0],
+      contrastText: greyColors[0] ?? contrastText,
     },
     error: {
       lighter: red[0],
@@ -88,5 +97,51 @@ export const Theme = (colors: PalettesProps) => {
       contrastText,
     },
     grey: greyColors,
+  };
+};
+
+export const makePalette = (mode: PaletteMode) => {
+  const colors = presetPalettes;
+
+  const greyPrimary = [
+    '#ffffff',
+    '#fafafa',
+    '#f5f5f5',
+    '#f0f0f0',
+    '#d9d9d9',
+    '#bfbfbf',
+    '#8c8c8c',
+    '#595959',
+    '#262626',
+    '#141414',
+    '#000000',
+  ];
+  const greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
+  const greyConstant = ['#fafafb', '#e6ebf1'];
+
+  colors.grey = [...greyPrimary, ...greyAscent, ...greyConstant];
+
+  const paletteColors = makePaletteColors(colors);
+
+  return {
+    mode,
+    common: {
+      black: '#000',
+      white: '#fff',
+    },
+    ...paletteColors,
+    text: {
+      primary: paletteColors?.grey?.[700],
+      secondary: paletteColors?.grey?.[500],
+      disabled: paletteColors?.grey?.[400],
+    },
+    action: {
+      disabled: paletteColors?.grey?.[300],
+    },
+    divider: paletteColors?.grey?.[200],
+    background: {
+      paper: paletteColors?.grey?.[0],
+      default: paletteColors?.grey?.A50,
+    },
   };
 };
