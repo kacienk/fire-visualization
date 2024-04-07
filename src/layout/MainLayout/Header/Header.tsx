@@ -56,7 +56,7 @@ export const Header = ({ open, handleDrawerToggle }: HeaderProps) => {
     <>
       {!matchDownMD ? (
         <AppBarStyled
-          // open={open}
+          open={open}
           {...appBar}
         >
           {mainHeader}

@@ -19,7 +19,7 @@ export const DrawerHeader = ({ open }: DrawerHeaderProps) => {
     // only available in paid version
     <DrawerHeaderStyled
       theme={theme}
-      // open={open}
+      open={open}
     >
       <Stack
         direction="row"
