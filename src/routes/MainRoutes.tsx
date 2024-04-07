@@ -1,20 +1,27 @@
-import { lazily } from 'react-lazily';
+// import { lazily } from 'react-lazily';
 
 // project import
-import { Loadable } from '../components/Loadable';
+// import { Loadable } from '../components/Loadable';
 import { MainLayout } from '../layout/MainLayout';
+import { DashboardDefault } from '../pages/dashboard/index';
+import { ComponentColor } from '../pages/components-overview/Color';
+import { SamplePage } from '../pages/extra-pages/SamplePage';
+import { ComponentShadow } from '../pages/components-overview/Shadow';
+import { ComponentTypography } from '../pages/components-overview/Typography';
+import { AntIcons } from '../pages/components-overview/AntIcons';
 
 // render - dashboard
-const DashboardDefault = Loadable(lazily(() => import('../pages/dashboard/index')));
+// const DashboardDefault = Loadable(lazily(() => import('../pages/dashboard/index')));
 
-// render - sample page
-const SamplePage = Loadable(lazily(() => import('../pages/extra-pages/SamplePage')));
+// // render - sample page
+// const SamplePage = Loadable(lazily(() => import('../pages/extra-pages/SamplePage')));
 
-// render - utilities
-const Typography = Loadable(lazily(() => import('../pages/components-overview/Typography')));
-const Color = Loadable(lazily(() => import('../pages/components-overview/Color')));
-const Shadow = Loadable(lazily(() => import('../pages/components-overview/Shadow')));
-const AntIcons = Loadable(lazily(() => import('../pages/components-overview/AntIcons')));
+// // render - utilities
+// const Typography = Loadable(lazily(() => import('../pages/components-overview/Typography')));
+// const Color = Loadable(lazily(() => import('../pages/components-overview/Color')));
+// const Shadow = Loadable(lazily(() => import('../pages/components-overview/Shadow')));
+// const AntIcons = Loadable(lazily(() => import('../pages/components-overview/AntIcons')));
+// TODO fix lazy loading
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -24,11 +31,11 @@ export const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />,
+      element: <DashboardDefault />, //<div>DashboardDefault /</div>, //<DashboardDefault />,
     },
     {
       path: 'color',
-      element: <Color />,
+      element: <ComponentColor />,
     },
     {
       path: 'dashboard',
@@ -45,11 +52,11 @@ export const MainRoutes = {
     },
     {
       path: 'shadow',
-      element: <Shadow />,
+      element: <ComponentShadow />,
     },
     {
       path: 'typography',
-      element: <Typography />,
+      element: <ComponentTypography />,
     },
     {
       path: 'icons/ant',
