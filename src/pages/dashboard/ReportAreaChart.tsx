@@ -100,6 +100,13 @@ export const ReportAreaChart = () => {
     },
   ]);
 
-  // return <ReactApexChart options={options} series={series} type="line" height={345} />;
-  return <div>Tu powinien być jakiś wykres</div>;
+  return (
+    //@ts-ignore because allowSyntheticDefaultImports is set to false
+    <ReactApexChart
+      options={options}
+      series={series}
+      type="line"
+      height={345}
+    />
+  );
 };

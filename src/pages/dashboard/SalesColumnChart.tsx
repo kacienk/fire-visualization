@@ -141,8 +141,13 @@ export const SalesColumnChart = () => {
 
   return (
     <div id="chart">
-      <div>Tu powinien być jakiś wykres</div>
-      {/* <ReactApexChart options={options} series={series} type="bar" height={430} /> */}
+      {/* @ts-ignore because allowSyntheticDefaultImports is set to false */}
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="bar"
+        height={430}
+      />
     </div>
   );
 };

@@ -116,12 +116,12 @@ export const IncomeAreaChart = ({ slot }: IncomeAreaChartProps) => {
   }, [slot]);
 
   return (
-    <div>Tu powinien być jakiś wykres</div>
-    // <ReactApexChart
-    //   options={options}
-    //   series={series}
-    //   type="area"
-    //   height={450}
-    // />
+    //@ts-ignore because allowSyntheticDefaultImports is set to false
+    <ReactApexChart
+      options={options}
+      series={series}
+      type="area"
+      height={450}
+    />
   );
 };
