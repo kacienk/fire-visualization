@@ -11,10 +11,8 @@ import { MainDrawer } from './MainLayout/Drawer/MainDrawer';
 import { Header } from './MainLayout/Header/Header';
 import { Breadcrumbs } from '../components/@extended/Breadcrumbs';
 import { RootState } from '../store/reduxStore';
-import { Navigation } from './MainLayout/Drawer/DrawerContent/Navigation/Navigation';
-
-// types
 import { openDrawer } from '../store/reducers/menuSlice';
+import { menuItems } from '../menu-items/menuItems';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -61,7 +59,7 @@ export const MainLayout = () => {
       >
         <Toolbar />
         <Breadcrumbs
-          navigation={Navigation} // TODO idk if this should be here
+          navigation={menuItems}
           title
         />
         <Outlet />

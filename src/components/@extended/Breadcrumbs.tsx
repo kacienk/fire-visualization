@@ -10,50 +10,56 @@ import { MainCard } from '../MainCard';
 
 // ==============================|| BREADCRUMBS ||============================== //
 
-interface BreadcrumbsProps {
-  navigation: Record<string, any>;
-  title: boolean;
+interface MenuItem {
+  breadcrumbs?: boolean;
+  type: string;
+  title: string;
+  url?: string;
+  children?: MenuItem[];
 }
 
-export const Breadcrumbs = ({ navigation, title, ...others }: BreadcrumbsProps) => {
+interface BreadcrumbsProps {
+  navigation: { items: MenuItem[] };
+  title?: boolean;
+}
+
+export const Breadcrumbs = ({ navigation, title = true, ...others }: BreadcrumbsProps) => {
   const location = useLocation();
-  const [main, setMain] = useState();
-  const [item, setItem] = useState<{ breadcrumbs: boolean; title: string; type: string }>();
+  const [main, setMain] = useState<MenuItem | undefined>();
+  const [item, setItem] = useState<MenuItem | undefined>();
 
   // set active item state
-  const getCollapse = (menu) => {
+  const getCollapse = (menu: MenuItem) => {
     if (menu.children) {
-      menu.children.filter((collapse) => {
-        if (collapse.type && collapse.type === 'collapse') {
+      menu.children.forEach((collapse) => {
+        if (collapse.type === 'collapse') {
           getCollapse(collapse);
-        } else if (collapse.type && collapse.type === 'item') {
+        } else if (collapse.type === 'item') {
           if (location.pathname === collapse.url) {
             setMain(menu);
             setItem(collapse);
           }
         }
-        return false;
       });
     }
   };
 
   useEffect(() => {
-    navigation?.items?.map((menu) => {
-      if (menu.type && menu.type === 'group') {
+    navigation?.items?.forEach((menu) => {
+      if (menu.type === 'group') {
         getCollapse(menu);
       }
-      return false;
     });
-  });
+  }, [location.pathname, navigation]);
 
   // only used for component demo breadcrumbs
   if (location.pathname === '/breadcrumbs') {
     location.pathname = '/dashboard/analytics';
   }
 
-  let mainContent;
-  let itemContent;
-  let breadcrumbContent = <Typography />;
+  let mainContent: JSX.Element | null = null;
+  let itemContent: JSX.Element | null = null;
+  let breadcrumbContent: JSX.Element = <Typography />;
   let itemTitle = '';
 
   // collapse item
