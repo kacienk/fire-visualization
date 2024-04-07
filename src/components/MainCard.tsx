@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef } from 'react';
+import { HTMLProps, ReactNode, forwardRef } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,56 +16,59 @@ const headerSX = {
 // ==============================|| CUSTOM - MAIN CARD ||============================== //
 
 type MainCardProps = Partial<{
-  border: boolean;
-  boxShadow: boolean;
+  hasBorder: boolean;
+  hasBoxShadow: boolean;
+  hasDarkTitle: boolean;
+  hasDivider: boolean;
+  hasContent: boolean;
   contentSX: object;
-  darkTitle: boolean;
-  divider: boolean;
   elevation: number;
   secondary: ReactNode;
   shadow: string;
   sx: object;
-  title: ReactNode | string;
+  title: ReactNode | string; // TODO doesn't work
   codeHighlight: boolean;
-  content: boolean;
   children: ReactNode;
 }>;
 
-export const MainCard = forwardRef<HTMLDivElement>(
+export const MainCard = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & MainCardProps>(
   (
     {
-      border = true,
-      boxShadow,
-      children,
-      content = true,
+      hasBorder = true,
+      hasBoxShadow,
+      hasDarkTitle,
+      hasContent = true,
       contentSX = {},
-      darkTitle,
+      sx = {},
       elevation,
       secondary,
       shadow,
-      sx = {},
       title,
       codeHighlight,
+      children,
       ...others
     }: MainCardProps,
     ref,
   ) => {
     const theme = useTheme();
-    boxShadow = theme.palette.mode === 'dark' ? boxShadow || true : boxShadow;
+    hasBoxShadow = theme.palette.mode === 'dark' ? hasBoxShadow || true : hasBoxShadow;
 
     return (
       <Card
         elevation={elevation || 0}
+        // component={'div'} // TODO it doesn't work
         ref={ref}
         {...others}
         sx={{
-          border: border ? '1px solid' : 'none',
+          border: hasBorder ? '1px solid' : 'none',
           borderRadius: 2,
           borderColor: theme.palette.mode === 'dark' ? theme.palette.divider : theme.palette.grey['800'],
           boxShadow:
-            /*boxShadow && (!border || theme.palette.mode === 'dark') ? shadow || theme.customShadows.z1 :*/ 'inherit',
+            hasBoxShadow && (!hasBorder || theme.palette.mode === 'dark')
+              ? shadow || (theme.customShadows?.z1 ?? 'inherit')
+              : 'inherit',
           ':hover': {
-            boxShadow: /*boxShadow ? shadow || theme.customShadows.z1 :*/ 'inherit',
+            boxShadow: hasBoxShadow ? shadow || (theme.customShadows?.z1 ?? 'inherit') : 'inherit',
           },
           '& pre': {
             m: 0,
@@ -77,7 +80,7 @@ export const MainCard = forwardRef<HTMLDivElement>(
         }}
       >
         {/* card header and action */}
-        {!darkTitle && title && (
+        {!hasDarkTitle && title && (
           <CardHeader
             sx={headerSX}
             titleTypographyProps={{ variant: 'subtitle1' }}
@@ -85,7 +88,7 @@ export const MainCard = forwardRef<HTMLDivElement>(
             action={secondary}
           />
         )}
-        {darkTitle && title && (
+        {hasDarkTitle && title && (
           <CardHeader
             sx={headerSX}
             title={<Typography variant="h3">{title}</Typography>}
@@ -94,19 +97,14 @@ export const MainCard = forwardRef<HTMLDivElement>(
         )}
 
         {/* card content */}
-        {content && <CardContent sx={contentSX}>{children}</CardContent>}
-        {!content && children}
+        {hasContent && <CardContent sx={contentSX}>{children}</CardContent>}
+        {!hasContent && children}
 
         {/* card footer - clipboard & highlighter  */}
         {codeHighlight && (
           <>
             <Divider sx={{ borderStyle: 'dashed' }} />
-            <Highlighter
-            // codeHighlight={codeHighlight}
-            // main
-            >
-              {children}
-            </Highlighter>
+            <Highlighter>{children}</Highlighter>
           </>
         )}
       </Card>
