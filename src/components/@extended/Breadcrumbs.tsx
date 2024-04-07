@@ -87,10 +87,10 @@ export const Breadcrumbs = ({ navigation, title, ...others }: BreadcrumbsProps) 
     if (item.breadcrumbs !== false) {
       breadcrumbContent = (
         <MainCard
-          border={false}
+          hasBorder={false}
           sx={{ mb: 3, bgcolor: 'transparent' }}
           {...others}
-          content={false}
+          hasContent={false}
         >
           <Grid
             container
