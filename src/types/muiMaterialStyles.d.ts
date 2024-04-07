@@ -1,6 +1,15 @@
 export * from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
+  interface CustomShadows {
+    button?: string;
+    text?: string;
+    z1?: string;
+  }
+  interface Theme {
+    customShadows?: CustomShadows;
+  }
+
   interface PaletteColor {
     lighter?: string;
     100?: string;

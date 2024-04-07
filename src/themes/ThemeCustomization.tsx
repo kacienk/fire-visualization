@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // project import
 import { makePalette } from './makePalette';
 import { makeTypography } from './makeTypography';
+import { makeCustomShadows } from './makeCustomShadows';
 import { componentsOverrides } from './componentsOverrides';
 
 // ==============================|| DEFAULT THEME - MAIN  ||============================== //
@@ -46,6 +47,7 @@ export const ThemeCustomization = ({ children }: ThemeCustomizationProps) => {
 
   const theme = createTheme(themeOptions);
   theme.components = componentsOverrides(theme);
+  theme.customShadows = makeCustomShadows(theme);
 
   return (
     <StyledEngineProvider injectFirst>
