@@ -2,12 +2,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 // project import
-import { reducers } from './reducers';
+import { combinedReducers } from './reducers';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
 export const store = configureStore({
-  reducer: reducers,
+  reducer: combinedReducers,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

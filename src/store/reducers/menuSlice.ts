@@ -1,8 +1,16 @@
 // types
 import { createSlice } from '@reduxjs/toolkit';
 
+export type MenuState = {
+  openItem: string[];
+  defaultId: string;
+  openComponent: string;
+  drawerOpen: boolean;
+  componentDrawerOpen: boolean;
+};
+
 // initial state
-const initialState = {
+const initialState: MenuState = {
   openItem: ['dashboard'],
   defaultId: 'dashboard',
   openComponent: 'buttons',
@@ -12,7 +20,7 @@ const initialState = {
 
 // ==============================|| SLICE - MENU ||============================== //
 
-export const menu = createSlice({
+export const menuSlice = createSlice({
   name: 'menu',
   initialState,
   reducers: {
@@ -34,8 +42,5 @@ export const menu = createSlice({
   },
 });
 
-export type Menu = typeof menu;
-
-export const { reducer } = menu;
-
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer } = menu.actions;
+export const { activeItem, activeComponent, openDrawer, openComponentDrawer } = menuSlice.actions;
+export default menuSlice.reducer;

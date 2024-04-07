@@ -14,7 +14,7 @@ import { RootState } from '../../store';
 import { Navigation } from './Drawer/DrawerContent/Navigation';
 
 // types
-import { openDrawer } from '../../store/reducers/menu';
+import { openDrawer } from '../../store/reducers/menuSlice';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 

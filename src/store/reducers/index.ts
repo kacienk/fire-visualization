@@ -2,8 +2,8 @@
 import { combineReducers } from 'redux';
 
 // project import
-import { menu } from './menu';
+import menuReducer from './menuSlice';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
-export const reducers = combineReducers({ menu });
+export const combinedReducers = combineReducers({ menu: menuReducer });
