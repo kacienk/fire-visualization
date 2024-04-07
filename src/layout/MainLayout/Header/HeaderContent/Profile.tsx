@@ -20,13 +20,13 @@ import {
 } from '@mui/material';
 
 // project import
-import { MainCard } from '../../../../../components/MainCard';
-import { Transitions } from '../../../../../components/@extended/Transitions';
-import { ProfileTab } from './ProfileTab';
-import { SettingTab } from './SettingTab';
+import { MainCard } from '../../../../components/MainCard';
+import { Transitions } from '../../../../components/@extended/Transitions';
+import { ProfileTab } from './Profile/ProfileTab';
+import { SettingTab } from './Profile/SettingTab';
 
 // assets
-import avatar1 from '../../../../../../assets/images/users/avatar-1.png';
+import avatar1 from '../../../../../assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 type TabPanelProps = {

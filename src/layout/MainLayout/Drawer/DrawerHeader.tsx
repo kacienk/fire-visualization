@@ -3,8 +3,8 @@ import { useTheme } from '@mui/material/styles';
 import { Stack, Chip } from '@mui/material';
 
 // project import
-import { DrawerHeaderStyled } from './DrawerHeaderStyled';
-import { Logo } from '../../../../components/Logo/Logo';
+import { DrawerHeaderStyled } from './DrawerHeader/DrawerHeaderStyled';
+import { Logo } from '../../../components/Logo/Logo';
 
 // ==============================|| DRAWER HEADER ||============================== //
 

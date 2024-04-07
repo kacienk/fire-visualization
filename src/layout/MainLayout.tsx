@@ -7,14 +7,14 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Toolbar, useMediaQuery } from '@mui/material';
 
 // project import
-import { MainDrawer } from './Drawer';
-import { Header } from './Header';
-import { Breadcrumbs } from '../../components/@extended/Breadcrumbs';
-import { RootState } from '../../store';
-import { Navigation } from './Drawer/DrawerContent/Navigation';
+import { MainDrawer } from './MainLayout/Drawer/MainDrawer';
+import { Header } from './MainLayout/Header/Header';
+import { Breadcrumbs } from '../components/@extended/Breadcrumbs';
+import { RootState } from '../store/reduxStore';
+import { Navigation } from './MainLayout/Drawer/DrawerContent/Navigation/Navigation';
 
 // types
-import { openDrawer } from '../../store/reducers/menuSlice';
+import { openDrawer } from '../store/reducers/menuSlice';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 

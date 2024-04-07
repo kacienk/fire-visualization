@@ -8,7 +8,7 @@ import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } 
 
 // project import
 import { Menu, activeItem } from '../../../../../store/reducers/menuSlice';
-import { RootState } from '../../../../../store';
+import { RootState } from '../../../../../store/reduxStore';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 

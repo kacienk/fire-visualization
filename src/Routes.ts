@@ -1,7 +1,7 @@
 import { useRoutes } from 'react-router-dom';
 
 // project import
-import { MainRoutes } from './MainRoutes';
+import { MainRoutes } from './routes/MainRoutes';
 
 // ==============================|| ROUTING RENDER ||============================== //
 

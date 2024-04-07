@@ -3,10 +3,10 @@ import { Box, IconButton, Link, Theme, useMediaQuery } from '@mui/material';
 import { GithubOutlined } from '@ant-design/icons';
 
 // project import
-import { Search } from './Search';
-import { Profile } from './Profile';
-import { Notification } from './Notification';
-import { MobileSection } from './MobileSection';
+import { Search } from './HeaderContent/Search';
+import { Profile } from './HeaderContent/Profile';
+import { Notification } from './HeaderContent/Notification';
+import { MobileSection } from './HeaderContent/MobileSection';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 

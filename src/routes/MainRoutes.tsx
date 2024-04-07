@@ -3,11 +3,11 @@
 // project import
 // import { Loadable } from '../components/Loadable';
 import { MainLayout } from '../layout/MainLayout';
-import { DashboardDefault } from '../pages/dashboard/index';
-import { ComponentColor } from '../pages/components-overview/Color';
+import { DashboardDefault } from '../pages/dashboard/DashboardDefault';
+import { ComponentColor } from '../pages/components-overview/ComponentColor';
 import { SamplePage } from '../pages/extra-pages/SamplePage';
-import { ComponentShadow } from '../pages/components-overview/Shadow';
-import { ComponentTypography } from '../pages/components-overview/Typography';
+import { ComponentShadow } from '../pages/components-overview/ComponentShadow';
+import { ComponentTypography } from '../pages/components-overview/ComponentTypography';
 import { AntIcons } from '../pages/components-overview/AntIcons';
 
 // render - dashboard

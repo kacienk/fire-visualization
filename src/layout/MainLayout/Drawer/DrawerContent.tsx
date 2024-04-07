@@ -1,7 +1,7 @@
 // project import
-import { NavCard } from './NavCard';
-import { Navigation } from './Navigation';
-import { SimpleBarScroll } from '../../../../components/third-party/SimpleBar';
+import { NavCard } from './DrawerContent/NavCard';
+import { Navigation } from './DrawerContent/Navigation/Navigation';
+import { SimpleBarScroll } from '../../../components/third-party/SimpleBar';
 
 // ==============================|| DRAWER CONTENT ||============================== //
 

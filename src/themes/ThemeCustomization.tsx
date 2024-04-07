@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // project import
 import { makePalette } from './makePalette';
 import { makeTypography } from './makeTypography';
-import { componentsOverrides } from './overrides';
+import { componentsOverrides } from './componentsOverrides';
 
 // ==============================|| DEFAULT THEME - MAIN  ||============================== //
 

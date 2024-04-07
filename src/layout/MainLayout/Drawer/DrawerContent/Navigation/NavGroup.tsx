@@ -5,7 +5,7 @@ import { Box, List, Typography } from '@mui/material';
 
 // project import
 import { NavItem } from './NavItem';
-import { RootState } from '../../../../../store';
+import { RootState } from '../../../../../store/reduxStore';
 
 // ==============================|| NAVIGATION - LIST GROUP ||============================== //
 
