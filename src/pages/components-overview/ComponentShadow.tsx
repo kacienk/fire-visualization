@@ -15,7 +15,7 @@ type ShadowBoxProps = {
 function ShadowBox({ shadow }: ShadowBoxProps) {
   return (
     <MainCard
-      border={false}
+      hasBorder={false}
       sx={{ boxShadow: shadow }}
     >
       <Stack
@@ -42,7 +42,7 @@ type CustomShadowBoxProps = {
 function CustomShadowBox({ shadow, label, color, bgcolor }: CustomShadowBoxProps) {
   return (
     <MainCard
-      border={false}
+      hasBorder={false}
       sx={{ bgcolor: bgcolor || 'inherit', boxShadow: shadow }}
     >
       <Stack

@@ -157,8 +157,8 @@ export const Profile = () => {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MainCard
                     elevation={0}
-                    border={false}
-                    content={false}
+                    hasBorder={false}
+                    hasContent={false}
                   >
                     <CardContent sx={{ px: 2.5, pt: 3 }}>
                       <Grid

@@ -170,7 +170,7 @@ export const DashboardDefault = () => {
           </Grid>
         </Grid>
         <MainCard
-          content={false}
+          hasContent={false}
           sx={{ mt: 1.5 }}
         >
           <Box sx={{ pt: 1, pr: 2 }}>
@@ -196,7 +196,7 @@ export const DashboardDefault = () => {
         </Grid>
         <MainCard
           sx={{ mt: 2 }}
-          content={false}
+          hasContent={false}
         >
           <Box sx={{ p: 3, pb: 0 }}>
             <Stack spacing={2}>
@@ -232,7 +232,7 @@ export const DashboardDefault = () => {
         </Grid>
         <MainCard
           sx={{ mt: 2 }}
-          content={false}
+          hasContent={false}
         >
           <OrderTable />
         </MainCard>
@@ -255,7 +255,7 @@ export const DashboardDefault = () => {
         </Grid>
         <MainCard
           sx={{ mt: 2 }}
-          content={false}
+          hasContent={false}
         >
           <List sx={{ p: 0, '& .MuiListItemButton-root': { py: 2 } }}>
             <ListItemButton divider>
@@ -344,7 +344,7 @@ export const DashboardDefault = () => {
         </Grid>
         <MainCard
           sx={{ mt: 2 }}
-          content={false}
+          hasContent={false}
         >
           <List
             component="nav"

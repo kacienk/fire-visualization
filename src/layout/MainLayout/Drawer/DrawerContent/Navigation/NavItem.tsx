@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 // project import
-import { Menu, activeItem } from '../../../../../store/reducers/menuSlice';
+import { activeItem } from '../../../../../store/reducers/menuSlice';
 import { RootState } from '../../../../../store/reduxStore';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //

@@ -20,7 +20,7 @@ export const ComponentSkeleton = ({ children }: ComponentSkeletonProps) => {
 
   const skeletonCard = (
     <MainCard
-      title={<Skeleton sx={{ width: { xs: 120, md: 180 } }} />}
+      // title={<Skeleton sx={{ width: { xs: 120, md: 180 } }} />} // TODO doesn't work
       secondary={
         <Skeleton
           animation="wave"

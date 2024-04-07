@@ -125,8 +125,8 @@ export const Notification = () => {
                 <MainCard
                   title="Notification"
                   elevation={0}
-                  border={false}
-                  content={false}
+                  hasBorder={false}
+                  hasContent={false}
                   secondary={
                     <IconButton
                       size="small"
