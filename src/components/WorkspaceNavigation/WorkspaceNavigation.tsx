@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-  Box,
-  Typography,
-} from '@mui/material';
+import { List, ListItem, ListItemIcon, ListItemText, Collapse, Box, Typography } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useTheme } from '@mui/material/styles';
@@ -55,7 +47,7 @@ export const sampleData = [
 
 const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleClick = (folderName: string) => {
     const isOpen = openFolders.includes(folderName);
@@ -64,18 +56,6 @@ const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
         ? openFolders.filter((f) => f !== folderName)
         : [...openFolders, folderName]
     );
-    name: 'Folder1',
-    type: 'folder',
-    contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
-  } as Folder,
-  {
-    name: 'Folder2',
-    type: 'folder',
-    contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
-  } as Folder,
-  { name: 'File1' } as File,
-  { name: 'File2' } as File,
-];
 
 const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
