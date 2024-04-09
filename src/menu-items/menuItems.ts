@@ -7,5 +7,5 @@ import { support } from './support';
 // ==============================|| MENU ITEMS ||============================== //
 
 export const menuItems = {
-  items: [dashboard, pages, utilities, support],
+  items: [utilities],
 };
