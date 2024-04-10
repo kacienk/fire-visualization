@@ -25,6 +25,7 @@ import { MonthlyBarChart } from './MonthlyBarChart';
 import { ReportAreaChart } from './ReportAreaChart';
 import { SalesColumnChart } from './SalesColumnChart';
 import { MainCard } from '../../components/MainCard';
+import { ParametersForm } from '../../components/parameters/ParametersForm';
 
 // assets
 import { GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
@@ -512,6 +513,9 @@ export const DashboardDefault = () => {
               Need Help?
             </Button>
           </Stack>
+        </MainCard>
+        <MainCard sx={{ mt: 2 }}>
+          <ParametersForm/>
         </MainCard>
       </Grid>
     </Grid>
