@@ -9,6 +9,7 @@ import { SamplePage } from '../pages/extra-pages/SamplePage';
 import { ComponentShadow } from '../pages/components-overview/ComponentShadow';
 import { ComponentTypography } from '../pages/components-overview/ComponentTypography';
 import { AntIcons } from '../pages/components-overview/AntIcons';
+import { MainPage } from '../pages/MainPage';
 
 // render - dashboard
 // const DashboardDefault = Loadable(lazily(() => import('../pages/dashboard/index')));
@@ -31,7 +32,7 @@ export const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />, //<div>DashboardDefault /</div>, //<DashboardDefault />,
+      element: <MainPage />,
     },
     {
       path: 'color',
