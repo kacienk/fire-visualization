@@ -1,11 +1,5 @@
 import { useState } from 'react';
 
-// google-maps
-import {
-  APIProvider,
-  Map,
-} from '@vis.gl/react-google-maps';
-
 // material-ui
 import {
   Avatar,
@@ -537,28 +531,6 @@ const Row4 = () => {
   );
 };
 
-const MapWrapper = () => {
-  const centerCoords = { lat: 53.54, lng: 10 };
-  return (
-    <>
-      <Grid
-        item
-        xs={12}
-        sx={{ mb: -2.25 }}
-      >
-        <APIProvider apiKey={window.env.GOOGLE_API_KEY}>
-          <Box sx={{ height: '800px' }}>
-            <Map
-              zoom={9}
-              center={centerCoords}
-            ></Map>
-          </Box>
-        </APIProvider>
-      </Grid>
-    </>
-  );
-};
-
 export const DashboardDefault = () => {
   return (
     <Grid
@@ -566,7 +538,6 @@ export const DashboardDefault = () => {
       rowSpacing={4.5}
       columnSpacing={2.75}
     >
-      <MapWrapper />
       <Row1 />
       <Row2 />
       <Row3 />
