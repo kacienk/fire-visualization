@@ -13,15 +13,26 @@ import './maps-styles-overrides.css';
 // material-ui
 import { Grid, Box } from '@mui/material';
 import { MainCard } from '../MainCard';
+import { mapConfigMockup } from '../../data/sectorsMockup';
 
 export const MapWrapper = () => {
-  // 49.5599264763197, 20.132385645406604
-  // 49.49921247019953, 20.254446675807113
-  const boundsOchotnica: google.maps.LatLngBoundsLiteral = {
-    east: 20.254446675807113, // lng
-    north: 49.5599264763197, // lat
-    south: 49.49921247019953, // lat
-    west: 20.132385645406604, // lng
+  const bounds: google.maps.LatLngBoundsLiteral = {
+    east: mapConfigMockup.location.reduce((maxLng: number, { longitude }) => {
+      if (longitude > maxLng) maxLng = longitude;
+      return maxLng;
+    }, -Infinity), // lng
+    north: mapConfigMockup.location.reduce((maxLat: number, { latitude }) => {
+      if (latitude > maxLat) maxLat = latitude;
+      return maxLat;
+    }, -Infinity), // lat
+    south: mapConfigMockup.location.reduce((minLat: number, { latitude }) => {
+      if (latitude < minLat) minLat = latitude;
+      return minLat;
+    }, Infinity), // lat
+    west: mapConfigMockup.location.reduce((minLng: number, { longitude }) => {
+      if (longitude < minLng) minLng = longitude;
+      return minLng;
+    }, Infinity), // lng
   };
 
   return (
@@ -37,7 +48,7 @@ export const MapWrapper = () => {
         >
           <APIProvider apiKey={window.env.GOOGLE_API_KEY}>
             <Box sx={{ height: '800px' /* TODO fix fixed height */ }}>
-              <Map defaultBounds={boundsOchotnica}>
+              <Map defaultBounds={bounds}>
                 <DeckGlOverlay layers={getDeckGlLayers()} />
               </Map>
             </Box>

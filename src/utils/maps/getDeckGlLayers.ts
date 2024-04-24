@@ -2,42 +2,38 @@
 import { PolygonLayer } from '@deck.gl/layers';
 
 // data
-import { sectorsMockup } from '../../data/sectorsMockup';
+import { mapConfigMockup } from '../../data/sectorsMockup';
 
 export const getDeckGlLayers = () => {
   return [
-    new PolygonLayer({
-      id: 'PolygonLayer',
-      data: sectorsMockup,
+    new PolygonLayer<
+      {
+        longitude: number;
+        latitude: number;
+      }[]
+    >({
+      id: 'ForestBorders',
+      data: [mapConfigMockup.location],
 
       extruded: false,
       filled: false,
       stroked: true,
-      getPolygon: (sector: { contours: number[][] }) => sector.contours,
-      getLineColor: [255, 0, 0],
-      getLineWidth: 20,
+      getPolygon: (points) => points.map((point) => [point.longitude, point.latitude]),
+      getLineColor: [0, 255, 0],
+      getLineWidth: 30,
       lineWidthMinPixels: 1,
       pickable: true,
     }),
     new PolygonLayer({
-      id: 'ForestBorders',
-      data: [
-        {
-          contours: [
-            [20.132385645406604, 49.49921247019953],
-            [20.132385645406604, 49.5599264763197],
-            [20.254446675807113, 49.5599264763197],
-            [20.254446675807113, 49.49921247019953],
-          ],
-        },
-      ],
+      id: 'PolygonLayer',
+      data: mapConfigMockup.sectors,
 
       extruded: false,
       filled: false,
       stroked: true,
-      getPolygon: (sector: { contours: number[][] }) => sector.contours,
-      getLineColor: [0, 255, 0],
-      getLineWidth: 1,
+      getPolygon: (sector) => sector.contours,
+      getLineColor: [255, 0, 0],
+      getLineWidth: 20,
       lineWidthMinPixels: 1,
       pickable: true,
     }),
