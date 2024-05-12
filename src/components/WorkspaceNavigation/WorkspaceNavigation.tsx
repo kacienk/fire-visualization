@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-  Box,
-  Typography,
-} from '@mui/material';
+import { List, ListItem, ListItemIcon, ListItemText, Collapse, Box, Typography, Button } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useTheme } from '@mui/material/styles';
-
+import { FileAddOutlined, FolderAddOutlined } from '@ant-design/icons';
 
 interface File {
   name: string;
@@ -32,50 +24,26 @@ interface Props {
 
 export const sampleData = [
   {
-    name: "Folder1",
-    type: "folder",
-    contents: [
-      {name: "File1"} as File,
-      {name: "File2"} as File,
-      {name: "File3"} as File
-    ]
+    name: 'Folder1',
+    type: 'folder',
+    contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
   } as Folder,
   {
-    name: "Folder2",
-    type: "folder",
-    contents: [
-      {name: "File1"} as File,
-      {name: "File2"} as File,
-      {name: "File3"} as File
-    ]
+    name: 'Folder2',
+    type: 'folder',
+    contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
   } as Folder,
-  {name: "File1"} as File,
-  {name: "File2"} as File,
-]
+  { name: 'File1' } as File,
+  { name: 'File2' } as File,
+];
 
-const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
+export const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
   const theme = useTheme();
 
   const handleClick = (folderName: string) => {
     const isOpen = openFolders.includes(folderName);
-    setOpenFolders(
-      isOpen
-        ? openFolders.filter((f) => f !== folderName)
-        : [...openFolders, folderName]
-    );
-
-const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
-  const [openFolders, setOpenFolders] = useState<string[]>([]);
-  const theme = useTheme()
-
-  const handleClick = (folderName: string) => {
-    const isOpen = openFolders.includes(folderName);
-    setOpenFolders(
-      isOpen
-        ? openFolders.filter((f) => f !== folderName)
-        : [...openFolders, folderName]
-    );
+    setOpenFolders(isOpen ? openFolders.filter((f) => f !== folderName) : [...openFolders, folderName]);
   };
 
   const renderFileOrFolder = (item: FileOrFolder, level: number) => {
@@ -85,15 +53,22 @@ const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
         <div key={folder.name}>
           <ListItem
             onClick={() => handleClick(folder.name)}
-            sx={{cursor: "pointer", pl: 2 * level, ":hover": {bgcolor: "secondary.lighter"}}}
+            sx={{ cursor: 'pointer', pl: 2 * level, ':hover': { bgcolor: 'secondary.lighter' } }}
           >
             <ListItemIcon>
               <FolderIcon />
             </ListItemIcon>
             <ListItemText primary={folder.name} />
           </ListItem>
-          <Collapse in={openFolders.includes(folder.name)} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
+          <Collapse
+            in={openFolders.includes(folder.name)}
+            timeout="auto"
+            unmountOnExit
+          >
+            <List
+              component="div"
+              disablePadding
+            >
               {folder.contents.map((childItem) => renderFileOrFolder(childItem, level + 1))}
             </List>
           </Collapse>
@@ -102,7 +77,10 @@ const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
     } else {
       const file = item as File;
       return (
-        <ListItem key={file.name} sx={{cursor: "pointer", pl: 2 * level, ":hover": {bgcolor: "secondary.lighter"}}}>
+        <ListItem
+          key={file.name}
+          sx={{ cursor: 'pointer', pl: 2 * level, ':hover': { bgcolor: 'secondary.lighter' } }}
+        >
           <ListItemIcon>
             <InsertDriveFileIcon />
           </ListItemIcon>
@@ -113,27 +91,37 @@ const WorkspaceNavigation: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Box sx={
-      {
-      boxSizing: 'border-box',
-      width: 400,
-      paddingX: 1,
-      borderRight: `1px solid ${theme.palette.divider}`,
-      backgroundImage: 'none',
-      boxShadow: 'inherit',
-      bgcolor: "secondary.A100"
-      }
-    }
+    <Box
+      sx={{
+        boxSizing: 'border-box',
+        width: 250,
+        paddingX: 1,
+        borderRight: `1px solid ${theme.palette.divider}`,
+        backgroundImage: 'none',
+        boxShadow: 'inherit',
+        bgcolor: 'secondary.A100',
+      }}
     >
-      <Typography sx={{ mt: 2, color: "secondary.main" }} variant="h6" component="div">
-        Workspace
-      </Typography>
-      <List>
-        {data.map((element) => renderFileOrFolder(element, 0))}
-      </List>
+      <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography
+          sx={{
+            color: 'secondary.main',
+          }}
+          variant="h6"
+          component="div"
+        >
+          Workspace
+        </Typography>
+        <Box>
+          <Button sx={{ color: 'secondary.main', minWidth: 0 }}>
+            <FileAddOutlined style={{ fontSize: 20 }} />
+          </Button>
+          <Button sx={{ color: 'secondary.main', minWidth: 0 }}>
+            <FolderAddOutlined style={{ fontSize: 20 }} />
+          </Button>
+        </Box>
+      </Box>
+      <List>{data.map((element) => renderFileOrFolder(element, 0))}</List>
     </Box>
   );
 };
-
-
-export default WorkspaceNavigation;
