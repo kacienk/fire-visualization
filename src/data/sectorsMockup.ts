@@ -1,20 +1,4 @@
 import { Configuration } from '../model/configuration/configuration';
-import { Sector } from '../model/sector';
-
-export const MapConfig = {
-  sectors: {
-    toString: (sector: Sector & { contours: [number, number][] }) => {
-      return `Forest type: ${'Mixed'}
-        Temperature: ${sector.initialState.temperature}
-        Wind speed: ${sector.initialState.windSpeed}
-        Wind direction: ${'NE' /*sector.initialState.windDirection*/}
-        Air humidity: ${sector.initialState.airHumidity}
-        Plant litter moisture: ${sector.initialState.plantLitterMoisture}
-        CO2 concentration: ${sector.initialState.co2Concentration}
-        PM 2.5 concentration: ${sector.initialState.pm2_5Concentration}`;
-    },
-  },
-};
 
 export const mapConfigMockup = {
   forestId: 1,

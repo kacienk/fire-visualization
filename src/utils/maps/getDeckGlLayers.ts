@@ -2,12 +2,13 @@
 import { PolygonLayer } from '@deck.gl/layers';
 
 // data
-import { MapConfig, mapConfigMockup } from '../../data/sectorsMockup';
+import { mapConfigMockup } from '../../data/sectorsMockup';
 import { PickingInfo } from '@deck.gl/core';
 import { eventEmitter } from '../eventEmitter';
 import { createElement, CSSProperties } from 'react';
 import { Box, List, ListItem, ListItemText } from '@mui/material';
 import { Sector } from '../../model/sector';
+import { Configuration } from '../../model/configuration/configuration';
 
 const styles = {
   tooltip: {
@@ -58,7 +59,7 @@ export const getDeckGlLayers = () => {
       createElement(
         List,
         { dense: false },
-        MapConfig.sectors
+        Configuration.sectors
           .toString(sector)
           .split('\n')
           .map((str) => {

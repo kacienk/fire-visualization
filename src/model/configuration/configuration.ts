@@ -44,6 +44,18 @@ export const Configuration = {
       }, Infinity), // lng
     };
   },
+  sectors: {
+    toString: (sector: Sector & { contours: [number, number][] }) => {
+      return `Forest type: ${sector.sectorType}
+        Temperature: ${sector.initialState.temperature}
+        Wind speed: ${sector.initialState.windSpeed}
+        Wind direction: ${sector.initialState.windDirection}
+        Air humidity: ${sector.initialState.airHumidity}
+        Plant litter moisture: ${sector.initialState.plantLitterMoisture}
+        CO2 concentration: ${sector.initialState.co2Concentration}
+        PM 2.5 concentration: ${sector.initialState.pm2_5Concentration}`;
+    },
+  },
 };
 
 export const getDefaultConfigution = (): Configuration => {
