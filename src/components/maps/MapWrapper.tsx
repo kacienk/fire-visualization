@@ -14,6 +14,8 @@ import './maps-styles-overrides.css';
 import { Grid, Box } from '@mui/material';
 import { MainCard } from '../MainCard';
 import { mapConfigMockup } from '../../data/sectorsMockup';
+import { ReactNode, useEffect, useState } from 'react';
+import { eventEmitter } from '../../utils/eventEmitter';
 
 export const MapWrapper = () => {
   const bounds: google.maps.LatLngBoundsLiteral = {
@@ -35,6 +37,17 @@ export const MapWrapper = () => {
     }, Infinity), // lng
   };
 
+  const [tooltip, setTooltip] = useState<ReactNode>(null);
+  useEffect(() => {
+    const onTooltipChange = (tooltip: ReactNode) => setTooltip(tooltip);
+
+    eventEmitter.addListener('onTooltipChange', onTooltipChange);
+
+    return () => {
+      eventEmitter.removeListener('onTooltipChange', onTooltipChange);
+    };
+  }, []);
+
   return (
     <>
       <Grid
@@ -48,7 +61,14 @@ export const MapWrapper = () => {
         >
           <APIProvider apiKey={window.env.GOOGLE_API_KEY}>
             <Box sx={{ height: '800px' /* TODO fix fixed height */ }}>
-              <Map defaultBounds={bounds}>
+              <Map
+                defaultBounds={bounds}
+                onDragstart={() => {
+                  // hide tooltip when dragging the map
+                  if (tooltip !== null) setTooltip(null);
+                }}
+              >
+                {tooltip}
                 <DeckGlOverlay layers={getDeckGlLayers()} />
               </Map>
             </Box>

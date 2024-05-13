@@ -1,3 +1,33 @@
+export const MapConfig = {
+  sectors: {
+    toString: (sector: {
+      sectorId: number;
+      row: number;
+      column: number;
+      sectorType: number;
+      initialState: {
+        temperature: number;
+        windSpeed: number;
+        windDirection: number;
+        airHumidity: number;
+        plantLitterMoisture: number;
+        co2Concentration: number;
+        pm2_5Concentration: number;
+      };
+      contours: [number, number][];
+    }) => {
+      return `Forest type: ${'Mixed'}
+        Temperature: ${sector.initialState.temperature}
+        Wind speed: ${sector.initialState.windSpeed}
+        Wind direction: ${'NE' /*sector.initialState.windDirection*/}
+        Air humidity: ${sector.initialState.airHumidity}
+        Plant litter moisture: ${sector.initialState.plantLitterMoisture}
+        CO2 concentration: ${sector.initialState.co2Concentration}
+        PM 2.5 concentration: ${sector.initialState.pm2_5Concentration}`;
+    },
+  },
+};
+
 export const mapConfigMockup = {
   forestId: 'ochotnica-1',
   forestName: 'Ochotnica',
