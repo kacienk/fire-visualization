@@ -4,19 +4,17 @@ import { FileAddOutlined, FolderAddOutlined, FolderOpenOutlined } from '@ant-des
 import { FileSystemComponent } from './FileSystemComponent';
 import { getSampleFileSystem } from '../../model/FileSystemModel/utils';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getNodes } from '../apiService';
 import OpenWorkspaceLayout from '../../layout/MainLayout/OpenWorkspaceLayout/OpenWorkspaceLayout';
-// import { ipcRenderer } from 'electron';
-
-export const filesURL = 'http://localhost:31415';
 
 export const WorkspaceNavigation: React.FC = () => {
-  // const handleOpenSelectWorkspaceDialog = () => {
-  //   ipcRenderer.send('open-select-workspace-window');
-  // };
   const theme = useTheme();
   const navigate = useNavigate();
   const [isSelecWorkspaceModalVisible, setIsSelecWorkspaceModalVisible] = useState(false);
+  const [url, setUrl] = useState('http://localhost:31415');
+  const [nodesInWorkspace, setNodesInWorkspace] = useState([]);
+  const [workspaceParentNode, setWorkspaceParentNode] = useState('');
 
   const handleOpenModal = () => {
     setIsSelecWorkspaceModalVisible(true);
@@ -25,6 +23,19 @@ export const WorkspaceNavigation: React.FC = () => {
   const handleCloseModal = () => {
     setIsSelecWorkspaceModalVisible(false);
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getNodes(url);
+        console.log('Data:', data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <Box
@@ -77,7 +88,7 @@ export const WorkspaceNavigation: React.FC = () => {
         {/* <OpenWorkspaceLayout onClose={() => {}}></OpenWorkspaceLayout> */}
         <Box sx={{ backgroundColor: 'secondary.A100', p: 2, borderRadius: 2 }}>
           <Typography variant="h2">Open Workspace</Typography>
-          <Typography> URL: {filesURL} </Typography>
+          <Typography> URL: {url} </Typography>
 
           <Box
             sx={{

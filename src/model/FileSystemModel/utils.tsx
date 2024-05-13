@@ -1,21 +1,29 @@
-import { Folder } from './Folder';
-import { File } from './File';
-
-export type FileSystemNode = Folder | File;
+import { FileSystemNode } from './FileSystemNode';
+import { NodeTypeEnum } from './NodeTypeEnum';
 
 export const getSampleFileSystem = (): FileSystemNode[] => {
   return [
     {
+      id: '1',
       name: 'Folder1',
-      type: 'folder',
-      contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
-    } as Folder,
+      nodeType: NodeTypeEnum.FOLDER,
+      contents: [
+        { id: '3', name: 'File1', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+        { id: '4', name: 'File2', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+        { id: '5', name: 'File3', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+      ],
+    } as FileSystemNode,
     {
+      id: '2',
       name: 'Folder2',
-      type: 'folder',
-      contents: [{ name: 'File1' } as File, { name: 'File2' } as File, { name: 'File3' } as File],
-    } as Folder,
-    { name: 'File1' } as File,
-    { name: 'File2' } as File,
+      nodeType: NodeTypeEnum.FOLDER,
+      contents: [
+        { id: '6', name: 'File1', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+        { id: '7', name: 'File2', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+        { id: '8', name: 'File3', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+      ],
+    } as FileSystemNode,
+    { id: '9', name: 'File1', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
+    { id: '10', name: 'File2', nodeType: NodeTypeEnum.FILE } as FileSystemNode,
   ];
 };

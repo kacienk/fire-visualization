@@ -2,9 +2,8 @@ import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, useThe
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useState } from 'react';
-import { FileSystemNode } from '../../model/FileSystemModel/utils';
-import { File } from '../../model/FileSystemModel/File';
-import { Folder } from '../../model/FileSystemModel/Folder';
+import { FileSystemNode } from '../../model/FileSystemModel/FileSystemNode';
+import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
 
 interface Props {
   data: FileSystemNode[];
@@ -15,24 +14,21 @@ export const FileSystemComponent: React.FC<Props> = ({ data }) => {
   const theme = useTheme();
   const [selected, setSelected] = useState<string | null>(null);
 
-  const handleFolderClick = (folderName: string) => {
-    const isOpen = openFolders.includes(folderName);
-    setOpenFolders(isOpen ? openFolders.filter((f) => f !== folderName) : [...openFolders, folderName]);
-    setSelected(folderName);
-  };
-
-  const handleFileClick = (fileName: string) => {
-    setSelected(fileName);
+  const handleItemClick = (item: FileSystemNode) => {
+    if (item.nodeType === NodeTypeEnum.FOLDER) {
+      const isOpen = openFolders.includes(item.id);
+      setOpenFolders(isOpen ? openFolders.filter((f) => f !== item.id) : [...openFolders, item.id]);
+    }
+    setSelected(item.id);
   };
 
   const renderFileOrFolder = (item: FileSystemNode, level: number) => {
-    if (item.type === 'folder') {
-      const folder = item as Folder;
+    if (item.nodeType === NodeTypeEnum.FOLDER) {
       return (
-        <Box key={folder.name}>
+        <Box key={item.name}>
           <ListItemButton
-            onClick={() => handleFolderClick(folder.name)}
-            selected={folder.name === selected}
+            onClick={() => handleItemClick(item)}
+            selected={item.id === selected}
             sx={{
               cursor: 'pointer',
               pl: 2 * level,
@@ -49,10 +45,10 @@ export const FileSystemComponent: React.FC<Props> = ({ data }) => {
             <ListItemIcon>
               <FolderIcon />
             </ListItemIcon>
-            <ListItemText primary={folder.name} />
+            <ListItemText primary={item.name} />
           </ListItemButton>
           <Collapse
-            in={openFolders.includes(folder.name)}
+            in={openFolders.includes(item.id)}
             timeout="auto"
             unmountOnExit
           >
@@ -60,18 +56,17 @@ export const FileSystemComponent: React.FC<Props> = ({ data }) => {
               component="div"
               disablePadding
             >
-              {folder.contents.map((childItem) => renderFileOrFolder(childItem, level + 1))}
+              {item.contents && item.contents.map((childItem) => renderFileOrFolder(childItem, level + 1))}
             </List>
           </Collapse>
         </Box>
       );
     } else {
-      const file = item as File;
       return (
         <ListItemButton
-          key={file.name}
-          onClick={() => handleFileClick(file.name)}
-          selected={file.name === selected}
+          key={item.name}
+          onClick={() => handleItemClick(item)}
+          selected={item.id === selected}
           sx={{
             cursor: 'pointer',
             pl: 2 * level,
@@ -88,7 +83,7 @@ export const FileSystemComponent: React.FC<Props> = ({ data }) => {
           <ListItemIcon>
             <InsertDriveFileIcon />
           </ListItemIcon>
-          <ListItemText primary={file.name} />
+          <ListItemText primary={item.name} />
         </ListItemButton>
       );
     }
