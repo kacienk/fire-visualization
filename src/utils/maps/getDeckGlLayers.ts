@@ -7,6 +7,7 @@ import { PickingInfo } from '@deck.gl/core';
 import { eventEmitter } from '../eventEmitter';
 import { createElement, CSSProperties } from 'react';
 import { Box, List, ListItem, ListItemText } from '@mui/material';
+import { Sector } from '../../model/sector';
 
 const styles = {
   tooltip: {
@@ -21,7 +22,7 @@ const styles = {
 } satisfies Record<string, CSSProperties>;
 
 export const getDeckGlLayers = () => {
-  const showTooltip = (pickingInfo: PickingInfo) => {
+  const showTooltip = (pickingInfo: PickingInfo<Sector>) => {
     const { x, y, object: sector, viewport } = pickingInfo;
     if (!sector) {
       eventEmitter.emit('onTooltipChange', null);
@@ -68,6 +69,11 @@ export const getDeckGlLayers = () => {
     eventEmitter.emit('onTooltipChange', tooltip);
   };
 
+  const onClick = (pickingInfo: PickingInfo<Sector>) => {
+    const { object: sector } = pickingInfo;
+    eventEmitter.emit('onSectorChange', sector?.sectorId ?? null);
+  };
+
   return [
     new PolygonLayer<LocationRect>({
       id: 'ForestBorders',
@@ -82,7 +88,7 @@ export const getDeckGlLayers = () => {
       lineWidthMinPixels: 1,
       pickable: false,
     }),
-    new PolygonLayer({
+    new PolygonLayer<Sector>({
       id: 'PolygonLayer',
       data: mapConfigMockup.sectors,
 
@@ -98,6 +104,7 @@ export const getDeckGlLayers = () => {
       onHover: (pickingInfo) => {
         showTooltip(pickingInfo);
       },
+      onClick: onClick,
       autoHighlight: true,
       highlightColor: [116, 146, 195, 128],
     }),
