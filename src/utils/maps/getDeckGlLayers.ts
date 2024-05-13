@@ -69,12 +69,7 @@ export const getDeckGlLayers = () => {
   };
 
   return [
-    new PolygonLayer<
-      {
-        longitude: number;
-        latitude: number;
-      }[]
-    >({
+    new PolygonLayer<LocationRect>({
       id: 'ForestBorders',
       data: [mapConfigMockup.location],
 

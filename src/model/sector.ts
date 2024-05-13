@@ -10,6 +10,7 @@ export interface Sector {
   column: number;
   sectorType: SectorType;
   initialState: SectorState;
+  contours: [number, number][];
 }
 
 interface SectorState {
