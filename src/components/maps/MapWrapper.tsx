@@ -16,26 +16,10 @@ import { MainCard } from '../MainCard';
 import { mapConfigMockup } from '../../data/sectorsMockup';
 import { ReactNode, useEffect, useState } from 'react';
 import { eventEmitter } from '../../utils/eventEmitter';
+import { Configuration } from '../../model/configuration/configuration';
 
 export const MapWrapper = () => {
-  const bounds: google.maps.LatLngBoundsLiteral = {
-    east: mapConfigMockup.location.reduce((maxLng: number, { longitude }) => {
-      if (longitude > maxLng) maxLng = longitude;
-      return maxLng;
-    }, -Infinity), // lng
-    north: mapConfigMockup.location.reduce((maxLat: number, { latitude }) => {
-      if (latitude > maxLat) maxLat = latitude;
-      return maxLat;
-    }, -Infinity), // lat
-    south: mapConfigMockup.location.reduce((minLat: number, { latitude }) => {
-      if (latitude < minLat) minLat = latitude;
-      return minLat;
-    }, Infinity), // lat
-    west: mapConfigMockup.location.reduce((minLng: number, { longitude }) => {
-      if (longitude < minLng) minLng = longitude;
-      return minLng;
-    }, Infinity), // lng
-  };
+  const bounds = Configuration.getBounds(mapConfigMockup);
 
   const [tooltip, setTooltip] = useState<ReactNode>(null);
   useEffect(() => {
