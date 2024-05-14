@@ -35,7 +35,7 @@ export const mapFileSystemNodeToApiDataNode = (
 export const mapApiDataNodesToFileSystemNodes = (apiDataNodes: ApiDataNode[]): FileSystemNode[] => {
   const findRoots = (nodes: ApiDataNode[]): ApiDataNode[] => {
     const parentIds = nodes.map((node) => node.parentId);
-    return nodes.filter((node) => node.parentId === null || !parentIds.includes(node.id));
+    return nodes.filter((node) => node.parentId === null || !parentIds.includes(node.parentId));
   };
 
   const buildTree = (nodes: ApiDataNode[], parent: ApiDataNode | null): FileSystemNode[] => {
@@ -48,6 +48,7 @@ export const mapApiDataNodesToFileSystemNodes = (apiDataNodes: ApiDataNode[]): F
   };
 
   const roots = findRoots(apiDataNodes);
+  console.log('roots:', roots);
   return roots.flatMap((root) => ({
     ...mapApiDataNodeToFileSystemNode(root),
     contents: buildTree(apiDataNodes, root),
