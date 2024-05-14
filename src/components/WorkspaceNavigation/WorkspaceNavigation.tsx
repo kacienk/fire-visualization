@@ -61,7 +61,6 @@ export const WorkspaceNavigation: React.FC = () => {
         const data = await getNodeChildren(url, workspace.parent.id);
         const convertedData = mapApiDataNodesToFileSystemNodes(data);
         setWorkspace((prevState) => ({ ...prevState, nodes: convertedData }));
-        console.log('Workspace:', workspace);
       }
     } catch (error) {
       console.error('Error fetching nodes:', error);
