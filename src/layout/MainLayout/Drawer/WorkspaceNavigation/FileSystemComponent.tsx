@@ -2,8 +2,8 @@ import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, useThe
 import FolderIcon from '@mui/icons-material/Folder';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useState } from 'react';
-import { FileSystemNode } from '../../model/FileSystemModel/FileSystemNode';
-import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
+import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
+import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
 
 interface Props {
   data: { parent: FileSystemNode | null; nodes: FileSystemNode[] };

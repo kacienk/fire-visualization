@@ -2,17 +2,15 @@ import { Box, Typography, Button, Modal, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { FileAddOutlined, FolderAddOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { FileSystemComponent } from './FileSystemComponent';
-import { getSampleFileSystem } from '../../model/FileSystemModel/utils';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { createNode, getNode, getNodeChildren, getNodes } from '../apiService';
+import { createNode, getNode, getNodeChildren, getNodes } from '../../../../components/apiService';
 import {
   FileSystemNode,
   mapApiDataNodeToFileSystemNode,
   mapApiDataNodesToFileSystemNodes,
   mapFileSystemNodeToApiDataNode,
-} from '../../model/FileSystemModel/FileSystemNode';
-import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
+} from '../../../../model/FileSystemModel/FileSystemNode';
+import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
 
 export const WorkspaceNavigation: React.FC = () => {
   const theme = useTheme();

@@ -1,7 +1,7 @@
 // project import
 import { Navigation } from './DrawerContent/Navigation/Navigation';
 import { SimpleBarScroll } from '../../../components/third-party/SimpleBar';
-import { WorkspaceNavigation } from '../../../components/WorkspaceNavigation/WorkspaceNavigation';
+import { WorkspaceNavigation } from './WorkspaceNavigation/WorkspaceNavigation';
 
 // ==============================|| DRAWER CONTENT ||============================== //
 
