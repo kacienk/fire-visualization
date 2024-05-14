@@ -17,9 +17,14 @@ import { mapConfigMockup } from '../../data/sectorsMockup';
 import { ReactNode, useEffect, useState } from 'react';
 import { eventEmitter } from '../../utils/eventEmitter';
 import { Configuration } from '../../model/configuration/configuration';
+import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
+import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
 
 export const MapWrapper = () => {
   const bounds = Configuration.getBounds(mapConfigMockup);
+
+  const forestBorderLayer = useForestBorderLayer(mapConfigMockup);
+  const sectorsLayer = useSectorsLayer(mapConfigMockup);
 
   const [tooltip, setTooltip] = useState<ReactNode>(null);
   useEffect(() => {
@@ -53,7 +58,7 @@ export const MapWrapper = () => {
                 }}
               >
                 {tooltip}
-                <DeckGlOverlay layers={getDeckGlLayers()} />
+                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer]} />
               </Map>
             </Box>
           </APIProvider>
