@@ -38,5 +38,6 @@ export const getDefaultSector = (): Sector => {
       co2Concentration: 0,
       pm2_5Concentration: 0,
     },
+    contours: [],
   };
 };
