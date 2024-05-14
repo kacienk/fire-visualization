@@ -5,8 +5,6 @@ import { Color, PaletteMode } from '@mui/material';
 // third-party
 import { PalettesProps, presetPalettes } from '@ant-design/colors';
 
-import { DeepPartial } from '../types/DeepPartial';
-
 // ==============================|| DEFAULT THEME - PALETTE  ||============================== //
 
 const makePaletteColors = (

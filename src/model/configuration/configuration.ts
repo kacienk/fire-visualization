@@ -1,13 +1,21 @@
-import { Sector } from '../sector';
+import { getDefaultSector, Sector } from '../sector';
+import { getDefaultSensor, Sensor } from '../sensor';
+import { Camera, getDefaultCamera } from '../camera';
+import { FireBrigade, getDefaultFireBrigade } from '../FireBrigade';
+import { ForesterPatrol, getDefaultForesterPatrol } from '../ForesterPatrol';
+import { Region } from '../geography';
 
-interface Configuration {
+export interface Forest {
   forestId: number;
   forestName: string;
   width: number;
   height: number;
   sectorSize: number;
   imageReference: string;
-  location: LocationRect;
+  location: Region;
+}
+
+export interface Configuration extends Forest {
   sectors: Sector[];
   sensors: Sensor[];
   cameras: Camera[];
@@ -18,7 +26,7 @@ interface Configuration {
 export const getDefaultConfigution = (): Configuration => {
   return {
     forestId: 0,
-    forestName: '',
+    forestName: 'Wolski',
     width: 0,
     height: 0,
     sectorSize: 0,
@@ -41,10 +49,10 @@ export const getDefaultConfigution = (): Configuration => {
         longitude: 0,
       },
     ],
-    sectors: [],
-    sensors: [],
-    cameras: [],
-    fireBrigades: [],
-    foresterPatrols: [],
+    sectors: [getDefaultSector()],
+    sensors: [getDefaultSensor()],
+    cameras: [getDefaultCamera()],
+    fireBrigades: [getDefaultFireBrigade()],
+    foresterPatrols: [getDefaultForesterPatrol()],
   };
 };

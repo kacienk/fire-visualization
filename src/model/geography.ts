@@ -1,8 +1,10 @@
-interface MapLocation {
+export interface MapLocation {
   longitude: number;
   latitude: number;
 }
 
-type LocationRect = [MapLocation, MapLocation, MapLocation, MapLocation];
+export type Region = [MapLocation, MapLocation, MapLocation, MapLocation];
 
-type Direction = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW';
+export const Directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const;
+
+export type Direction = (typeof Directions)[number];
