@@ -30,14 +30,14 @@ export const ConfigurationForm: FC = () => {
           <FireBrigadesFormPart />
           <Divider>Forester Patrols</Divider>
           <ForesterPatrolsFormPart />
+          <Button
+            color={'primary'}
+            variant={'contained'}
+            type={'submit'}
+          >
+            Save
+          </Button>
         </Stack>
-        <Button
-          color={'primary'}
-          variant={'contained'}
-          type={'submit'}
-        >
-          Save
-        </Button>
       </Form>
     </Formik>
   );
