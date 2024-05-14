@@ -12,9 +12,9 @@ export const getDefaultCamera = (): Camera => {
     cameraId: 0,
     location: {
       latitude: 0,
-      longitude: 0
+      longitude: 0,
     },
     range: 1,
-    timestamp: new Date(Date.now())
-  }
-}
+    timestamp: new Date(Date.now()),
+  };
+};

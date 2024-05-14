@@ -5,30 +5,22 @@ import { Typography } from '@mui/material';
 import { useFormikContext } from 'formik';
 
 export const ForestFormPart: FC = () => {
-  const { values } = useFormikContext<Configuration>()
+  const { values } = useFormikContext<Configuration>();
 
-  return (<>
-    <Typography variant={"body1"}>Forest {values.forestName}</Typography>
-    <ConfigGridContainer>
-      <ConfigFormTextField
-        propertyName={"forestId"}
-        readOnly={true}
-      />
-      <ConfigFormTextField
-        propertyName={"forestName"}
-      />
-      <ConfigFormTextField
-        propertyName={"width"}
-      />
-      <ConfigFormTextField
-        propertyName={"height"}
-      />
-      <ConfigFormTextField
-        propertyName={"sectorSize"}
-      />
-      <ConfigFormTextField
-        propertyName={"imageReference"}
-      />
-    </ConfigGridContainer>
-  </>)
-}
+  return (
+    <>
+      <Typography variant={'body1'}>Forest {values.forestName}</Typography>
+      <ConfigGridContainer>
+        <ConfigFormTextField
+          propertyName={'forestId'}
+          readOnly={true}
+        />
+        <ConfigFormTextField propertyName={'forestName'} />
+        <ConfigFormTextField propertyName={'width'} />
+        <ConfigFormTextField propertyName={'height'} />
+        <ConfigFormTextField propertyName={'sectorSize'} />
+        <ConfigFormTextField propertyName={'imageReference'} />
+      </ConfigGridContainer>
+    </>
+  );
+};

@@ -27,15 +27,15 @@ export const getDefaultSector = (): Sector => {
     sectorId: 0,
     row: 0,
     column: 0,
-    sectorType: "DECIDUOUS",
+    sectorType: 'DECIDUOUS',
     initialState: {
       temperature: 0,
       windSpeed: 0,
-      windDirection: "NE",
+      windDirection: 'NE',
       airHumidity: 0,
       plantLitterMoisture: 0,
       co2Concentration: 0,
-      pm2_5Concentration: 0
-    }
-  }
-}
+      pm2_5Concentration: 0,
+    },
+  };
+};

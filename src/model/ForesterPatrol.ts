@@ -16,14 +16,14 @@ export const getDefaultForesterPatrol = (): ForesterPatrol => {
   return {
     foresterPatrolId: 0,
     timestamp: new Date(Date.now()),
-    state: "AVAILABLE",
+    state: 'AVAILABLE',
     baseLocation: {
       latitude: 0,
-      longitude: 0
+      longitude: 0,
     },
     currentLocation: {
       latitude: 0,
-      longitude: 0
-    }
-  }
-}
+      longitude: 0,
+    },
+  };
+};
