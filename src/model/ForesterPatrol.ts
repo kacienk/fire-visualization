@@ -15,7 +15,7 @@ export interface ForesterPatrol {
 export const getDefaultForesterPatrol = (): ForesterPatrol => {
   return {
     foresterPatrolId: 0,
-    timestamp: new Date(Date.now()),
+    timestamp: new Date(),
     state: 'AVAILABLE',
     baseLocation: {
       latitude: 0,

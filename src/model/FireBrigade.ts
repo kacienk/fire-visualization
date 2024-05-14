@@ -15,7 +15,7 @@ export interface FireBrigade {
 export const getDefaultFireBrigade = (): FireBrigade => {
   return {
     fireBrigadeId: 0,
-    timestamp: new Date(Date.now()),
+    timestamp: new Date(),
     state: 'AVAILABLE',
     baseLocation: {
       longitude: 0,

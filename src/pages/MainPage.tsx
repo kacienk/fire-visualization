@@ -2,7 +2,7 @@
 import { Grid } from '@mui/material';
 import { MapWrapper } from '../components/maps/MapWrapper';
 import { MainCard } from '../components/MainCard';
-import { ParametersForm } from '../components/parameters/ParametersForm';
+import { ConfigurationForm } from '../components/configuration/ConfigurationForm';
 
 export const MainPage = () => {
   return (
@@ -17,7 +17,7 @@ export const MainPage = () => {
         xs={12}
       >
         <MainCard sx={{ mt: 2 }}>
-          <ParametersForm />
+          <ConfigurationForm />
         </MainCard>
       </Grid>
     </Grid>

@@ -26,6 +26,6 @@ export const getDefaultSensor = (): Sensor => {
       latitude: 0,
       longitude: 0,
     },
-    timestamp: new Date(Date.now()),
+    timestamp: new Date(),
   };
 };
