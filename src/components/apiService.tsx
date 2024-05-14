@@ -1,5 +1,6 @@
 import { ApiDataNode } from '../model/FileSystemModel/ApiDataNode';
 import { camelize } from '../utils/camelize';
+import { snakeize } from '../utils/snakeize';
 
 export const getNodes = async (baseUrl: string) => {
   const response = await fetch(baseUrl + '/api/v1/nodes/');
@@ -16,12 +17,16 @@ export const getNode = async (baseUrl: string, id: string) => {
 };
 
 export const createNode = async (baseUrl: string, node: ApiDataNode) => {
+  const data = snakeize(node);
+  data.id = null;
+  data.data = null;
+
   const response = await fetch(baseUrl + '/api/v1/nodes/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(node),
+    body: JSON.stringify(data),
   });
 
   return response.json();
@@ -33,7 +38,7 @@ export const updateNode = async (baseUrl: string, id: string, node: ApiDataNode)
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(node),
+    body: JSON.stringify(snakeize(node)),
   });
 
   return response.json();

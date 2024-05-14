@@ -1,7 +1,7 @@
 import { NodeTypeEnum } from './NodeTypeEnum';
 
 export interface ApiDataNode {
-  id: string;
+  id: string | null;
   name: string;
   nodeType: NodeTypeEnum;
   parentId: string | null;

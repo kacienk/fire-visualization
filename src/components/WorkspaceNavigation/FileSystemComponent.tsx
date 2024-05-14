@@ -6,7 +6,7 @@ import { FileSystemNode } from '../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
 
 interface Props {
-  data: FileSystemNode[];
+  data: { parent: FileSystemNode | null; nodes: FileSystemNode[] };
   selected: string | null;
   onItemSelected: (id: string) => void;
   inSelectWorkspace: boolean;
@@ -25,6 +25,15 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
       if (!inSelectWorkspace) {
         onItemSelected(item.id);
       }
+    }
+  };
+
+  const getRenderStructure = (): FileSystemNode[] => {
+    if (data.parent) {
+      data.parent.contents = data.nodes;
+      return [data.parent];
+    } else {
+      return data.nodes;
     }
   };
 
@@ -96,5 +105,5 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
     }
   };
 
-  return <List>{data.map((element) => renderFileOrFolder(element, 0))}</List>;
+  return <List>{getRenderStructure().map((element) => renderFileOrFolder(element, 0))}</List>;
 };

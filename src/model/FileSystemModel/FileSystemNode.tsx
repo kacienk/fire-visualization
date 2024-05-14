@@ -10,16 +10,30 @@ export interface FileSystemNode {
 
 export const mapApiDataNodeToFileSystemNode = (apiDataNode: ApiDataNode): FileSystemNode => {
   return {
-    id: apiDataNode.id,
+    id: apiDataNode.id ? apiDataNode.id : '',
     name: apiDataNode.name,
     nodeType: apiDataNode.nodeType,
     contents: apiDataNode.nodeType === NodeTypeEnum.FOLDER ? [] : undefined,
   };
 };
 
+export const mapFileSystemNodeToApiDataNode = (
+  fileSystemNode: FileSystemNode,
+  parentId: string | null,
+): ApiDataNode => {
+  return {
+    id: null,
+    name: fileSystemNode.name,
+    nodeType: fileSystemNode.nodeType,
+    parentId: parentId,
+    data: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+};
+
 export const mapApiDataNodesToFileSystemNodes = (apiDataNodes: ApiDataNode[]): FileSystemNode[] => {
   const findRoots = (nodes: ApiDataNode[]): ApiDataNode[] => {
-    console.log('nodes', nodes);
     const parentIds = nodes.map((node) => node.parentId);
     return nodes.filter((node) => node.parentId === null || !parentIds.includes(node.id));
   };
