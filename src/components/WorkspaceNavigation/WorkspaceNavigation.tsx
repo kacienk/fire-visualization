@@ -6,7 +6,6 @@ import { getSampleFileSystem } from '../../model/FileSystemModel/utils';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { createNode, getNode, getNodeChildren, getNodes } from '../apiService';
-import OpenWorkspaceLayout from '../../layout/MainLayout/OpenWorkspaceLayout/OpenWorkspaceLayout';
 import {
   FileSystemNode,
   mapApiDataNodeToFileSystemNode,
@@ -243,7 +242,7 @@ export const WorkspaceNavigation: React.FC = () => {
 
           <Button
             onClick={handleCreateFolder}
-            disabled={selectedModalMenuItem === null || newFolderName === null}
+            disabled={selectedModalMenuItem === null || newFolderName === null || newFolderName === ''}
           >
             Create
           </Button>
