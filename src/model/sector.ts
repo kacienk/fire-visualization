@@ -1,3 +1,5 @@
+import { Direction } from './geography';
+
 export const SectorTypes = ['DECIDUOUS', 'MIXED', 'CONIFEROUS', 'FIELD', 'FALLOW', 'WATER', 'UNTRACKED'] as const;
 
 type SectorType = (typeof SectorTypes)[number];
@@ -18,4 +20,22 @@ interface SectorState {
   plantLitterMoisture: number;
   co2Concentration: number;
   pm2_5Concentration: number;
+}
+
+export const getDefaultSector = (): Sector => {
+  return {
+    sectorId: 0,
+    row: 0,
+    column: 0,
+    sectorType: "DECIDUOUS",
+    initialState: {
+      temperature: 0,
+      windSpeed: 0,
+      windDirection: "NE",
+      airHumidity: 0,
+      plantLitterMoisture: 0,
+      co2Concentration: 0,
+      pm2_5Concentration: 0
+    }
+  }
 }
