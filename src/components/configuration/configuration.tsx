@@ -1,11 +1,7 @@
 import { Field, FieldArray, useFormik, useFormikContext } from 'formik';
 import { FC, ReactNode } from 'react';
 import { Button, Grid, MenuItem, Select, Stack, TextField } from '@mui/material';
-import { SectorTypes } from '../../model/sector';
 import { labelize } from '../../utils/labelize';
-import { Configuration } from '../../model/configuration/configuration';
-
-export type OnChangeFn = ReturnType<typeof useFormik>['handleChange'];
 
 export interface FormPartProps<T> {}
 
@@ -83,9 +79,9 @@ export const ConfigFormDropDown: FC<ConfigFormDropDownProps> = (props) => {
 export const ConfigArrayForm = <T extends object>({ name, ChildForm, defaultObj, data }: ConfigArrayFormProps<T>) => {
   return (
     <FieldArray name={name}>
-      {({ insert, remove, push }) => (
+      {({ push }) => (
         <Stack spacing={2}>
-          {data.map((item, idx) => (
+          {data.map((_, idx) => (
             <ChildForm idx={idx} />
           ))}
           <Button

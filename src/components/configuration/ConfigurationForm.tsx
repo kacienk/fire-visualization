@@ -8,6 +8,7 @@ import { SensorsFormPart } from './SensorConfiguration';
 import { CamerasFormPart } from './CameraConfiguration';
 import { FireBrigadesFormPart } from './FireBrigadeConfiguration';
 import { ForesterPatrolsFormPart } from './ForesterPatrolConfiguration';
+
 export const ConfigurationForm: FC = () => {
   return (
     <Formik

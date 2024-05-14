@@ -4,7 +4,6 @@ import {
   ConfigFormDropDown,
   ConfigFormTextField,
   ConfigGridContainer,
-  FormPartProps,
   ItemFormPartProps,
 } from './configuration';
 import { getDefaultSector, Sector, SectorTypes } from '../../model/sector';
@@ -94,7 +93,7 @@ const SectorFormPart: FC<ItemFormPartProps<Sector>> = (props) => {
   );
 };
 
-export const SectorsFormPart: FC = (props) => {
+export const SectorsFormPart: FC = () => {
   const { values } = useFormikContext<Configuration>();
 
   return (

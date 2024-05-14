@@ -11,6 +11,8 @@ import { Configuration } from '../../model/configuration/configuration';
 import { getDefaultSensor, Sensor, SensorTypes } from '../../model/sensor';
 import { Typography } from '@mui/material';
 
+const objectName = "sensors"
+
 const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
   const { values } = useFormikContext<Configuration>();
 
@@ -19,7 +21,7 @@ const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
       <Typography variant={'body1'}>Sensor {values.sensors[idx].sensorId}</Typography>
       <ConfigGridContainer>
         <ConfigFormTextField
-          objectName={'sensors'}
+          objectName={objectName}
           propertyName={'sensorId'}
           idx={idx}
           readOnly={true}
@@ -31,13 +33,13 @@ const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
           idx={idx}
         />
         <ConfigFormTextField
-          objectName={'sensors'}
+          objectName={objectName}
           propertyName={'location.latitude'}
           idx={idx}
           type={'number'}
         />
         <ConfigFormTextField
-          objectName={'sensors'}
+          objectName={objectName}
           propertyName={'location.longitude'}
           idx={idx}
           type={'number'}
@@ -52,7 +54,7 @@ export const SensorsFormPart: FC = () => {
 
   return (
     <ConfigArrayForm
-      name={'sensors'}
+      name={objectName}
       ChildForm={SensorFormPart}
       defaultObj={getDefaultSensor()}
       data={values.sensors}
