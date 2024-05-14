@@ -5,37 +5,84 @@ import { FileSystemComponent } from './FileSystemComponent';
 import { getSampleFileSystem } from '../../model/FileSystemModel/utils';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getNodes } from '../apiService';
+import { getNode, getNodeChildren, getNodes } from '../apiService';
 import OpenWorkspaceLayout from '../../layout/MainLayout/OpenWorkspaceLayout/OpenWorkspaceLayout';
+import {
+  FileSystemNode,
+  mapApiDataNodeToFileSystemNode,
+  mapApiDataNodesToFileSystemNodes,
+} from '../../model/FileSystemModel/FileSystemNode';
 
 export const WorkspaceNavigation: React.FC = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const [isSelecWorkspaceModalVisible, setIsSelecWorkspaceModalVisible] = useState(false);
+  const [isSelectWorkspaceModalVisible, setIsSelectWorkspaceModalVisible] = useState(false);
   const [url, setUrl] = useState('http://localhost:31415');
-  const [nodesInWorkspace, setNodesInWorkspace] = useState([]);
-  const [workspaceParentNode, setWorkspaceParentNode] = useState('');
+  const [allNodes, setAllNodes] = useState<FileSystemNode[]>([]);
+  const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
+  const [selectedModalMenuItem, setSelectedModalMenuItem] = useState<string | null>(null);
+  const [workspace, setWorkspace] = useState<{ parent: FileSystemNode | null; nodes: FileSystemNode[] }>({
+    parent: null,
+    nodes: [],
+  });
 
-  const handleOpenModal = () => {
-    setIsSelecWorkspaceModalVisible(true);
+  const handleOpenModal = async () => {
+    setIsSelectWorkspaceModalVisible(true);
+    setSelectedMenuItem(null);
+    setSelectedModalMenuItem(null);
+    const fetchedNodes = await fetchAllNodes();
+    setAllNodes(fetchedNodes);
   };
 
   const handleCloseModal = () => {
-    setIsSelecWorkspaceModalVisible(false);
+    setIsSelectWorkspaceModalVisible(false);
+    setSelectedMenuItem(null);
+    setSelectedModalMenuItem(null);
+  };
+
+  const fetchAllNodes = async (): Promise<FileSystemNode[]> => {
+    let convertedData: FileSystemNode[] = [];
+    try {
+      const data = await getNodes(url);
+      convertedData = mapApiDataNodesToFileSystemNodes(data);
+      console.log('Converted Data:', convertedData);
+    } catch (error) {
+      console.error('Error fetching nodes:', error);
+    }
+
+    return convertedData;
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchChildNodes = async () => {
       try {
-        const data = await getNodes(url);
-        console.log('Data:', data);
+        if (workspace.parent) {
+          const data = await getNodeChildren(url, workspace.parent.id);
+          const convertedData = mapApiDataNodesToFileSystemNodes(data);
+          console.log('Converted Data:', convertedData);
+          setWorkspace((prevState) => ({ ...prevState, nodes: convertedData }));
+        }
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching nodes:', error);
       }
     };
 
-    fetchUsers();
-  }, []);
+    fetchChildNodes();
+  }, [workspace]);
+
+  const selectWorkspace = async () => {
+    try {
+      if (selectedModalMenuItem) {
+        const data = await getNode(url, selectedModalMenuItem);
+        const convertedData = mapApiDataNodeToFileSystemNode(data);
+        console.log('Converted Data:', convertedData);
+        setWorkspace({ parent: convertedData, nodes: [] });
+      }
+    } catch (error) {
+      console.error('Error fetching workspace node:', error);
+    }
+
+    handleCloseModal();
+  };
 
   return (
     <Box
@@ -57,7 +104,7 @@ export const WorkspaceNavigation: React.FC = () => {
           variant="h6"
           component="div"
         >
-          Workspace
+          Workspace ({workspace.parent ? workspace.parent.name : 'None'})
         </Typography>
         <Box>
           <Button sx={{ color: 'secondary.main', minWidth: 0 }}>
@@ -76,16 +123,13 @@ export const WorkspaceNavigation: React.FC = () => {
       </Box>
 
       <Modal
-        open={isSelecWorkspaceModalVisible}
+        open={isSelectWorkspaceModalVisible}
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
-        {/* <Typography>URL: {url}</Typography>
-        <Typography>File System: {fileSystem}</Typography> */}
-        {/* <OpenWorkspaceLayout onClose={() => {}}></OpenWorkspaceLayout> */}
         <Box sx={{ backgroundColor: 'secondary.A100', p: 2, borderRadius: 2 }}>
           <Typography variant="h2">Open Workspace</Typography>
           <Typography> URL: {url} </Typography>
@@ -102,15 +146,30 @@ export const WorkspaceNavigation: React.FC = () => {
               overflow: 'scroll',
             }}
           >
-            <FileSystemComponent data={getSampleFileSystem()} />
+            <FileSystemComponent
+              data={allNodes}
+              selected={selectedModalMenuItem}
+              onItemSelected={setSelectedModalMenuItem}
+              inSelectWorkspace={true}
+            />
           </Box>
 
-          <Button onClick={() => {}}>Open</Button>
+          <Button
+            onClick={selectWorkspace}
+            disabled={selectedModalMenuItem === null}
+          >
+            Open
+          </Button>
           <Button onClick={handleCloseModal}>Cancel</Button>
         </Box>
       </Modal>
 
-      <FileSystemComponent data={getSampleFileSystem()} />
+      <FileSystemComponent
+        data={workspace.nodes}
+        selected={selectedMenuItem}
+        onItemSelected={setSelectedMenuItem}
+        inSelectWorkspace={false}
+      />
     </Box>
   );
 };

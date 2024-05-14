@@ -19,6 +19,7 @@ export const mapApiDataNodeToFileSystemNode = (apiDataNode: ApiDataNode): FileSy
 
 export const mapApiDataNodesToFileSystemNodes = (apiDataNodes: ApiDataNode[]): FileSystemNode[] => {
   const findRoots = (nodes: ApiDataNode[]): ApiDataNode[] => {
+    console.log('nodes', nodes);
     const parentIds = nodes.map((node) => node.parentId);
     return nodes.filter((node) => node.parentId === null || !parentIds.includes(node.id));
   };

@@ -7,19 +7,25 @@ import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
 
 interface Props {
   data: FileSystemNode[];
+  selected: string | null;
+  onItemSelected: (id: string) => void;
+  inSelectWorkspace: boolean;
 }
 
-export const FileSystemComponent: React.FC<Props> = ({ data }) => {
+export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSelected, inSelectWorkspace }) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
   const theme = useTheme();
-  const [selected, setSelected] = useState<string | null>(null);
 
   const handleItemClick = (item: FileSystemNode) => {
     if (item.nodeType === NodeTypeEnum.FOLDER) {
       const isOpen = openFolders.includes(item.id);
       setOpenFolders(isOpen ? openFolders.filter((f) => f !== item.id) : [...openFolders, item.id]);
+      onItemSelected(item.id);
+    } else {
+      if (!inSelectWorkspace) {
+        onItemSelected(item.id);
+      }
     }
-    setSelected(item.id);
   };
 
   const renderFileOrFolder = (item: FileSystemNode, level: number) => {
@@ -66,7 +72,8 @@ export const FileSystemComponent: React.FC<Props> = ({ data }) => {
         <ListItemButton
           key={item.name}
           onClick={() => handleItemClick(item)}
-          selected={item.id === selected}
+          selected={item.id === selected && !inSelectWorkspace}
+          disabled={inSelectWorkspace}
           sx={{
             cursor: 'pointer',
             pl: 2 * level,

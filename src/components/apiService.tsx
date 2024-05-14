@@ -5,7 +5,7 @@ export const getNodes = async (baseUrl: string) => {
   const response = await fetch(baseUrl + '/api/v1/nodes/');
   const data = await response.json();
 
-  return camelize(data) as ApiDataNode[];
+  return camelize(data.nodes) as ApiDataNode[];
 };
 
 export const getNode = async (baseUrl: string, id: string) => {
@@ -51,5 +51,5 @@ export const getNodeChildren = async (baseUrl: string, id: string) => {
   const response = await fetch(baseUrl + `/api/v1/nodes/${id}/children`);
   const data = await response.json();
 
-  return camelize(data) as ApiDataNode[];
+  return camelize(data.nodes) as ApiDataNode[];
 };
