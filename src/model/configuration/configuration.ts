@@ -4,6 +4,8 @@ import { Camera, getDefaultCamera } from '../camera';
 import { FireBrigade, getDefaultFireBrigade } from '../FireBrigade';
 import { ForesterPatrol, getDefaultForesterPatrol } from '../ForesterPatrol';
 import { Region } from '../geography';
+import { linspace } from '../../utils/linspace';
+import { ProcessedSector } from '../processedSector';
 
 export interface Forest {
   forestId: number;
@@ -24,28 +26,52 @@ export interface Configuration extends Forest {
 }
 
 export const Configuration = {
-  getBounds: (configuration: Configuration): google.maps.LatLngBoundsLiteral => {
+  getBounds: ({ location }: Configuration): google.maps.LatLngBoundsLiteral => {
     return {
-      east: configuration.location.reduce((maxLng: number, { longitude }) => {
+      east: location.reduce((maxLng: number, { longitude }) => {
         if (longitude > maxLng) maxLng = longitude;
         return maxLng;
       }, -Infinity), // lng
-      north: configuration.location.reduce((maxLat: number, { latitude }) => {
+      north: location.reduce((maxLat: number, { latitude }) => {
         if (latitude > maxLat) maxLat = latitude;
         return maxLat;
       }, -Infinity), // lat
-      south: configuration.location.reduce((minLat: number, { latitude }) => {
+      south: location.reduce((minLat: number, { latitude }) => {
         if (latitude < minLat) minLat = latitude;
         return minLat;
       }, Infinity), // lat
-      west: configuration.location.reduce((minLng: number, { longitude }) => {
+      west: location.reduce((minLng: number, { longitude }) => {
         if (longitude < minLng) minLng = longitude;
         return minLng;
       }, Infinity), // lng
     };
   },
+  preprocessSectors: (configuration: Configuration) => {
+    const { sectors: rawSectors, width, height, sectorSize } = configuration;
+    // the solution with width, height, sectorSize of the map is stupid
+    const sectorRows = Math.floor(height / sectorSize);
+    const sectorCols = Math.floor(width / sectorSize);
+
+    const { east, north, south, west } = Configuration.getBounds(configuration);
+    const linspaceLat = linspace(south, north, sectorRows);
+    const linspaceLng = linspace(west, east, sectorCols);
+
+    return rawSectors.map((rawSector) => {
+      const rowIdx = rawSector.row - 1;
+      const colIdx = rawSector.column - 1;
+      return {
+        ...rawSector,
+        contours: [
+          [linspaceLng[colIdx], linspaceLat[rowIdx]],
+          [linspaceLng[colIdx], linspaceLat[rowIdx + 1]],
+          [linspaceLng[colIdx + 1], linspaceLat[rowIdx + 1]],
+          [linspaceLng[colIdx + 1], linspaceLat[rowIdx]],
+        ],
+      };
+    });
+  },
   sectors: {
-    toString: (sector: Sector & { contours: [number, number][] }) => {
+    toString: (sector: ProcessedSector) => {
       return `Forest type: ${sector.sectorType}
         Temperature: ${sector.initialState.temperature}
         Wind speed: ${sector.initialState.windSpeed}
