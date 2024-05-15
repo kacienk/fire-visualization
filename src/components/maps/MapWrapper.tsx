@@ -1,7 +1,6 @@
 // maps
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { DeckGlOverlay } from './DeckGlOverlay';
-import { getDeckGlLayers } from '../../utils/maps/getDeckGlLayers';
 
 // maps styles overrides
 /**
@@ -14,28 +13,28 @@ import './maps-styles-overrides.css';
 import { Grid, Box } from '@mui/material';
 import { MainCard } from '../MainCard';
 import { mapConfigMockup } from '../../data/sectorsMockup';
-import { ReactNode, useEffect, useState } from 'react';
-import { eventEmitter } from '../../utils/eventEmitter';
+import { ReactNode, useState } from 'react';
 import { Configuration } from '../../model/configuration/configuration';
 import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
 import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
+import { useSelectedSectorLayer } from '../../hooks/maps/useSelectedSectorLayer';
+import { useOnSectorChange } from '../../hooks/maps/useOnSectorChange';
+import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
 
 export const MapWrapper = () => {
+  const [tooltip, setTooltip] = useState<ReactNode>(null);
+  const [currentSectorId, setCurrentSectorId] = useState<number | null>(null);
+
   const bounds = Configuration.getBounds(mapConfigMockup);
 
   const forestBorderLayer = useForestBorderLayer(mapConfigMockup);
   const sectorsLayer = useSectorsLayer(mapConfigMockup);
+  const selectedSectorLayer = useSelectedSectorLayer(
+    mapConfigMockup.sectors.find(({ sectorId }) => sectorId === currentSectorId),
+  );
 
-  const [tooltip, setTooltip] = useState<ReactNode>(null);
-  useEffect(() => {
-    const onTooltipChange = (tooltip: ReactNode) => setTooltip(tooltip);
-
-    eventEmitter.addListener('onTooltipChange', onTooltipChange);
-
-    return () => {
-      eventEmitter.removeListener('onTooltipChange', onTooltipChange);
-    };
-  }, []);
+  useOnTooltipChange(setTooltip);
+  useOnSectorChange(setCurrentSectorId);
 
   return (
     <>
@@ -58,7 +57,7 @@ export const MapWrapper = () => {
                 }}
               >
                 {tooltip}
-                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer]} />
+                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer]} />
               </Map>
             </Box>
           </APIProvider>
