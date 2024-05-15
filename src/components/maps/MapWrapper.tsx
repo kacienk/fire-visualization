@@ -12,7 +12,6 @@ import './maps-styles-overrides.css';
 // material-ui
 import { Grid, Box } from '@mui/material';
 import { MainCard } from '../MainCard';
-import { mapConfigMockup } from '../../data/sectorsMockup';
 import { ReactNode, useState } from 'react';
 import { Configuration } from '../../model/configuration/configuration';
 import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
@@ -20,17 +19,21 @@ import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
 import { useSelectedSectorLayer } from '../../hooks/maps/useSelectedSectorLayer';
 import { useOnSectorChange } from '../../hooks/maps/useOnSectorChange';
 import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reduxStore';
 
 export const MapWrapper = () => {
+  const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration);
+
   const [tooltip, setTooltip] = useState<ReactNode>(null);
   const [currentSectorId, setCurrentSectorId] = useState<number | null>(null);
 
-  const bounds = Configuration.getBounds(mapConfigMockup);
+  const bounds = Configuration.getBounds(mapConfiguration);
 
-  const forestBorderLayer = useForestBorderLayer(mapConfigMockup);
-  const sectorsLayer = useSectorsLayer(mapConfigMockup);
+  const forestBorderLayer = useForestBorderLayer(mapConfiguration);
+  const sectorsLayer = useSectorsLayer(mapConfiguration);
   const selectedSectorLayer = useSelectedSectorLayer(
-    mapConfigMockup.sectors.find(({ sectorId }) => sectorId === currentSectorId),
+    mapConfiguration.sectors.find(({ sectorId }) => sectorId === currentSectorId),
   );
 
   useOnTooltipChange(setTooltip);
