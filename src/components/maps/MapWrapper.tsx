@@ -1,7 +1,6 @@
 // maps
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { DeckGlOverlay } from './DeckGlOverlay';
-import { getDeckGlLayers } from '../../utils/maps/getDeckGlLayers';
 
 // maps styles overrides
 /**
@@ -13,40 +12,32 @@ import './maps-styles-overrides.css';
 // material-ui
 import { Grid, Box } from '@mui/material';
 import { MainCard } from '../MainCard';
-import { mapConfigMockup } from '../../data/sectorsMockup';
-import { ReactNode, useEffect, useState } from 'react';
-import { eventEmitter } from '../../utils/eventEmitter';
+import { ReactNode, useState } from 'react';
+import { Configuration } from '../../model/configuration/configuration';
+import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
+import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
+import { useSelectedSectorLayer } from '../../hooks/maps/useSelectedSectorLayer';
+import { useOnSectorChange } from '../../hooks/maps/useOnSectorChange';
+import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reduxStore';
 
 export const MapWrapper = () => {
-  const bounds: google.maps.LatLngBoundsLiteral = {
-    east: mapConfigMockup.location.reduce((maxLng: number, { longitude }) => {
-      if (longitude > maxLng) maxLng = longitude;
-      return maxLng;
-    }, -Infinity), // lng
-    north: mapConfigMockup.location.reduce((maxLat: number, { latitude }) => {
-      if (latitude > maxLat) maxLat = latitude;
-      return maxLat;
-    }, -Infinity), // lat
-    south: mapConfigMockup.location.reduce((minLat: number, { latitude }) => {
-      if (latitude < minLat) minLat = latitude;
-      return minLat;
-    }, Infinity), // lat
-    west: mapConfigMockup.location.reduce((minLng: number, { longitude }) => {
-      if (longitude < minLng) minLng = longitude;
-      return minLng;
-    }, Infinity), // lng
-  };
+  const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration);
 
   const [tooltip, setTooltip] = useState<ReactNode>(null);
-  useEffect(() => {
-    const onTooltipChange = (tooltip: ReactNode) => setTooltip(tooltip);
+  const [currentSectorId, setCurrentSectorId] = useState<number | null>(null);
 
-    eventEmitter.addListener('onTooltipChange', onTooltipChange);
+  const bounds = Configuration.getBounds(mapConfiguration);
 
-    return () => {
-      eventEmitter.removeListener('onTooltipChange', onTooltipChange);
-    };
-  }, []);
+  const forestBorderLayer = useForestBorderLayer(mapConfiguration);
+  const sectorsLayer = useSectorsLayer(mapConfiguration);
+  const selectedSectorLayer = useSelectedSectorLayer(
+    mapConfiguration.sectors.find(({ sectorId }) => sectorId === currentSectorId),
+  );
+
+  useOnTooltipChange(setTooltip);
+  useOnSectorChange(setCurrentSectorId);
 
   return (
     <>
@@ -69,7 +60,7 @@ export const MapWrapper = () => {
                 }}
               >
                 {tooltip}
-                <DeckGlOverlay layers={getDeckGlLayers()} />
+                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer]} />
               </Map>
             </Box>
           </APIProvider>

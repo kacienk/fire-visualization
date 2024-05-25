@@ -2,11 +2,14 @@
 import { PolygonLayer } from '@deck.gl/layers';
 
 // data
-import { MapConfig, mapConfigMockup } from '../../data/sectorsMockup';
+import { mapConfigMockup } from '../../data/sectorsMockup';
 import { PickingInfo } from '@deck.gl/core';
 import { eventEmitter } from '../eventEmitter';
 import { createElement, CSSProperties } from 'react';
 import { Box, List, ListItem, ListItemText } from '@mui/material';
+import { Sector } from '../../model/sector';
+import { Configuration } from '../../model/configuration/configuration';
+import { Region } from '../../model/geography';
 
 const styles = {
   tooltip: {
@@ -21,7 +24,7 @@ const styles = {
 } satisfies Record<string, CSSProperties>;
 
 export const getDeckGlLayers = () => {
-  const showTooltip = (pickingInfo: PickingInfo) => {
+  const showTooltip = (pickingInfo: PickingInfo<Sector>) => {
     const { x, y, object: sector, viewport } = pickingInfo;
     if (!sector) {
       eventEmitter.emit('onTooltipChange', null);
@@ -57,7 +60,7 @@ export const getDeckGlLayers = () => {
       createElement(
         List,
         { dense: false },
-        MapConfig.sectors
+        Configuration.sectors
           .toString(sector)
           .split('\n')
           .map((str) => {
@@ -68,13 +71,13 @@ export const getDeckGlLayers = () => {
     eventEmitter.emit('onTooltipChange', tooltip);
   };
 
+  const onClick = (pickingInfo: PickingInfo<Sector>) => {
+    const { object: sector } = pickingInfo;
+    eventEmitter.emit('onSectorChange', sector?.sectorId ?? null);
+  };
+
   return [
-    new PolygonLayer<
-      {
-        longitude: number;
-        latitude: number;
-      }[]
-    >({
+    new PolygonLayer<Region>({
       id: 'ForestBorders',
       data: [mapConfigMockup.location],
 
@@ -87,7 +90,7 @@ export const getDeckGlLayers = () => {
       lineWidthMinPixels: 1,
       pickable: false,
     }),
-    new PolygonLayer({
+    new PolygonLayer<Sector>({
       id: 'PolygonLayer',
       data: mapConfigMockup.sectors,
 
@@ -103,6 +106,7 @@ export const getDeckGlLayers = () => {
       onHover: (pickingInfo) => {
         showTooltip(pickingInfo);
       },
+      onClick: onClick,
       autoHighlight: true,
       highlightColor: [116, 146, 195, 128],
     }),
