@@ -36,7 +36,7 @@ export const MainDrawer = ({ open, handleDrawerToggle, window }: MainDrawerProps
         <MiniDrawerStyled
           variant="permanent"
           open={open}
-        >          
+        >
           {drawerContent}
         </MiniDrawerStyled>
       ) : (

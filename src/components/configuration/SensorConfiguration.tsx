@@ -11,7 +11,7 @@ import { Configuration } from '../../model/configuration/configuration';
 import { getDefaultSensor, Sensor, SensorTypes } from '../../model/sensor';
 import { Typography } from '@mui/material';
 
-const objectName = "sensors"
+const objectName = 'sensors';
 
 const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
   const { values } = useFormikContext<Configuration>();
