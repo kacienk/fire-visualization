@@ -8,6 +8,7 @@ import { MainMap } from '../components/maps/MainMap';
 
 // configuration
 import { ConfigurationForm } from '../components/configuration/ConfigurationForm';
+import { SectorDetails } from '../components/configuration/SectorConfiguration';
 
 export const MainPage = () => {
   return (
@@ -24,7 +25,7 @@ export const MainPage = () => {
         xs={12}
       >
         <MainCard sx={{ mt: 2 }}>
-          <ConfigurationForm />
+          <SectorDetails />
         </MainCard>
       </Grid>
     </Grid>
