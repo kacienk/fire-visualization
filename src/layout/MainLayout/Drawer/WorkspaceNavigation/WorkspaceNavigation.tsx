@@ -26,8 +26,8 @@ export const WorkspaceNavigation: React.FC = () => {
   const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfigution());
   const [url, setUrl] = useState('http://localhost:31415');
   const [allNodes, setAllNodes] = useState<{ parent: null; nodes: FileSystemNode[] }>({ parent: null, nodes: [] });
-  const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
-  const [selectedModalMenuItem, setSelectedModalMenuItem] = useState<string | null>(null);
+  const [selectedMenuItem, setSelectedMenuItem] = useState<FileSystemNode | null>(null);
+  const [selectedModalMenuItem, setSelectedModalMenuItem] = useState<FileSystemNode | null>(null);
   const [workspace, setWorkspace] = useState<{ parent: FileSystemNode | null; nodes: FileSystemNode[] }>({
     parent: null,
     nodes: [],
@@ -80,7 +80,7 @@ export const WorkspaceNavigation: React.FC = () => {
   const selectWorkspace = async () => {
     try {
       if (selectedModalMenuItem) {
-        const data = await getNode(url, selectedModalMenuItem);
+        const data = await getNode(url, selectedModalMenuItem.id);
         const convertedData = mapApiDataNodeToFileSystemNode(data);
         setWorkspace({ parent: convertedData, nodes: [] });
       }
@@ -124,7 +124,7 @@ export const WorkspaceNavigation: React.FC = () => {
       };
 
       try {
-        await createNode(url, mapFileSystemNodeToApiDataNode(newFolder, selectedModalMenuItem));
+        await createNode(url, mapFileSystemNodeToApiDataNode(newFolder, selectedModalMenuItem.id));
       } catch (error) {
         console.error('Error creating new folder:', error);
       }
@@ -313,7 +313,7 @@ export const WorkspaceNavigation: React.FC = () => {
         >
           <Typography variant="h2">New configuration</Typography>
           <Typography> URL: {url} </Typography>
-          <Typography> Folder name: {selectedMenuItem ? selectedMenuItem : workspace.parent?.name} </Typography>
+          <Typography> Folder name: {selectedMenuItem ? selectedMenuItem.name : workspace.parent?.name} </Typography>
           <TextField
             sx={{ my: 1 }}
             id="outlined-basic"

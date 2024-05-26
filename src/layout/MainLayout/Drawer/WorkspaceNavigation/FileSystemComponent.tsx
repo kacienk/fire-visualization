@@ -7,8 +7,8 @@ import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
 
 interface Props {
   data: { parent: FileSystemNode | null; nodes: FileSystemNode[] };
-  selected: string | null;
-  onItemSelected: (id: string) => void;
+  selected: FileSystemNode | null;
+  onItemSelected: (item: FileSystemNode) => void;
   inSelectWorkspace: boolean;
 }
 
@@ -20,10 +20,10 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
     if (item.nodeType === NodeTypeEnum.FOLDER) {
       const isOpen = openFolders.includes(item.id);
       setOpenFolders(isOpen ? openFolders.filter((f) => f !== item.id) : [...openFolders, item.id]);
-      onItemSelected(item.id);
+      onItemSelected(item);
     } else {
       if (!inSelectWorkspace) {
-        onItemSelected(item.id);
+        onItemSelected(item);
       }
     }
   };
@@ -43,7 +43,7 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
         <Box key={item.name}>
           <ListItemButton
             onClick={() => handleItemClick(item)}
-            selected={item.id === selected}
+            selected={item.id === selected?.id}
             sx={{
               cursor: 'pointer',
               pl: 2 * level,
@@ -81,7 +81,7 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
         <ListItemButton
           key={item.name}
           onClick={() => handleItemClick(item)}
-          selected={item.id === selected && !inSelectWorkspace}
+          selected={item.id === selected?.id && !inSelectWorkspace}
           disabled={inSelectWorkspace}
           sx={{
             cursor: 'pointer',
