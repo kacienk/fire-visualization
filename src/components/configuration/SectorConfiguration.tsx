@@ -113,93 +113,107 @@ export const SectorsFormPart: FC = () => {
   );
 };
 
-// type SectorFormProps = {
-//   readonly: boolean | Record<keyof Sector, boolean>
-// }
+type SectorFormProps = {
+  readonly: boolean | Booleanify<Omit<Sector, 'sectorId' | 'row' | 'column'>>;
+};
 
-export const SectorForm: FC = () => {
+export const SectorForm: FC<SectorFormProps> = (props) => {
   const { configuration: mapConfiguration, currentSectorId } = useSelector(
     (state: RootState) => state.mapConfiguration,
   );
   const { values, setFieldValue } = useFormikContext<Configuration>();
 
-  const [currentSector, setCurrentSector] = useState<Sector | null>(null);
+  const [idx, setIdx] = useState<number | undefined>(undefined);
   useEffect(() => {
-    console.debug(values);
-    setCurrentSector(mapConfiguration.sectors.find((sector) => sector.sectorId === currentSectorId) ?? null);
+    setIdx(currentSectorId !== null ? currentSectorId - 1 : undefined);
   }, [mapConfiguration, currentSectorId]);
 
-  if (currentSectorId === null) return null;
+  if (currentSectorId === null || idx === undefined) return null;
 
   return (
     <>
-      <Typography variant={'body1'}>Sector {values.sectors[currentSectorId - 1].sectorId}</Typography>
+      <Typography variant={'body1'}>Sector {values.sectors[idx].sectorId}</Typography>
       <ConfigGridContainer>
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'sectorId'}
           readOnly={true}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'row'}
           readOnly={true}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'column'}
           readOnly={true}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormDropDown
           objectName={objectName}
           allVariants={SectorTypes}
           propertyName={'sectorType'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.sectorType}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.temperature'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.temperature}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.windSpeed'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.windSpeed}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormDropDown
           allVariants={Directions}
           objectName={objectName}
           propertyName={'initialState.windDirection'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.windDirection}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.airHumidity'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.airHumidity}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.plantLitterMoisture'}
-          readOnly={true}
+          readOnly={
+            typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.plantLitterMoisture
+          }
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.co2Concentration'}
-          readOnly={true}
+          readOnly={typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.co2Concentration}
           type={'number'}
+          idx={idx}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.pm2_5Concentration'}
-          readOnly={true}
+          readOnly={
+            typeof props.readonly === 'boolean' ? props.readonly : props.readonly.initialState.pm2_5Concentration
+          }
           type={'number'}
+          idx={idx}
         />
       </ConfigGridContainer>
     </>
@@ -217,7 +231,7 @@ export const SectorDetails = () => {
     >
       <Form>
         <Stack spacing={2}>
-          <SectorForm />
+          <SectorForm readonly={true} />
           {/* <Divider>Sensors</Divider>
           <SensorsFormPart />
           <Divider>Cameras</Divider>

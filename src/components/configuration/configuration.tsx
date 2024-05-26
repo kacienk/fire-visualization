@@ -69,6 +69,7 @@ export const ConfigFormDropDown: FC<ConfigFormDropDownProps> = (props) => {
       id={constructId(props.propertyName, props.objectName, props.idx)}
       name={constructName(props.propertyName, props.objectName, props.idx)}
       label={labelize(props.propertyName)}
+      disabled={props.readOnly}
     >
       {props.allVariants.map((type) => (
         <MenuItem
