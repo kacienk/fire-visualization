@@ -10,10 +10,8 @@ import { ProcessedSector } from '../processedSector';
 export interface Forest {
   forestId: number;
   forestName: string;
-  width: number;
-  height: number;
-  sectorSize: number;
-  imageReference: string;
+  rows: number;
+  columns: number;
   location: Region;
 }
 
@@ -47,14 +45,12 @@ export const Configuration = {
     };
   },
   preprocessSectors: (configuration: Configuration) => {
-    const { sectors: rawSectors, width, height, sectorSize } = configuration;
+    const { sectors: rawSectors, rows, columns } = configuration;
     // the solution with width, height, sectorSize of the map is stupid
-    const sectorRows = Math.floor(height / sectorSize);
-    const sectorCols = Math.floor(width / sectorSize);
 
     const { east, north, south, west } = Configuration.getBounds(configuration);
-    const linspaceLat = linspace(south, north, sectorRows);
-    const linspaceLng = linspace(west, east, sectorCols);
+    const linspaceLat = linspace(south, north, rows);
+    const linspaceLng = linspace(west, east, columns);
 
     return rawSectors.map((rawSector) => {
       const rowIdx = rawSector.row - 1;
@@ -88,10 +84,8 @@ export const getDefaultConfigution = (): Configuration => {
   return {
     forestId: 0,
     forestName: 'Wolski',
-    width: 0,
-    height: 0,
-    sectorSize: 0,
-    imageReference: '',
+    rows: 1,
+    columns: 1,
     location: [
       {
         latitude: 0,
