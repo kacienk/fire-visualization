@@ -1,8 +1,8 @@
-import { Box, Typography, Button, Modal, TextField } from '@mui/material';
+import { Box, Typography, Button, Modal, TextField, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { FileAddOutlined, FolderAddOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { FileSystemComponent } from './FileSystemComponent';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createNode, getNode, getNodeChildren, getNodes } from '../../../../components/apiService';
 import {
   FileSystemNode,
@@ -11,12 +11,19 @@ import {
   mapFileSystemNodeToApiDataNode,
 } from '../../../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
+import { ForestFormPart } from '../../../../components/configuration/ForestConfiguration';
+import { Form, Formik, FormikProps } from 'formik';
+import { Configuration, getDefaultConfigution } from '../../../../model/configuration/configuration';
+import { get } from 'http';
 
 export const WorkspaceNavigation: React.FC = () => {
   const theme = useTheme();
   const [isSelectWorkspaceModalVisible, setIsSelectWorkspaceModalVisible] = useState(false);
-  const [isNewFolderModalVisivle, setIsNewFolderModalVisible] = useState(false);
+  const [isNewFolderModalVisible, setIsNewFolderModalVisible] = useState(false);
+  const [isNewConfigurationModalVisible, setIsNewConfigurationModalVisible] = useState(false);
   const [newFolderName, setNewFolderName] = useState<string | null>(null);
+  const [newConfigurationName, setNewConfigurationName] = useState<string | null>(null);
+  const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfigution());
   const [url, setUrl] = useState('http://localhost:31415');
   const [allNodes, setAllNodes] = useState<{ parent: null; nodes: FileSystemNode[] }>({ parent: null, nodes: [] });
   const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
@@ -25,6 +32,8 @@ export const WorkspaceNavigation: React.FC = () => {
     parent: null,
     nodes: [],
   });
+
+  const configurationFormRef = useRef<any>();
 
   const handleOpenSelectWorkspaceModal = async () => {
     setIsSelectWorkspaceModalVisible(true);
@@ -96,6 +105,16 @@ export const WorkspaceNavigation: React.FC = () => {
     setNewFolderName(null);
   };
 
+  const handleOpenNewConfigurationModal = (): void => {
+    setIsNewConfigurationModalVisible(true);
+    setNewConfigurationName(null);
+  };
+
+  const handleCloseNewConfigurationModal = (): void => {
+    setIsNewConfigurationModalVisible(false);
+    setNewConfigurationName(null);
+  };
+
   const handleCreateFolder = async () => {
     if (selectedModalMenuItem && newFolderName) {
       const newFolder: FileSystemNode = {
@@ -113,6 +132,29 @@ export const WorkspaceNavigation: React.FC = () => {
 
     fetchChildNodes();
     handleCloseNewFolderModal();
+  };
+
+  const handleCreateConfiguration = async () => {
+    if (workspace.parent && newConfigurationName) {
+      if (configurationFormRef.current) {
+        configurationFormRef.current.submitForm();
+      }
+
+      const newConfiguration: FileSystemNode = {
+        id: 'null',
+        name: newConfigurationName,
+        nodeType: NodeTypeEnum.FILE,
+      };
+
+      // try {
+      //   await createNode(url, mapFileSystemNodeToApiDataNode(newConfiguration, workspace.parent.id));
+      // } catch (error) {
+      //   console.error('Error creating new configuration:', error);
+      // }
+    }
+
+    fetchChildNodes();
+    handleCloseNewConfigurationModal();
   };
 
   return (
@@ -138,7 +180,11 @@ export const WorkspaceNavigation: React.FC = () => {
           Workspace ({workspace.parent ? workspace.parent.name : 'None'})
         </Typography>
         <Box>
-          <Button sx={{ color: 'secondary.main', minWidth: 0 }}>
+          <Button
+            disabled={!workspace.parent}
+            sx={{ color: 'secondary.main', minWidth: 0 }}
+            onClick={handleOpenNewConfigurationModal}
+          >
             <FileAddOutlined style={{ fontSize: 20 }} />
           </Button>
           <Button
@@ -200,7 +246,7 @@ export const WorkspaceNavigation: React.FC = () => {
       </Modal>
 
       <Modal
-        open={isNewFolderModalVisivle}
+        open={isNewFolderModalVisible}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -245,6 +291,71 @@ export const WorkspaceNavigation: React.FC = () => {
             Create
           </Button>
           <Button onClick={handleCloseNewFolderModal}>Cancel</Button>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={isNewConfigurationModalVisible}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: 'secondary.A100',
+            p: 2,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h2">New configuration</Typography>
+          <Typography> URL: {url} </Typography>
+          <Typography> Folder name: {selectedMenuItem ? selectedMenuItem : workspace.parent?.name} </Typography>
+          <TextField
+            sx={{ my: 1 }}
+            id="outlined-basic"
+            label="Configuration name"
+            variant="outlined"
+            value={newConfigurationName}
+            onChange={(e) => setNewConfigurationName(e.target.value)}
+          />
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              mt: 2,
+              borderColor: 'secondary.darker',
+              height: '480px',
+              width: '620px',
+              overflow: 'scroll',
+            }}
+          >
+            <Formik
+              initialValues={{ ...configuration }}
+              onSubmit={(values) => {
+                const content = JSON.stringify(values);
+                setConfiguration(values);
+                console.log(content); // save
+              }}
+              innerRef={configurationFormRef}
+            >
+              <Form>
+                <Stack spacing={2}>
+                  <ForestFormPart />
+                </Stack>
+              </Form>
+            </Formik>
+          </Box>
+
+          <Button
+            onClick={handleCreateConfiguration}
+            disabled={newConfigurationName === null || newConfigurationName === ''}
+          >
+            Create
+          </Button>
+          <Button onClick={handleCloseNewConfigurationModal}>Cancel</Button>
         </Box>
       </Modal>
 
