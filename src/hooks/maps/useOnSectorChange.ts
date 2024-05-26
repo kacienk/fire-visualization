@@ -1,17 +1,13 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 import { eventEmitter } from '../../utils/eventEmitter';
 
-export const useOnSectorChange = (setCurrentSectorIdCallback: Dispatch<SetStateAction<number | null>>) => {
+export const useOnSectorChange = (onSectorChangeCallback: (sectorId: number | null) => void) => {
   useEffect(
     () => {
-      const onSectorChange = (sectorId: number | null) => {
-        setCurrentSectorIdCallback((prevSectorId) => (prevSectorId !== sectorId ? sectorId : null));
-      };
-
-      eventEmitter.addListener('onSectorChange', onSectorChange);
+      eventEmitter.addListener('onSectorChange', onSectorChangeCallback);
 
       return () => {
-        eventEmitter.removeListener('onSectorChange', onSectorChange);
+        eventEmitter.removeListener('onSectorChange', onSectorChangeCallback);
       };
     },
     // ON PURPOSE:

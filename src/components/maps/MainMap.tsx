@@ -12,22 +12,25 @@ import './maps-styles-overrides.css';
 // material-ui
 import { Grid, Box, Typography } from '@mui/material';
 import { MainCard } from '../MainCard';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { Configuration } from '../../model/configuration/configuration';
 import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
 import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
 import { useSelectedSectorLayer } from '../../hooks/maps/useSelectedSectorLayer';
 import { useOnSectorChange } from '../../hooks/maps/useOnSectorChange';
 import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { setCurrentSectorId } from '../../store/reducers/mapConfigurationSlice';
 
 export const MainMap = () => {
   const map = useMap('main-map');
-  const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration.configuration);
+  const { configuration: mapConfiguration, currentSectorId } = useSelector(
+    (state: RootState) => state.mapConfiguration,
+  );
+  const dispatch = useDispatch();
 
   const [tooltip, setTooltip] = useState<ReactNode>(null);
-  const [currentSectorId, setCurrentSectorId] = useState<number | null>(null);
 
   const [bounds, setBounds] = useState(Configuration.getBounds(mapConfiguration));
   useEffect(() => {
@@ -45,7 +48,14 @@ export const MainMap = () => {
   );
 
   useOnTooltipChange(setTooltip);
-  useOnSectorChange(setCurrentSectorId);
+
+  const onSectorChange = useCallback(
+    (sectorId: number | null) => {
+      dispatch(setCurrentSectorId({ currentSectorId: sectorId }));
+    },
+    [dispatch],
+  );
+  useOnSectorChange(onSectorChange);
 
   if (Object.values(bounds).every((bound) => bound === 0))
     return (
