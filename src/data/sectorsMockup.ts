@@ -4,10 +4,8 @@ import { Region } from '../model/geography';
 export const mapConfigMockup = {
   forestId: 1,
   forestName: 'Ochotnica',
-  width: 1200,
-  height: 800,
-  sectorSize: 100,
-  imageReference: 'string',
+  rows: 8,
+  columns: 12,
   location: [
     {
       longitude: 20.132385645406604,
