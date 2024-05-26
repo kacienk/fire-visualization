@@ -135,7 +135,7 @@ export const WorkspaceNavigation: React.FC = () => {
   };
 
   const handleCreateConfiguration = async () => {
-    if (workspace.parent && newConfigurationName) {
+    if ((workspace.parent || selectedMenuItem) && newConfigurationName) {
       if (configurationFormRef.current) {
         configurationFormRef.current.submitForm();
       }
@@ -145,13 +145,17 @@ export const WorkspaceNavigation: React.FC = () => {
         name: newConfigurationName,
         nodeType: NodeTypeEnum.FILE,
       };
-      const newConfigurationMapped = mapFileSystemNodeToApiDataNode(newConfiguration, workspace.parent.id);
-      newConfigurationMapped.data = JSON.stringify(configuration);
+      const parentId = selectedMenuItem ? selectedMenuItem.id : workspace.parent?.id;
 
-      try {
-        await createNode(url, newConfigurationMapped);
-      } catch (error) {
-        console.error('Error creating new configuration:', error);
+      if (parentId) {
+        const newConfigurationMapped = mapFileSystemNodeToApiDataNode(newConfiguration, parentId);
+        newConfigurationMapped.data = JSON.stringify(configuration);
+
+        try {
+          await createNode(url, newConfigurationMapped);
+        } catch (error) {
+          console.error('Error creating new configuration:', error);
+        }
       }
     }
 
