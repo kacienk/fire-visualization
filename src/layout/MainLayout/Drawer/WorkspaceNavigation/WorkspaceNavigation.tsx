@@ -145,12 +145,14 @@ export const WorkspaceNavigation: React.FC = () => {
         name: newConfigurationName,
         nodeType: NodeTypeEnum.FILE,
       };
+      const newConfigurationMapped = mapFileSystemNodeToApiDataNode(newConfiguration, workspace.parent.id);
+      newConfigurationMapped.data = JSON.stringify(configuration);
 
-      // try {
-      //   await createNode(url, mapFileSystemNodeToApiDataNode(newConfiguration, workspace.parent.id));
-      // } catch (error) {
-      //   console.error('Error creating new configuration:', error);
-      // }
+      try {
+        await createNode(url, newConfigurationMapped);
+      } catch (error) {
+        console.error('Error creating new configuration:', error);
+      }
     }
 
     fetchChildNodes();
