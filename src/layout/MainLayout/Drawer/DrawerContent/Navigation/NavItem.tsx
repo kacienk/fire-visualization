@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { forwardRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +31,7 @@ export const NavItem = ({ item, level }: NavItemProps) => {
     itemTarget = '_blank';
   }
 
-  let listItemProps = {
+  const listItemProps = {
     component: forwardRef<HTMLAnchorElement>((props, ref) => (
       <Link
         ref={ref}
@@ -39,6 +41,7 @@ export const NavItem = ({ item, level }: NavItemProps) => {
       />
     )),
   };
+  listItemProps.component.displayName = 'ListItemComponent';
   // if (item?.external) {
   //   listItemProps = { component: 'a', href: item.url, target: itemTarget };
   // }

@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { ConfigFormTextField, ConfigGridContainer, FormPartProps } from './configuration';
-import { Configuration, Forest } from '../../model/configuration/configuration';
+import { ConfigFormTextField, ConfigGridContainer } from './configuration';
+import { Configuration } from '../../model/configuration/configuration';
 import { Typography } from '@mui/material';
 import { useFormikContext } from 'formik';
 

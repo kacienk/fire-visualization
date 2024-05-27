@@ -19,7 +19,7 @@ export const SettingTab = () => {
   const theme = useTheme();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const handleListItemClick = (event: Partial<Event>, index: number) => {
+  const handleListItemClick = (_event: Partial<Event>, index: number) => {
     setSelectedIndex(index);
   };
 

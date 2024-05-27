@@ -10,5 +10,7 @@ export const mapConfigurationSlice = createSlice({
   reducers: {},
 });
 
+// TODO fix no-empty-pattern
+// eslint-disable-next-line no-empty-pattern
 export const {} = mapConfigurationSlice.actions;
 export const { reducer: mapConfigurationReducer } = mapConfigurationSlice;

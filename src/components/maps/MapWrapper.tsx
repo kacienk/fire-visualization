@@ -21,6 +21,7 @@ import { useOnSectorChange } from '../../hooks/maps/useOnSectorChange';
 import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { useDrawRectangleLayer } from '../../hooks/maps/useDrawRectangleLayer';
 
 export const MapWrapper = () => {
   const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration);
@@ -35,6 +36,8 @@ export const MapWrapper = () => {
   const selectedSectorLayer = useSelectedSectorLayer(
     mapConfiguration.sectors.find(({ sectorId }) => sectorId === currentSectorId),
   );
+
+  const drawRectangleLayer = useDrawRectangleLayer();
 
   useOnTooltipChange(setTooltip);
   useOnSectorChange(setCurrentSectorId);
@@ -60,7 +63,7 @@ export const MapWrapper = () => {
                 }}
               >
                 {tooltip}
-                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer]} />
+                <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer, drawRectangleLayer]} />
               </Map>
             </Box>
           </APIProvider>

@@ -12,9 +12,8 @@ import {
 } from '../../../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
 import { ForestFormPart } from '../../../../components/configuration/ForestConfiguration';
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik } from 'formik';
 import { Configuration, getDefaultConfigution } from '../../../../model/configuration/configuration';
-import { get } from 'http';
 
 export const WorkspaceNavigation: React.FC = () => {
   const theme = useTheme();
@@ -24,7 +23,7 @@ export const WorkspaceNavigation: React.FC = () => {
   const [newFolderName, setNewFolderName] = useState<string | null>(null);
   const [newConfigurationName, setNewConfigurationName] = useState<string | null>(null);
   const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfigution());
-  const [url, setUrl] = useState('http://localhost:31415');
+  const [url] = useState('http://localhost:31415');
   const [allNodes, setAllNodes] = useState<{ parent: null; nodes: FileSystemNode[] }>({ parent: null, nodes: [] });
   const [selectedMenuItem, setSelectedMenuItem] = useState<FileSystemNode | null>(null);
   const [selectedModalMenuItem, setSelectedModalMenuItem] = useState<FileSystemNode | null>(null);
@@ -33,6 +32,7 @@ export const WorkspaceNavigation: React.FC = () => {
     nodes: [],
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const configurationFormRef = useRef<any>();
 
   const handleOpenSelectWorkspaceModal = async () => {
@@ -73,6 +73,9 @@ export const WorkspaceNavigation: React.FC = () => {
     }
   };
 
+  // TODO fix react-hooks/exhaustive-deps
+  // Probably just add fetchChildNodes to deps?
+  // And then wrap fetchChildNodes in useCallback
   useEffect(() => {
     fetchChildNodes();
   }, [workspace.parent]);

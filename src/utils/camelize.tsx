@@ -1,3 +1,6 @@
+// TODO fix no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const camelize = (obj: any): any => {
   if (Array.isArray(obj)) {
     return obj.map((item) => camelize(item));

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 // material-ui
@@ -29,20 +29,23 @@ export const Breadcrumbs = ({ navigation, title = true, ...others }: Breadcrumbs
   const [item, setItem] = useState<MenuItem | undefined>();
 
   // set active item state
-  const getCollapse = (menu: MenuItem) => {
-    if (menu.children) {
-      menu.children.forEach((collapse) => {
-        if (collapse.type === 'collapse') {
-          getCollapse(collapse);
-        } else if (collapse.type === 'item') {
-          if (location.pathname === collapse.url) {
-            setMain(menu);
-            setItem(collapse);
+  const getCollapse = useCallback(
+    (menu: MenuItem) => {
+      if (menu.children) {
+        menu.children.forEach((collapse) => {
+          if (collapse.type === 'collapse') {
+            getCollapse(collapse);
+          } else if (collapse.type === 'item') {
+            if (location.pathname === collapse.url) {
+              setMain(menu);
+              setItem(collapse);
+            }
           }
-        }
-      });
-    }
-  };
+        });
+      }
+    },
+    [location.pathname],
+  );
 
   useEffect(() => {
     navigation?.items?.forEach((menu) => {
@@ -50,7 +53,7 @@ export const Breadcrumbs = ({ navigation, title = true, ...others }: Breadcrumbs
         getCollapse(menu);
       }
     });
-  }, [location.pathname, navigation]);
+  }, [getCollapse, location.pathname, navigation]);
 
   // only used for component demo breadcrumbs
   if (location.pathname === '/breadcrumbs') {
