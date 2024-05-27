@@ -4,6 +4,7 @@
   "description": "",
   "main": "electron.js",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "webpack serve --open --mode development",
     "build": "webpack --mode production",
     "electron-start": "electron .",
@@ -34,6 +35,8 @@
     "eventemitter3": "^5.0.1",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.25",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
