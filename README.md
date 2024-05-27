@@ -12,6 +12,8 @@ Install all necessary dependencies by running:
 
 In order to make the code more consistent we use Prettier code formatter with configuration provided in the `.prettierrc` file.
 
+Moreover, we integrated ESLint to help with the development process, clean code and to follow the good React and Typescript practices.
+
 ## Formatting process
 
 In VSCode set:
@@ -19,6 +21,10 @@ In VSCode set:
 - Default Formatter: Prettier _(firstly install necessary VSCode extension)_
 - Format On Save: on
 - Format On Save Mode: modifications _(we don't want to format code of other collaborators)_
+
+## Linting process
+
+Install VSCode extension: __ESLint__. It should work out of the box with the ESLint configuration in `.eslintrc.json`.
 
 ## Running app in development mode
 
