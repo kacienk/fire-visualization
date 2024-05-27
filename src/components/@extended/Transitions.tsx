@@ -55,3 +55,4 @@ export const Transitions = forwardRef(
     );
   },
 );
+Transitions.displayName = 'Transitions';

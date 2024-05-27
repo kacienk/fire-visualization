@@ -12,7 +12,7 @@ interface Props {
   inSelectWorkspace: boolean;
 }
 
-export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSelected, inSelectWorkspace }) => {
+export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSelected, inSelectWorkspace }: Props) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
   const theme = useTheme();
 

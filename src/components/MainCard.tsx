@@ -111,3 +111,4 @@ export const MainCard = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & M
     );
   },
 );
+MainCard.displayName = 'MainCard';

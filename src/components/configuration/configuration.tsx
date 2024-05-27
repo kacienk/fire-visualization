@@ -1,8 +1,10 @@
-import { Field, FieldArray, useFormik, useFormikContext } from 'formik';
+import { Field, FieldArray } from 'formik';
 import { FC, ReactNode } from 'react';
 import { Button, Grid, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { labelize } from '../../utils/labelize';
 
+// ON PURPOSE:
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface FormPartProps<T> {}
 
 export interface ItemFormPartProps<T> extends FormPartProps<T> {
@@ -69,7 +71,12 @@ export const ConfigFormDropDown: FC<ConfigFormDropDownProps> = (props) => {
       label={labelize(props.propertyName)}
     >
       {props.allVariants.map((type) => (
-        <MenuItem value={type}>{type}</MenuItem>
+        <MenuItem
+          value={type}
+          key={type}
+        >
+          {type}
+        </MenuItem>
       ))}
     </Field>
   );
@@ -82,7 +89,10 @@ export const ConfigArrayForm = <T extends object>({ name, ChildForm, defaultObj,
       {({ push }) => (
         <Stack spacing={2}>
           {data.map((_, idx) => (
-            <ChildForm idx={idx} />
+            <ChildForm
+              idx={idx}
+              key={idx}
+            />
           ))}
           <Button
             variant={'contained'}
@@ -106,10 +116,11 @@ export const ConfigGridContainer: FC<ConfigGridContainerProps> = (props) => {
       container
       spacing={2}
     >
-      {props.children.map((child) => (
+      {props.children.map((child, idx) => (
         <Grid
           item
           xs={4}
+          key={idx}
         >
           {child}
         </Grid>

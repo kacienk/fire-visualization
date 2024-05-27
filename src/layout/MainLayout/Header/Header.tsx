@@ -1,7 +1,6 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { AppBar, AppBarPropsColorOverrides, Color, IconButton, Toolbar, useMediaQuery } from '@mui/material';
-import { OverridableStringUnion } from '@mui/types';
+import { AppBar, IconButton, Toolbar, useMediaQuery } from '@mui/material';
 
 // project import
 import { AppBarStyled } from './AppBarStyled';

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ReactNode, useRef, useState } from 'react';
 
 // material-ui
@@ -83,7 +85,7 @@ export const Profile = () => {
 
   const [value, setValue] = useState(0);
 
-  const handleChange = (event: Partial<Event>, newValue: number) => {
+  const handleChange = (_event: Partial<Event>, newValue: number) => {
     setValue(newValue);
   };
 
