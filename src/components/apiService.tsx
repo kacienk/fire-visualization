@@ -19,7 +19,6 @@ export const getNode = async (baseUrl: string, id: string) => {
 export const createNode = async (baseUrl: string, node: ApiDataNode) => {
   const data = snakeize(node);
   data.id = null;
-  data.data = null;
 
   const response = await fetch(baseUrl + '/api/v1/nodes/', {
     method: 'POST',

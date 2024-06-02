@@ -4,7 +4,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import { ForestFormPart } from '../../../../components/configuration/ForestConfiguration';
 import { FileSystemNodes } from './WorkspaceNavigation';
 import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
-import { Configuration } from '../../../../model/configuration/configuration';
+import { Configuration, getDefaultConfiguration } from '../../../../model/configuration/configuration';
 import { NewConfigurationMapWrapper } from '../../../../components/maps/NewConfigurationMapWrapper';
 
 type CreateConfigurationModalProps = {
@@ -18,12 +18,11 @@ type CreateConfigurationModalProps = {
   nodesData: FileSystemNodes;
   selectedNode: FileSystemNode | null;
 
-  configuration: Configuration;
-  setConfiguration: Dispatch<SetStateAction<Configuration>>;
-
   configurationFormRef: MutableRefObject<FormikProps<Configuration> | null>;
 
   handleCreateConfiguration: () => Promise<void>;
+
+  handleSubmit: (values: Configuration) => Promise<void>;
 
   closeModal: () => void;
 };
@@ -35,10 +34,9 @@ export const CreateConfigurationModal = ({
   setNewConfigurationName,
   nodesData,
   selectedNode,
-  configuration,
-  setConfiguration,
   configurationFormRef,
   handleCreateConfiguration,
+  handleSubmit,
   closeModal,
 }: CreateConfigurationModalProps) => {
   return (
@@ -81,13 +79,8 @@ export const CreateConfigurationModal = ({
           }}
         >
           <Formik
-            initialValues={{ ...configuration }}
-            onSubmit={(values) => {
-              const sectors = Configuration.createSectors(values);
-              const forestConfigurationWithSectors = { ...values, sectors };
-              setConfiguration(forestConfigurationWithSectors);
-              console.log(forestConfigurationWithSectors); // save
-            }}
+            initialValues={{ ...getDefaultConfiguration() }}
+            onSubmit={handleSubmit}
             innerRef={configurationFormRef}
           >
             <Form>
