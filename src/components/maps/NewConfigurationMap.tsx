@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Maps handling
-import { APIProvider, limitTiltRange, Map } from '@vis.gl/react-google-maps';
+import { limitTiltRange, Map } from '@vis.gl/react-google-maps';
 import DeckGL from '@deck.gl/react';
 import { MapViewState } from '@deck.gl/core';
 import {
@@ -32,7 +32,7 @@ const INITIAL_VIEW_STATE: MapViewState = {
 
 const parsePositionToMapLocation = (position: Position) => ({ longitude: position[0], latitude: position[1] });
 
-export const NewConfigurationMapWrapper = () => {
+export const NewConfigurationMap = () => {
   const { setFieldValue } = useFormikContext<Configuration>();
 
   const [features, setFeatures] = useState<FeatureCollection>({
@@ -100,48 +100,46 @@ export const NewConfigurationMapWrapper = () => {
       hasContent={false}
       sx={{ mt: 1.5 }}
     >
-      <APIProvider apiKey={window.env.GOOGLE_API_KEY}>
-        <Box sx={{ position: 'relative', width: '100%', height: '500px' /* TODO fix fixed height */ }}>
-          <DeckGL
-            initialViewState={INITIAL_VIEW_STATE}
-            controller={true}
-            layers={[drawForestBoundsLayer]}
-            onViewStateChange={limitTiltRange}
-          >
-            <Map />
-          </DeckGL>
-          <Box sx={{ position: 'absolute', top: 10, left: 10 }}>
-            {!areForestBoundsDrawn ? (
-              !isDrawing ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={toggleDrawing}
-                >
-                  Start Drawing
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={toggleDrawing}
-                >
-                  Stop Drawing
-                </Button>
-              )
+      <Box sx={{ position: 'relative', width: '100%', height: '500px' /* TODO fix fixed height */ }}>
+        <DeckGL
+          initialViewState={INITIAL_VIEW_STATE}
+          controller={true}
+          layers={[drawForestBoundsLayer]}
+          onViewStateChange={limitTiltRange}
+        >
+          <Map />
+        </DeckGL>
+        <Box sx={{ position: 'absolute', top: 10, left: 10 }}>
+          {!areForestBoundsDrawn ? (
+            !isDrawing ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={toggleDrawing}
+              >
+                Start Drawing
+              </Button>
             ) : (
               <Button
                 variant="contained"
-                color="secondary"
-                onClick={handleClearPolygon}
-                disabled={!areForestBoundsDrawn}
+                color="primary"
+                onClick={toggleDrawing}
               >
-                Clear Forest Bounds
+                Stop Drawing
               </Button>
-            )}
-          </Box>
+            )
+          ) : (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleClearPolygon}
+              disabled={!areForestBoundsDrawn}
+            >
+              Clear Forest Bounds
+            </Button>
+          )}
         </Box>
-      </APIProvider>
+      </Box>
     </MainCard>
   );
 };

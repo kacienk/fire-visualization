@@ -5,7 +5,8 @@ import { ForestFormPart } from '../../../../components/configuration/ForestConfi
 import { FileSystemNodes } from './WorkspaceNavigation';
 import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
 import { Configuration, getDefaultConfiguration } from '../../../../model/configuration/configuration';
-import { NewConfigurationMapWrapper } from '../../../../components/maps/NewConfigurationMapWrapper';
+import { MapWrapper } from '../../../../components/maps/MapWrapper';
+import { NewConfigurationMap } from '../../../../components/maps/NewConfigurationMap';
 
 type CreateConfigurationModalProps = {
   isOpen: boolean;
@@ -88,7 +89,9 @@ export const CreateConfigurationModal = ({
                 <ForestFormPart />
               </Stack>
 
-              <NewConfigurationMapWrapper />
+              <MapWrapper>
+                <NewConfigurationMap />
+              </MapWrapper>
             </Form>
           </Formik>
         </Box>
