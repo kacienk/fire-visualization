@@ -4,10 +4,8 @@ import { Form, Formik, FormikProps } from 'formik';
 import { ForestFormPart } from '../../../../components/configuration/ForestConfiguration';
 import { FileSystemNodes } from './WorkspaceNavigation';
 import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
-import { Configuration } from '../../../../model/configuration/configuration';
+import { Configuration, getDefaultConfiguration } from '../../../../model/configuration/configuration';
 import { NewConfigurationMapWrapper } from '../../../../components/maps/NewConfigurationMapWrapper';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store/reduxStore';
 
 type CreateConfigurationModalProps = {
   isOpen: boolean;
@@ -41,8 +39,6 @@ export const CreateConfigurationModal = ({
   handleSubmit,
   closeModal,
 }: CreateConfigurationModalProps) => {
-  const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration);
-
   return (
     <Modal
       open={isOpen}
@@ -83,7 +79,7 @@ export const CreateConfigurationModal = ({
           }}
         >
           <Formik
-            initialValues={{ ...mapConfiguration }}
+            initialValues={{ ...getDefaultConfiguration() }}
             onSubmit={handleSubmit}
             innerRef={configurationFormRef}
           >
