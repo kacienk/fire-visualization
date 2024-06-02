@@ -33,7 +33,6 @@ export const WorkspaceNavigation: React.FC = () => {
 
   const [isNewConfigurationModalVisible, setIsNewConfigurationModalVisible] = useState(false);
   const [newConfigurationName, setNewConfigurationName] = useState<string | null>(null);
-  const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfiguration());
 
   const [url] = useState('http://localhost:31415');
 
