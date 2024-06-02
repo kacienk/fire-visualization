@@ -11,7 +11,7 @@ import {
   mapFileSystemNodeToApiDataNode,
 } from '../../../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
-import { Configuration, getDefaultConfiguration } from '../../../../model/configuration/configuration';
+import { Configuration } from '../../../../model/configuration/configuration';
 import { SelectWorkspaceModal } from './SelectWorkspaceModal';
 import { CreateFolderModal } from './CreateFolderModal';
 import { CreateConfigurationModal } from './CreateConfigurationModal';
@@ -147,39 +147,37 @@ export const WorkspaceNavigation: React.FC = () => {
   const handleCreateConfiguration = useCallback(async () => {
     if ((workspace.parent || selectedMenuItem) && newConfigurationName) {
       if (configurationFormRef.current) {
-        configurationFormRef.current.submitForm();
-      }
-
-      const newConfiguration: FileSystemNode = {
-        id: 'null',
-        name: newConfigurationName,
-        nodeType: NodeTypeEnum.FILE,
-      };
-      const parentId = selectedMenuItem ? selectedMenuItem.id : workspace.parent?.id;
-
-      if (parentId) {
-        const newConfigurationMapped = mapFileSystemNodeToApiDataNode(newConfiguration, parentId);
-        newConfigurationMapped.data = JSON.stringify(configuration);
-
-        try {
-          await createNode(url, newConfigurationMapped);
-        } catch (error) {
-          console.error('Error creating new configuration:', error);
-        }
+        await configurationFormRef.current.submitForm();
       }
     }
-
     fetchChildNodes();
     handleCloseNewConfigurationModal();
-  }, [
-    configuration,
-    fetchChildNodes,
-    handleCloseNewConfigurationModal,
-    newConfigurationName,
-    selectedMenuItem,
-    url,
-    workspace.parent,
-  ]);
+  }, [fetchChildNodes, handleCloseNewConfigurationModal, newConfigurationName, selectedMenuItem, workspace.parent]);
+
+  const handleSubmit = async (values: Configuration) => {
+    if (!newConfigurationName) return;
+    if (!(workspace.parent || selectedMenuItem)) return;
+
+    const sectors = Configuration.createSectors(values);
+    const forestConfigurationWithSectors = { ...values, sectors };
+
+    const newConfiguration: FileSystemNode = {
+      id: 'null',
+      name: newConfigurationName,
+      nodeType: NodeTypeEnum.FILE,
+    };
+    const parentId = selectedMenuItem ? selectedMenuItem.id : workspace.parent?.id;
+    if (!parentId) return;
+
+    const newConfigurationMapped = mapFileSystemNodeToApiDataNode(newConfiguration, parentId);
+    newConfigurationMapped.data = JSON.stringify(forestConfigurationWithSectors);
+
+    try {
+      await createNode(url, newConfigurationMapped);
+    } catch (error) {
+      console.error('Error creating new configuration:', error);
+    }
+  };
 
   return (
     <Box
@@ -205,7 +203,7 @@ export const WorkspaceNavigation: React.FC = () => {
         </Typography>
         <Box>
           <Button
-            disabled={!workspace.parent}
+            disabled={!workspace.parent || selectedMenuItem?.nodeType === NodeTypeEnum.FILE}
             sx={{ color: 'secondary.main', minWidth: 0 }}
             onClick={handleOpenNewConfigurationModal}
           >
@@ -256,10 +254,9 @@ export const WorkspaceNavigation: React.FC = () => {
         setNewConfigurationName={setNewConfigurationName}
         nodesData={workspace}
         selectedNode={selectedModalMenuItem}
-        configuration={configuration}
-        setConfiguration={setConfiguration}
         configurationFormRef={configurationFormRef}
         handleCreateConfiguration={handleCreateConfiguration}
+        handleSubmit={handleSubmit}
         closeModal={handleCloseNewConfigurationModal}
       />
 

@@ -6,6 +6,8 @@ import { FileSystemNodes } from './WorkspaceNavigation';
 import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
 import { Configuration } from '../../../../model/configuration/configuration';
 import { NewConfigurationMapWrapper } from '../../../../components/maps/NewConfigurationMapWrapper';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/reduxStore';
 
 type CreateConfigurationModalProps = {
   isOpen: boolean;
@@ -18,12 +20,11 @@ type CreateConfigurationModalProps = {
   nodesData: FileSystemNodes;
   selectedNode: FileSystemNode | null;
 
-  configuration: Configuration;
-  setConfiguration: Dispatch<SetStateAction<Configuration>>;
-
   configurationFormRef: MutableRefObject<FormikProps<Configuration> | null>;
 
   handleCreateConfiguration: () => Promise<void>;
+
+  handleSubmit: (values: Configuration) => Promise<void>;
 
   closeModal: () => void;
 };
@@ -35,12 +36,13 @@ export const CreateConfigurationModal = ({
   setNewConfigurationName,
   nodesData,
   selectedNode,
-  configuration,
-  setConfiguration,
   configurationFormRef,
   handleCreateConfiguration,
+  handleSubmit,
   closeModal,
 }: CreateConfigurationModalProps) => {
+  const mapConfiguration = useSelector((state: RootState) => state.mapConfiguration);
+
   return (
     <Modal
       open={isOpen}
@@ -81,13 +83,8 @@ export const CreateConfigurationModal = ({
           }}
         >
           <Formik
-            initialValues={{ ...configuration }}
-            onSubmit={(values) => {
-              const sectors = Configuration.createSectors(values);
-              const forestConfigurationWithSectors = { ...values, sectors };
-              setConfiguration(forestConfigurationWithSectors);
-              console.log(forestConfigurationWithSectors); // save
-            }}
+            initialValues={{ ...mapConfiguration }}
+            onSubmit={handleSubmit}
             innerRef={configurationFormRef}
           >
             <Form>
