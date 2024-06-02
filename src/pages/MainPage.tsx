@@ -1,7 +1,12 @@
 // material-ui
 import { Grid } from '@mui/material';
-import { MapWrapper } from '../components/maps/MapWrapper';
 import { MainCard } from '../components/MainCard';
+
+// maps
+import { MapWrapper } from '../components/maps/MapWrapper';
+import { MainMap } from '../components/maps/MainMap';
+
+// configuration
 import { ConfigurationForm } from '../components/configuration/ConfigurationForm';
 
 export const MainPage = () => {
@@ -11,7 +16,9 @@ export const MainPage = () => {
       rowSpacing={4.5}
       columnSpacing={2.75}
     >
-      <MapWrapper />
+      <MapWrapper>
+        <MainMap />
+      </MapWrapper>
       <Grid
         item
         xs={12}

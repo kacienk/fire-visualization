@@ -69,8 +69,8 @@ export const Configuration = {
     const { sectors: rawSectors, rows, columns } = configuration;
 
     const { east, north, south, west } = Configuration.getBounds(configuration);
-    const linspaceLat = linspace(south, north, rows);
-    const linspaceLng = linspace(west, east, columns);
+    const linspaceLat = linspace(south, north, rows + 1);
+    const linspaceLng = linspace(west, east, columns + 1);
 
     return rawSectors.map((rawSector) => {
       const rowIdx = rawSector.row - 1;

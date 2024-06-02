@@ -10,9 +10,16 @@ interface Props {
   selected: FileSystemNode | null;
   onItemSelected: (item: FileSystemNode) => void;
   inSelectWorkspace: boolean;
+  onFileDoubleClick: () => Promise<void>;
 }
 
-export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSelected, inSelectWorkspace }: Props) => {
+export const FileSystemComponent: React.FC<Props> = ({
+  data,
+  selected,
+  onItemSelected,
+  inSelectWorkspace,
+  onFileDoubleClick,
+}: Props) => {
   const [openFolders, setOpenFolders] = useState<string[]>([]);
   const theme = useTheme();
 
@@ -81,6 +88,7 @@ export const FileSystemComponent: React.FC<Props> = ({ data, selected, onItemSel
         <ListItemButton
           key={item.name}
           onClick={() => handleItemClick(item)}
+          onDoubleClick={onFileDoubleClick}
           selected={item.id === selected?.id && !inSelectWorkspace}
           disabled={inSelectWorkspace}
           sx={{
