@@ -1,8 +1,8 @@
 import { getDefaultSector, Sector } from '../sector';
-import { getDefaultSensor, Sensor } from '../sensor';
-import { Camera, getDefaultCamera } from '../camera';
-import { FireBrigade, getDefaultFireBrigade } from '../FireBrigade';
-import { ForesterPatrol, getDefaultForesterPatrol } from '../ForesterPatrol';
+import { Sensor } from '../sensor';
+import { Camera } from '../camera';
+import { FireBrigade } from '../FireBrigade';
+import { ForesterPatrol } from '../ForesterPatrol';
 import { Region } from '../geography';
 import { linspace } from '../../utils/linspace';
 import { ProcessedSector } from '../processedSector';
@@ -125,9 +125,9 @@ export const getDefaultConfiguration = (): Configuration => {
       },
     ],
     sectors: [getDefaultSector()],
-    sensors: [getDefaultSensor()],
-    cameras: [getDefaultCamera()],
-    fireBrigades: [getDefaultFireBrigade()],
-    foresterPatrols: [getDefaultForesterPatrol()],
+    sensors: [],
+    cameras: [],
+    fireBrigades: [],
+    foresterPatrols: [],
   };
 };
