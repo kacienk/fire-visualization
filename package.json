@@ -4,6 +4,7 @@
   "description": "",
   "main": "electron.js",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "webpack serve --open --mode development",
     "build": "webpack --mode production",
     "electron-start": "electron .",
@@ -15,6 +16,7 @@
   "dependencies": {
     "@ant-design/colors": "^7.0.2",
     "@ant-design/icons": "^5.3.6",
+    "@deck.gl-community/editable-layers": "^9.0.0-alpha.1",
     "@deck.gl/core": "^9.0.9",
     "@deck.gl/google-maps": "^9.0.9",
     "@deck.gl/layers": "^9.0.9",
@@ -33,6 +35,8 @@
     "eventemitter3": "^5.0.1",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.25",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",

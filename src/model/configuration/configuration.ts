@@ -1,8 +1,8 @@
 import { getDefaultSector, Sector } from '../sector';
-import { getDefaultSensor, Sensor } from '../sensor';
-import { Camera, getDefaultCamera } from '../camera';
-import { FireBrigade, getDefaultFireBrigade } from '../FireBrigade';
-import { ForesterPatrol, getDefaultForesterPatrol } from '../ForesterPatrol';
+import { Sensor } from '../sensor';
+import { Camera } from '../camera';
+import { FireBrigade } from '../FireBrigade';
+import { ForesterPatrol } from '../ForesterPatrol';
 import { Region } from '../geography';
 import { linspace } from '../../utils/linspace';
 import { ProcessedSector } from '../processedSector';
@@ -44,9 +44,29 @@ export const Configuration = {
       }, Infinity), // lng
     };
   },
-  preprocessSectors: (configuration: Configuration) => {
+  createSectors: (configuration: Configuration): Sector[] => {
+    const { rows, columns } = configuration;
+
+    const sectors: Sector[] = [];
+
+    let sectorId = 1;
+    for (let row = 1; row <= rows; row++) {
+      for (let column = 1; column <= columns; column++) {
+        const defaultSector = getDefaultSector();
+        sectors.push({
+          ...defaultSector,
+          sectorId,
+          row,
+          column,
+        });
+        sectorId++;
+      }
+    }
+
+    return sectors;
+  },
+  preprocessSectors: (configuration: Configuration): Sector[] => {
     const { sectors: rawSectors, rows, columns } = configuration;
-    // the solution with width, height, sectorSize of the map is stupid
 
     const { east, north, south, west } = Configuration.getBounds(configuration);
     const linspaceLat = linspace(south, north, rows);
@@ -80,7 +100,7 @@ export const Configuration = {
   },
 };
 
-export const getDefaultConfigution = (): Configuration => {
+export const getDefaultConfiguration = (): Configuration => {
   return {
     forestId: 0,
     forestName: 'Wolski',
@@ -105,9 +125,9 @@ export const getDefaultConfigution = (): Configuration => {
       },
     ],
     sectors: [getDefaultSector()],
-    sensors: [getDefaultSensor()],
-    cameras: [getDefaultCamera()],
-    fireBrigades: [getDefaultFireBrigade()],
-    foresterPatrols: [getDefaultForesterPatrol()],
+    sensors: [],
+    cameras: [],
+    fireBrigades: [],
+    foresterPatrols: [],
   };
 };

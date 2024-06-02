@@ -25,9 +25,9 @@ interface SectorState {
 
 export const getDefaultSector = (): Sector => {
   return {
-    sectorId: 0,
-    row: 0,
-    column: 0,
+    sectorId: 1,
+    row: 1,
+    column: 1,
     sectorType: 'DECIDUOUS',
     initialState: {
       temperature: 0,

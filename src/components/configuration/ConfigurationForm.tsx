@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { getDefaultConfigution } from '../../model/configuration/configuration';
+import { getDefaultConfiguration } from '../../model/configuration/configuration';
 import { Form, Formik } from 'formik';
 import { SectorsFormPart } from './SectorConfiguration';
 import { ForestFormPart } from './ForestConfiguration';
@@ -12,7 +12,7 @@ import { ForesterPatrolsFormPart } from './ForesterPatrolConfiguration';
 export const ConfigurationForm: FC = () => {
   return (
     <Formik
-      initialValues={{ ...getDefaultConfigution() }}
+      initialValues={{ ...getDefaultConfiguration() }}
       onSubmit={(values) => {
         const content = JSON.stringify(values);
         console.log(content); // save
