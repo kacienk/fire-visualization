@@ -12,8 +12,14 @@ export const ForestFormPart: FC = () => {
       <Typography variant={'body1'}>Forest {values.forestName}</Typography>
       <ConfigGridContainer>
         <ConfigFormTextField propertyName={'forestName'} />
-        <ConfigFormTextField propertyName={'rows'} />
-        <ConfigFormTextField propertyName={'columns'} />
+        <ConfigFormTextField
+          propertyName={'rows'}
+          type={'number'}
+        />
+        <ConfigFormTextField
+          propertyName={'columns'}
+          type={'number'}
+        />
       </ConfigGridContainer>
     </>
   );
