@@ -100,7 +100,7 @@ export const Configuration = {
   },
 };
 
-export const getDefaultConfigution = (): Configuration => {
+export const getDefaultConfiguration = (): Configuration => {
   return {
     forestId: 0,
     forestName: 'Wolski',

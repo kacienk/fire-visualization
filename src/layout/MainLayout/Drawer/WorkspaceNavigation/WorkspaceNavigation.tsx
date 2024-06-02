@@ -11,7 +11,7 @@ import {
   mapFileSystemNodeToApiDataNode,
 } from '../../../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../../../model/FileSystemModel/NodeTypeEnum';
-import { Configuration, getDefaultConfigution } from '../../../../model/configuration/configuration';
+import { Configuration, getDefaultConfiguration } from '../../../../model/configuration/configuration';
 import { SelectWorkspaceModal } from './SelectWorkspaceModal';
 import { CreateFolderModal } from './CreateFolderModal';
 import { CreateConfigurationModal } from './CreateConfigurationModal';
@@ -33,7 +33,7 @@ export const WorkspaceNavigation: React.FC = () => {
 
   const [isNewConfigurationModalVisible, setIsNewConfigurationModalVisible] = useState(false);
   const [newConfigurationName, setNewConfigurationName] = useState<string | null>(null);
-  const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfigution());
+  const [configuration, setConfiguration] = useState<Configuration>(getDefaultConfiguration());
 
   const [url] = useState('http://localhost:31415');
 

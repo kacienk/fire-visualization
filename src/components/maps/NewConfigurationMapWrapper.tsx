@@ -20,7 +20,7 @@ import { Box, Button } from '@mui/material';
 import { useFormikContext } from 'formik';
 
 // Map types and default configuration getter
-import { Configuration, getDefaultConfigution } from '../../model/configuration/configuration';
+import { Configuration, getDefaultConfiguration } from '../../model/configuration/configuration';
 import { Region } from '../../model/geography';
 
 // Initial state to display the whole Poland
@@ -91,7 +91,7 @@ export const NewConfigurationMapWrapper = () => {
       type: 'FeatureCollection',
       features: [],
     });
-    setFieldValue('location', getDefaultConfigution().location); // TODO it will be better to make same required constraint or sth
+    setFieldValue('location', getDefaultConfiguration().location); // TODO it will be better to make same required constraint or sth
     setIsDrawing(false);
   };
 
