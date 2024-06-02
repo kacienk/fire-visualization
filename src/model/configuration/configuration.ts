@@ -44,9 +44,29 @@ export const Configuration = {
       }, Infinity), // lng
     };
   },
-  preprocessSectors: (configuration: Configuration) => {
+  createSectors: (configuration: Configuration): Sector[] => {
+    const { rows, columns } = configuration;
+
+    const sectors: Sector[] = [];
+
+    let sectorId = 1;
+    for (let row = 1; row <= rows; row++) {
+      for (let column = 1; column <= columns; column++) {
+        const defaultSector = getDefaultSector();
+        sectors.push({
+          ...defaultSector,
+          sectorId,
+          row,
+          column,
+        });
+        sectorId++;
+      }
+    }
+
+    return sectors;
+  },
+  preprocessSectors: (configuration: Configuration): Sector[] => {
     const { sectors: rawSectors, rows, columns } = configuration;
-    // the solution with width, height, sectorSize of the map is stupid
 
     const { east, north, south, west } = Configuration.getBounds(configuration);
     const linspaceLat = linspace(south, north, rows);

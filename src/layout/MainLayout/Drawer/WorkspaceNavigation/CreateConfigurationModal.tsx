@@ -83,9 +83,10 @@ export const CreateConfigurationModal = ({
           <Formik
             initialValues={{ ...configuration }}
             onSubmit={(values) => {
-              const content = JSON.stringify(values);
-              setConfiguration(values);
-              console.log(content); // save
+              const sectors = Configuration.createSectors(values);
+              const forestConfigurationWithSectors = { ...values, sectors };
+              setConfiguration(forestConfigurationWithSectors);
+              console.log(forestConfigurationWithSectors); // save
             }}
             innerRef={configurationFormRef}
           >
