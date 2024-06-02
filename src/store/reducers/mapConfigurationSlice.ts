@@ -1,16 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { mapConfigMockup } from '../../data/sectorsMockup';
-import { Configuration } from '../../model/configuration/configuration';
+import { Configuration, getDefaultConfiguration } from '../../model/configuration/configuration';
 
-const initialState: Configuration = mapConfigMockup;
+const initialState: {
+  configuration: Configuration;
+} = {
+  configuration: getDefaultConfiguration(),
+};
 
 export const mapConfigurationSlice = createSlice({
   name: 'mapConfiguration',
   initialState,
-  reducers: {},
+  reducers: {
+    setConfiguration: (state, action) => {
+      const { configuration } = action.payload;
+      const processedSectors = Configuration.preprocessSectors(configuration);
+      state.configuration = { ...configuration, sectors: processedSectors };
+    },
+  },
 });
 
-// TODO fix no-empty-pattern
-// eslint-disable-next-line no-empty-pattern
-export const {} = mapConfigurationSlice.actions;
+export const { setConfiguration } = mapConfigurationSlice.actions;
 export const { reducer: mapConfigurationReducer } = mapConfigurationSlice;

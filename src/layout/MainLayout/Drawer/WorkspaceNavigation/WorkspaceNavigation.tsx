@@ -16,11 +16,14 @@ import { SelectWorkspaceModal } from './SelectWorkspaceModal';
 import { CreateFolderModal } from './CreateFolderModal';
 import { CreateConfigurationModal } from './CreateConfigurationModal';
 import { FormikProps } from 'formik';
+import { useDispatch } from 'react-redux';
+import { setConfiguration } from '../../../../store/reducers/mapConfigurationSlice';
 
 export type FileSystemNodes = { parent: FileSystemNode | null; nodes: FileSystemNode[] };
 
 export const WorkspaceNavigation: React.FC = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [isSelectWorkspaceModalVisible, setIsSelectWorkspaceModalVisible] = useState(false);
   const [workspace, setWorkspace] = useState<FileSystemNodes>({
@@ -264,6 +267,22 @@ export const WorkspaceNavigation: React.FC = () => {
         selected={selectedMenuItem}
         onItemSelected={setSelectedMenuItem}
         inSelectWorkspace={false}
+        onFileDoubleClick={async () => {
+          // TODO firstly we should check
+          // if there are any unsaved changes in the currently open configuration
+          if (!selectedMenuItem) return;
+
+          const node = await getNode(url, selectedMenuItem.id);
+          if (node.data === null) return;
+
+          const selectedConfiguration = JSON.parse(node.data) as Configuration;
+
+          dispatch(
+            setConfiguration({
+              configuration: selectedConfiguration,
+            }),
+          );
+        }}
       />
     </Box>
   );
