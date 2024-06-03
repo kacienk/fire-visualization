@@ -16,15 +16,15 @@ import { Form, Formik } from 'formik';
 import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { Booleanify } from '../../utils/Booleanify';
 
 const objectName = 'sectors';
 
-const SectorFormPart: FC<ItemFormPartProps<Sector>> = (props) => {
-  const { idx } = props;
+const SectorFormPart: FC<ItemFormPartProps<Sector>> = ({ idx, readonly }) => {
   const { values } = useFormikContext<Configuration>();
   return (
     <>
-      <Typography variant={'body1'}>Sector {values.sectors[idx].initialState.temperature}</Typography>
+      <Typography variant={'body1'}>Sector {values.sectors[idx].sectorId}</Typography>
       <ConfigGridContainer>
         <ConfigFormTextField
           objectName={objectName}
@@ -37,12 +37,14 @@ const SectorFormPart: FC<ItemFormPartProps<Sector>> = (props) => {
           objectName={objectName}
           propertyName={'row'}
           idx={idx}
+          readOnly={true}
           type={'number'}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'column'}
           idx={idx}
+          readOnly={true}
           type={'number'}
         />
         <ConfigFormDropDown
@@ -50,55 +52,67 @@ const SectorFormPart: FC<ItemFormPartProps<Sector>> = (props) => {
           allVariants={SectorTypes}
           propertyName={'sectorType'}
           idx={idx}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.sectorType}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.temperature'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.temperature}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.windSpeed'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.windSpeed}
         />
         <ConfigFormDropDown
           allVariants={Directions}
           objectName={objectName}
           propertyName={'initialState.windDirection'}
           idx={idx}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.windDirection}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.airHumidity'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.airHumidity}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.plantLitterMoisture'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.plantLitterMoisture}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.co2Concentration'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.co2Concentration}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'initialState.pm2_5Concentration'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.initialState.pm2_5Concentration}
         />
       </ConfigGridContainer>
     </>
   );
 };
 
-export const SectorsFormPart: FC = () => {
+type SectorsFormPartProps = {
+  readonly: boolean | Booleanify<Sector>;
+};
+
+export const SectorsFormPart: FC<SectorsFormPartProps> = ({ readonly }) => {
   const { values } = useFormikContext<Configuration>();
 
   return (
@@ -107,6 +121,7 @@ export const SectorsFormPart: FC = () => {
       ChildForm={SectorFormPart}
       defaultObj={getDefaultSector()}
       data={values.sectors}
+      readonly={readonly}
     />
   );
 };
@@ -219,7 +234,16 @@ export const SectorForm: FC<SectorFormProps> = (props) => {
 };
 
 export const SectorDetails = () => {
-  const { configuration: mapConfiguration } = useSelector((state: RootState) => state.mapConfiguration);
+  const { configuration: mapConfiguration, currentSectorId } = useSelector(
+    (state: RootState) => state.mapConfiguration,
+  );
+
+  const [idx, setIdx] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    setIdx(currentSectorId !== null ? currentSectorId - 1 : undefined);
+  }, [mapConfiguration, currentSectorId]);
+
+  if (currentSectorId === null || idx === undefined) return null;
 
   return (
     <Formik

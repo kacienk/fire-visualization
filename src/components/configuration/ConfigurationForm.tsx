@@ -22,15 +22,15 @@ export const ConfigurationForm: FC = () => {
         <Stack spacing={2}>
           <ForestFormPart />
           <Divider>Sectors</Divider>
-          <SectorsFormPart />
+          <SectorsFormPart readonly={false} />
           <Divider>Sensors</Divider>
-          <SensorsFormPart />
+          <SensorsFormPart readonly={false} />
           <Divider>Cameras</Divider>
-          <CamerasFormPart />
+          <CamerasFormPart readonly={false} />
           <Divider>Fire Brigades</Divider>
-          <FireBrigadesFormPart />
+          <FireBrigadesFormPart readonly={false} />
           <Divider>Forester Patrols</Divider>
-          <ForesterPatrolsFormPart />
+          <ForesterPatrolsFormPart readonly={false} />
           <Button
             color={'primary'}
             variant={'contained'}
