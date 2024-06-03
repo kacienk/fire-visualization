@@ -13,9 +13,7 @@ import { Configuration } from '../../model/configuration/configuration';
 import { Directions } from '../../model/geography';
 
 import { Form, Formik } from 'formik';
-import { getDefaultConfigution } from '../../model/configuration/configuration';
 import { Button, Stack } from '@mui/material';
-import { mapConfigMockup } from '../../data/sectorsMockup';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
 
@@ -221,13 +219,16 @@ export const SectorForm: FC<SectorFormProps> = (props) => {
 };
 
 export const SectorDetails = () => {
+  const { configuration: mapConfiguration } = useSelector((state: RootState) => state.mapConfiguration);
+
   return (
     <Formik
-      initialValues={mapConfigMockup}
+      initialValues={mapConfiguration}
       onSubmit={(values) => {
         const content = JSON.stringify(values);
         console.log(content); // save
       }}
+      enableReinitialize={true}
     >
       <Form>
         <Stack spacing={2}>

@@ -19,6 +19,9 @@ export const mapConfigurationSlice = createSlice({
       const { configuration } = action.payload;
       const processedSectors = Configuration.preprocessSectors(configuration);
       state.configuration = { ...configuration, sectors: processedSectors };
+
+      // reset the currentSectorId
+      state.currentSectorId = null;
     },
     setCurrentSectorId: (state, action) => {
       const { currentSectorId: prevSectorId } = state;
