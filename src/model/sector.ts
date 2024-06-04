@@ -10,6 +10,9 @@ export interface Sector {
   column: number;
   sectorType: SectorType;
   initialState: SectorState;
+  /**
+   * [lng, lat][]
+   */
   contours: [number, number][];
 }
 
@@ -22,6 +25,30 @@ interface SectorState {
   co2Concentration: number;
   pm2_5Concentration: number;
 }
+
+export const Sector = {
+  getBoundsFromContours: ({ contours }: Sector): google.maps.LatLngBoundsLiteral => {
+    return contours.reduce(
+      (acc: google.maps.LatLngBoundsLiteral, [longitude, latitude]) => {
+        if (longitude < acc.east) acc.east = longitude;
+
+        if (latitude > acc.north) acc.north = latitude;
+
+        if (latitude < acc.south) acc.south = latitude;
+
+        if (longitude > acc.west) acc.west = longitude;
+
+        return acc;
+      },
+      {
+        east: Infinity,
+        north: -Infinity,
+        south: Infinity,
+        west: -Infinity,
+      },
+    );
+  },
+};
 
 export const getDefaultSector = (): Sector => {
   return {
