@@ -6,6 +6,7 @@ import { ForesterPatrol } from '../ForesterPatrol';
 import { Region } from '../geography';
 import { linspace } from '../../utils/linspace';
 import { ProcessedSector } from '../processedSector';
+import { isPointInBounds } from '../../utils/isPointInBounds';
 
 export interface Forest {
   forestId: number;
@@ -85,6 +86,32 @@ export const Configuration = {
         ],
       };
     });
+  },
+  getSensorsForSectorId: (configuration: Configuration, sectorId: number): Sensor[] => {
+    const { sectors, sensors } = configuration;
+
+    const sector = sectors.find((sec) => sec.sectorId === sectorId);
+    if (!sector) {
+      console.error(`Configuration.getSensorsForSectorId couldn't find sector with provided ID: ${sectorId}`);
+      return [];
+    }
+
+    const sectorBounds = Sector.getBoundsFromContours(sector);
+
+    return sensors.filter(({ location }) => isPointInBounds(location, sectorBounds));
+  },
+  getCamerasForSectorId: (configuration: Configuration, sectorId: number): Camera[] => {
+    const { sectors, cameras } = configuration;
+
+    const sector = sectors.find((sec) => sec.sectorId === sectorId);
+    if (!sector) {
+      console.error(`Configuration.getCamerasForSectorId couldn't find sector with provided ID: ${sectorId}`);
+      return [];
+    }
+
+    const sectorBounds = Sector.getBoundsFromContours(sector);
+
+    return cameras.filter(({ location }) => isPointInBounds(location, sectorBounds));
   },
   sectors: {
     toString: (sector: ProcessedSector) => {
