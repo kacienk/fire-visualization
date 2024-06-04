@@ -1,3 +1,4 @@
+import { SensorMarker } from '../components/maps/SensorMarkers';
 import { MapLocation } from './geography';
 
 export const SensorTypes = [
@@ -17,6 +18,16 @@ export interface Sensor {
   location: MapLocation;
   timestamp: Date;
 }
+
+export const Sensor = {
+  toMarkerProps: (sensor: Sensor): SensorMarker => {
+    return {
+      location: { lng: sensor.location.longitude, lat: sensor.location.latitude },
+      key: `sensor-${sensor.sensorId}`,
+      type: sensor.sensorType,
+    };
+  },
+};
 
 export const getDefaultSensor = (): Sensor => {
   return {
