@@ -17,6 +17,7 @@ import { Button, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
 import { Booleanify } from '../../utils/Booleanify';
+import { MainCard } from '../MainCard';
 
 const objectName = 'sectors';
 
@@ -246,18 +247,19 @@ export const SectorDetails = () => {
   if (currentSectorId === null || idx === undefined) return null;
 
   return (
-    <Formik
-      initialValues={mapConfiguration}
-      onSubmit={(values) => {
-        const content = JSON.stringify(values);
-        console.log(content); // save
-      }}
-      enableReinitialize={true}
-    >
-      <Form>
-        <Stack spacing={2}>
-          <SectorForm readonly={true} />
-          {/* <Divider>Sensors</Divider>
+    <MainCard sx={{ mt: 2 }}>
+      <Formik
+        initialValues={mapConfiguration}
+        onSubmit={(values) => {
+          const content = JSON.stringify(values);
+          console.log(content); // save
+        }}
+        enableReinitialize={true}
+      >
+        <Form>
+          <Stack spacing={2}>
+            <SectorForm readonly={true} />
+            {/* <Divider>Sensors</Divider>
           <SensorsFormPart />
           <Divider>Cameras</Divider>
           <CamerasFormPart />
@@ -265,15 +267,16 @@ export const SectorDetails = () => {
           <FireBrigadesFormPart />
           <Divider>Forester Patrols</Divider>
           <ForesterPatrolsFormPart /> */}
-          <Button
-            color={'primary'}
-            variant={'contained'}
-            type={'submit'}
-          >
-            Save
-          </Button>
-        </Stack>
-      </Form>
-    </Formik>
+            <Button
+              color={'primary'}
+              variant={'contained'}
+              type={'submit'}
+            >
+              Save
+            </Button>
+          </Stack>
+        </Form>
+      </Formik>
+    </MainCard>
   );
 };

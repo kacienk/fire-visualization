@@ -1,6 +1,5 @@
 // material-ui
 import { Grid } from '@mui/material';
-import { MainCard } from '../components/MainCard';
 
 // maps
 import { MapWrapper } from '../components/maps/MapWrapper';
@@ -24,9 +23,7 @@ export const MainPage = () => {
         item
         xs={12}
       >
-        <MainCard sx={{ mt: 2 }}>
-          <SectorDetails />
-        </MainCard>
+        <SectorDetails />
       </Grid>
     </Grid>
   );
