@@ -7,7 +7,6 @@ import { MainMap } from '../components/maps/MainMap';
 
 // configuration
 import { ConfigurationForm } from '../components/configuration/ConfigurationForm';
-import { SectorDetails } from '../components/configuration/SectorConfiguration';
 
 export const MainPage = () => {
   return (
@@ -23,7 +22,7 @@ export const MainPage = () => {
         item
         xs={12}
       >
-        <SectorDetails />
+        <ConfigurationForm />
       </Grid>
     </Grid>
   );
