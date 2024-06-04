@@ -7,13 +7,20 @@ import { CamerasFormPart } from './CameraConfiguration';
 import { FireBrigadesFormPart } from './FireBrigadeConfiguration';
 import { ForesterPatrolsFormPart } from './ForesterPatrolConfiguration';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/reduxStore';
+import { RootState, dispatch } from '../../store/reduxStore';
 import { MainCard } from '../MainCard';
+import { setConfiguration } from '../../store/reducers/mapConfigurationSlice';
+import { updateNode } from '../apiService';
+import { mapFileSystemNodeToApiDataNode } from '../../model/FileSystemModel/FileSystemNode';
 
 export const ConfigurationForm: FC = () => {
-  const { configuration: mapConfiguration, currentSectorId } = useSelector(
-    (state: RootState) => state.mapConfiguration,
-  );
+  const {
+    configuration: mapConfiguration,
+    currentSectorId,
+    fileSystemNode,
+  } = useSelector((state: RootState) => state.mapConfiguration);
+  const [editInitialState, setEditInitialState] = useState<boolean>(false);
+  const url = 'http://localhost:31415';
 
   const [idx, setIdx] = useState<number | undefined>(undefined);
   useEffect(() => {
@@ -27,8 +34,17 @@ export const ConfigurationForm: FC = () => {
       <Formik
         initialValues={mapConfiguration}
         onSubmit={(values) => {
-          const content = JSON.stringify(values);
-          console.log(content); // save
+          const stringifiedConfiguration = JSON.stringify(values);
+          const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+          apiNode.data = stringifiedConfiguration;
+
+          updateNode(url, fileSystemNode.id, apiNode).then(() => {
+            dispatch(
+              setConfiguration({
+                configuration: values,
+              }),
+            );
+          });
         }}
         enableReinitialize={true}
       >
@@ -36,9 +52,27 @@ export const ConfigurationForm: FC = () => {
           <Stack spacing={2}>
             <Divider>Sector {currentSectorId}</Divider>
             <SectorFormPart
-              readonly={true}
+              readonly={!editInitialState}
               obj={mapConfiguration.sectors[idx]}
             />
+            <Button
+              sx={{ display: editInitialState ? 'none' : 'block' }}
+              color="primary"
+              variant="outlined"
+              type="button"
+              onClick={() => setEditInitialState(true)}
+            >
+              Edit
+            </Button>
+            <Button
+              sx={{ display: editInitialState ? 'block' : 'none' }}
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={() => setEditInitialState(false)}
+            >
+              Save
+            </Button>
             <Divider>Sensors</Divider>
             <SensorsFormPart
               readonly={false}
@@ -53,13 +87,6 @@ export const ConfigurationForm: FC = () => {
             <FireBrigadesFormPart readonly={false} />
             <Divider>Forester Patrols</Divider>
             <ForesterPatrolsFormPart readonly={false} />
-            <Button
-              color={'primary'}
-              variant={'contained'}
-              type={'submit'}
-            >
-              Save
-            </Button>
           </Stack>
         </Form>
       </Formik>
