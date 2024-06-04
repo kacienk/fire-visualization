@@ -30,18 +30,25 @@ export const ConfigurationForm: FC = () => {
           const content = JSON.stringify(values);
           console.log(content); // save
         }}
+        enableReinitialize={true}
       >
         <Form>
           <Stack spacing={2}>
             <Divider>Sector {currentSectorId}</Divider>
             <SectorFormPart
               readonly={true}
-              idx={idx}
+              obj={mapConfiguration.sectors[idx]}
             />
             <Divider>Sensors</Divider>
-            <SensorsFormPart readonly={false} />
+            <SensorsFormPart
+              readonly={false}
+              currentSectorId={currentSectorId}
+            />
             <Divider>Cameras</Divider>
-            <CamerasFormPart readonly={false} />
+            <CamerasFormPart
+              readonly={false}
+              currentSectorId={currentSectorId}
+            />
             <Divider>Fire Brigades</Divider>
             <FireBrigadesFormPart readonly={false} />
             <Divider>Forester Patrols</Divider>

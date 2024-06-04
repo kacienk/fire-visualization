@@ -9,8 +9,8 @@ import { Booleanify } from '../../utils/Booleanify';
 export interface FormPartProps<T> {}
 
 export interface ItemFormPartProps<T> extends FormPartProps<T> {
-  idx: number;
   readonly: boolean | Booleanify<T>;
+  obj: T;
 }
 
 export interface ConfigArrayFormProps<T> {
@@ -98,10 +98,10 @@ export const ConfigArrayForm = <T extends object>({
     <FieldArray name={name}>
       {({ push }) => (
         <Stack spacing={2}>
-          {data.map((_, idx) => (
+          {data.map((obj, idx) => (
             <ChildForm
-              idx={idx}
               key={idx}
+              obj={obj}
               readonly={readonly}
             />
           ))}
