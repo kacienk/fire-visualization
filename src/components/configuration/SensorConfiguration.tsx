@@ -10,10 +10,11 @@ import { useFormikContext } from 'formik';
 import { Configuration } from '../../model/configuration/configuration';
 import { getDefaultSensor, Sensor, SensorTypes } from '../../model/sensor';
 import { Typography } from '@mui/material';
+import { Booleanify } from '../../utils/Booleanify';
 
 const objectName = 'sensors';
 
-const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
+const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx, readonly }) => {
   const { values } = useFormikContext<Configuration>();
 
   return (
@@ -31,25 +32,32 @@ const SensorFormPart: FC<ItemFormPartProps<Sensor>> = ({ idx }) => {
           objectName={'sensors'}
           propertyName={'sensorType'}
           idx={idx}
-        />
-        <ConfigFormTextField
-          objectName={objectName}
-          propertyName={'location.latitude'}
-          idx={idx}
-          type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.sensorType}
         />
         <ConfigFormTextField
           objectName={objectName}
           propertyName={'location.longitude'}
           idx={idx}
           type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.location.longitude}
+        />
+        <ConfigFormTextField
+          objectName={objectName}
+          propertyName={'location.latitude'}
+          idx={idx}
+          type={'number'}
+          readOnly={typeof readonly === 'boolean' ? readonly : readonly.location.latitude}
         />
       </ConfigGridContainer>
     </>
   );
 };
 
-export const SensorsFormPart: FC = () => {
+type SensorsFormPartProps = {
+  readonly: boolean | Booleanify<Sensor>;
+};
+
+export const SensorsFormPart: FC<SensorsFormPartProps> = ({ readonly }) => {
   const { values } = useFormikContext<Configuration>();
 
   return (
@@ -58,6 +66,7 @@ export const SensorsFormPart: FC = () => {
       ChildForm={SensorFormPart}
       defaultObj={getDefaultSensor()}
       data={values.sensors}
+      readonly={readonly}
     />
   );
 };

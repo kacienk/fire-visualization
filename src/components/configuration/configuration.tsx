@@ -2,6 +2,7 @@ import { Field, FieldArray } from 'formik';
 import { FC, ReactNode } from 'react';
 import { Button, Grid, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { labelize } from '../../utils/labelize';
+import { Booleanify } from '../../utils/Booleanify';
 
 // ON PURPOSE:
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -9,6 +10,7 @@ export interface FormPartProps<T> {}
 
 export interface ItemFormPartProps<T> extends FormPartProps<T> {
   idx: number;
+  readonly: boolean | Booleanify<T>;
 }
 
 export interface ConfigArrayFormProps<T> {
@@ -16,6 +18,7 @@ export interface ConfigArrayFormProps<T> {
   ChildForm: FC<ItemFormPartProps<T>>;
   defaultObj: T;
   data: T[];
+  readonly: boolean | Booleanify<T>;
 }
 
 export interface ConfigFormFieldProps {
@@ -69,6 +72,7 @@ export const ConfigFormDropDown: FC<ConfigFormDropDownProps> = (props) => {
       id={constructId(props.propertyName, props.objectName, props.idx)}
       name={constructName(props.propertyName, props.objectName, props.idx)}
       label={labelize(props.propertyName)}
+      disabled={props.readOnly}
     >
       {props.allVariants.map((type) => (
         <MenuItem
@@ -83,7 +87,13 @@ export const ConfigFormDropDown: FC<ConfigFormDropDownProps> = (props) => {
 };
 
 // NOTE: For some reason extends is needed in order to hint to compiler that <T> is a generic type declaration
-export const ConfigArrayForm = <T extends object>({ name, ChildForm, defaultObj, data }: ConfigArrayFormProps<T>) => {
+export const ConfigArrayForm = <T extends object>({
+  name,
+  ChildForm,
+  defaultObj,
+  data,
+  readonly,
+}: ConfigArrayFormProps<T>) => {
   return (
     <FieldArray name={name}>
       {({ push }) => (
@@ -92,6 +102,7 @@ export const ConfigArrayForm = <T extends object>({ name, ChildForm, defaultObj,
             <ChildForm
               idx={idx}
               key={idx}
+              readonly={readonly}
             />
           ))}
           <Button
