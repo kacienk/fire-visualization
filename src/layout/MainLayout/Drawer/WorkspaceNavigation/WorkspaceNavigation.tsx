@@ -17,7 +17,11 @@ import { CreateFolderModal } from './CreateFolderModal';
 import { CreateConfigurationModal } from './CreateConfigurationModal';
 import { FormikProps } from 'formik';
 import { useDispatch } from 'react-redux';
-import { setConfiguration } from '../../../../store/reducers/mapConfigurationSlice';
+import {
+  setConfiguration,
+  setCurrentSectorId,
+  setFileSystemNode,
+} from '../../../../store/reducers/mapConfigurationSlice';
 
 export type FileSystemNodes = { parent: FileSystemNode | null; nodes: FileSystemNode[] };
 
@@ -280,6 +284,16 @@ export const WorkspaceNavigation: React.FC = () => {
           dispatch(
             setConfiguration({
               configuration: selectedConfiguration,
+            }),
+          );
+          dispatch(
+            setFileSystemNode({
+              fileSystemNode: selectedMenuItem,
+            }),
+          );
+          dispatch(
+            setCurrentSectorId({
+              currentSectorId: null,
             }),
           );
         }}
