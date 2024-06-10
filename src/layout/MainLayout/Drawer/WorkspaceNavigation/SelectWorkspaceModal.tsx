@@ -1,6 +1,5 @@
 import { Modal, Typography, Button, Box } from '@mui/material';
 import { FileSystemComponent } from './FileSystemComponent';
-import { FileSystemNodes } from './WorkspaceNavigation';
 import { FileSystemNode } from '../../../../model/FileSystemModel/FileSystemNode';
 
 type SelectWorkspaceModalProps = {
@@ -8,7 +7,7 @@ type SelectWorkspaceModalProps = {
 
   url: string;
 
-  nodesData: FileSystemNodes;
+  nodesData: { parent: FileSystemNode | null; nodes: FileSystemNode[] };
   selectedNode: FileSystemNode | null;
   setSelectedNode: (item: FileSystemNode) => void;
 
@@ -16,7 +15,7 @@ type SelectWorkspaceModalProps = {
 
   closeModal: () => void;
 };
-
+  
 export const SelectWorkspaceModal = ({
   isOpen,
   url,
@@ -56,6 +55,7 @@ export const SelectWorkspaceModal = ({
             selected={selectedNode}
             onItemSelected={setSelectedNode}
             inSelectWorkspace={true}
+            onFileDoubleClick={async () => {}}
           />
         </Box>
 

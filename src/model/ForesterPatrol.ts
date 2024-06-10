@@ -4,13 +4,17 @@ export const ForesterPatrolStates = ['AVAILABLE', 'TRAVELLING', 'PATROLLING', 'F
 
 export type ForesterPatrolState = (typeof ForesterPatrolStates)[number];
 
-export interface ForesterPatrol {
+export type ForesterPatrol = {
   foresterPatrolId: number;
   timestamp: Date;
   state: ForesterPatrolState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
-}
+};
+
+export const isForesterPatrol = (obj: unknown): obj is ForesterPatrol => {
+  return (obj as ForesterPatrol).foresterPatrolId !== undefined;
+};
 
 export const getDefaultForesterPatrol = (): ForesterPatrol => {
   return {
