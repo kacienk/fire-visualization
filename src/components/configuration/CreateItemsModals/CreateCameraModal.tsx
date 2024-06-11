@@ -4,17 +4,19 @@ import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { Sensor, getDefaultSensor } from '../../../model/sensor';
+import { SensorsFormPart } from '../SensorConfiguration';
 import { SensorForm } from '../SensorlikeForms/SensorForm';
+import { Camera, getDefaultCamera } from '../../../model/camera';
 
-type CreateSensorModalProps = {
+type CreateCameraModalProps = {
   isOpen: boolean;
   currentSectorId: number;
-  handleSubmit: (values: Sensor) => Promise<void>;
+  handleSubmit: (values: Camera) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, closeModal }: CreateSensorModalProps) => {
-  const sensorFormRef = useRef<FormikProps<Sensor> | null>(null);
+export const CreateCameraModal = ({ isOpen, currentSectorId, handleSubmit, closeModal }: CreateCameraModalProps) => {
+  const cameraFormRef = useRef<FormikProps<Camera> | null>(null);
 
   return (
     <Modal
@@ -46,8 +48,8 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           }}
         >
           <Formik
-            initialValues={{ ...getDefaultSensor() }}
-            innerRef={sensorFormRef}
+            initialValues={{ ...getDefaultCamera() }}
+            innerRef={cameraFormRef}
             onSubmit={handleSubmit}
           >
             <Form>
@@ -62,7 +64,7 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           </Formik>
         </Box>
 
-        <Button onClick={async () => await sensorFormRef.current?.submitForm()}>Create</Button>
+        <Button onClick={async () => await cameraFormRef.current?.submitForm()}>Create</Button>
         <Button onClick={closeModal}>Cancel</Button>
       </Box>
     </Modal>

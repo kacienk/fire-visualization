@@ -5,16 +5,25 @@ import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { Sensor, getDefaultSensor } from '../../../model/sensor';
 import { SensorForm } from '../SensorlikeForms/SensorForm';
+import { FireBrigade, getDefaultFireBrigade } from '../../../model/FireBrigade';
+import { FireBrigadeForm } from '../SensorlikeForms/FireBrigadeForm';
+import { ForesterPatrol, getDefaultForesterPatrol } from '../../../model/ForesterPatrol';
+import { ForesterPatrolForm } from '../SensorlikeForms/ForesterPatrolForm';
 
-type CreateSensorModalProps = {
+type CreateForesterPatrolModalProps = {
   isOpen: boolean;
   currentSectorId: number;
-  handleSubmit: (values: Sensor) => Promise<void>;
+  handleSubmit: (values: ForesterPatrol) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, closeModal }: CreateSensorModalProps) => {
-  const sensorFormRef = useRef<FormikProps<Sensor> | null>(null);
+export const CreateForesterPatrolModal = ({
+  isOpen,
+  currentSectorId,
+  handleSubmit,
+  closeModal,
+}: CreateForesterPatrolModalProps) => {
+  const foresterPatrolFormRef = useRef<FormikProps<ForesterPatrol> | null>(null);
 
   return (
     <Modal
@@ -32,7 +41,7 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           borderRadius: 2,
         }}
       >
-        <Typography variant="h2">New sensor</Typography>
+        <Typography variant="h2">New fire brigade</Typography>
 
         <Box
           sx={{
@@ -46,13 +55,13 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           }}
         >
           <Formik
-            initialValues={{ ...getDefaultSensor() }}
-            innerRef={sensorFormRef}
+            initialValues={{ ...getDefaultForesterPatrol() }}
+            innerRef={foresterPatrolFormRef}
             onSubmit={handleSubmit}
           >
             <Form>
               <Stack spacing={2}>
-                <SensorForm />
+                <ForesterPatrolForm />
               </Stack>
 
               <MapWrapper>
@@ -62,7 +71,7 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           </Formik>
         </Box>
 
-        <Button onClick={async () => await sensorFormRef.current?.submitForm()}>Create</Button>
+        <Button onClick={async () => await foresterPatrolFormRef.current?.submitForm()}>Create</Button>
         <Button onClick={closeModal}>Cancel</Button>
       </Box>
     </Modal>

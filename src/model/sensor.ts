@@ -33,16 +33,6 @@ export const isSensor = (obj: unknown): obj is Sensor => {
   return (obj as Sensor).sensorId !== undefined;
 };
 
-export const Sensor = {
-  toMarkerProps: (sensor: Sensor): SensorMarker => {
-    return {
-      location: { lng: sensor.location.longitude, lat: sensor.location.latitude },
-      key: `sensor-${sensor.sensorId}`,
-      type: sensor.sensorType,
-    };
-  },
-};
-
 export const getDefaultSensor = (): Sensor => {
   return {
     sensorId: 0,
