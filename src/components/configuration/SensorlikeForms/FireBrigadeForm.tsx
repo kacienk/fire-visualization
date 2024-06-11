@@ -1,19 +1,9 @@
 import { useFormikContext } from 'formik';
 import { FC } from 'react';
-import { Sensor, SensorTypes } from '../../../model/sensor';
-import { ConfigFormDropDown, ConfigGridContainer } from '../configuration';
+import { FireBrigade } from '../../../model/FireBrigade';
 
-export const SensorForm: FC = () => {
-  const { values } = useFormikContext<Sensor>();
+export const FireBrigadeForm: FC = () => {
+  const { values: _ } = useFormikContext<FireBrigade>();
 
-  return (
-    <>
-      <ConfigFormDropDown
-        allVariants={SensorTypes}
-        objectName={'sensor'}
-        propertyName={'sensorType'}
-        readOnly={false}
-      />
-    </>
-  );
+  return <></>;
 };

@@ -3,8 +3,6 @@ import { Modal, Typography, Stack, Button, Box } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
-import { Sensor, getDefaultSensor } from '../../../model/sensor';
-import { SensorForm } from '../SensorlikeForms/SensorForm';
 import { FireBrigade, getDefaultFireBrigade } from '../../../model/FireBrigade';
 import { FireBrigadeForm } from '../SensorlikeForms/FireBrigadeForm';
 

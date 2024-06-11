@@ -1,7 +1,7 @@
 import { useFormikContext } from 'formik';
 import { FC } from 'react';
 import { Sensor, SensorTypes } from '../../../model/sensor';
-import { ConfigFormDropDown, ConfigGridContainer } from '../configuration';
+import { ConfigFormDropDown } from '../configuration';
 
 export const SensorForm: FC = () => {
   const { values: _ } = useFormikContext<Sensor>();
