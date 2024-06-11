@@ -1,4 +1,5 @@
 import { SensorMarker } from '../components/maps/SensorMarkers';
+import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
 export const SensorTypes = [
@@ -37,10 +38,7 @@ export const getDefaultSensor = (): Sensor => {
   return {
     sensorId: 0,
     sensorType: 'CO2',
-    location: {
-      latitude: 0,
-      longitude: 0,
-    },
+    location: getDefaultMapLocation(),
     timestamp: new Date(),
   };
 };

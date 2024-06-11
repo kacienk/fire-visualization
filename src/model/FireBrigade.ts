@@ -1,3 +1,4 @@
+import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
 export const FireBrigadeStates = ['AVAILABLE', 'TRAVELLING', 'EXTINGUISHING'] as const;
@@ -21,13 +22,7 @@ export const getDefaultFireBrigade = (): FireBrigade => {
     fireBrigadeId: 0,
     timestamp: new Date(),
     state: 'AVAILABLE',
-    baseLocation: {
-      longitude: 0,
-      latitude: 0,
-    },
-    currentLocation: {
-      longitude: 0,
-      latitude: 0,
-    },
+    baseLocation: getDefaultMapLocation(),
+    currentLocation: getDefaultMapLocation(),
   };
 };

@@ -1,3 +1,4 @@
+import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
 export const ForesterPatrolStates = ['AVAILABLE', 'TRAVELLING', 'PATROLLING', 'FORRESTING'] as const;
@@ -21,13 +22,7 @@ export const getDefaultForesterPatrol = (): ForesterPatrol => {
     foresterPatrolId: 0,
     timestamp: new Date(),
     state: 'AVAILABLE',
-    baseLocation: {
-      latitude: 0,
-      longitude: 0,
-    },
-    currentLocation: {
-      latitude: 0,
-      longitude: 0,
-    },
+    baseLocation: getDefaultMapLocation(),
+    currentLocation: getDefaultMapLocation(),
   };
 };

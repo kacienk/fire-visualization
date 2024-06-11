@@ -1,3 +1,4 @@
+import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
 export type Camera = {
@@ -14,10 +15,7 @@ export const isCamera = (obj: unknown): obj is Camera => {
 export const getDefaultCamera = (): Camera => {
   return {
     cameraId: 0,
-    location: {
-      latitude: 0,
-      longitude: 0,
-    },
+    location: getDefaultMapLocation(),
     range: 1,
     timestamp: new Date(Date.now()),
   };
