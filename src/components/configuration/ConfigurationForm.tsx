@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { SectorFormPart } from './SectorConfiguration';
-import { Button, Divider, Stack } from '@mui/material';
+import { Button, Divider, List, Stack } from '@mui/material';
 import { SensorsFormPart } from './form_parts/SensorConfiguration';
 import { CamerasFormPart } from './form_parts/CameraConfiguration';
 import { FireBrigadesFormPart } from './form_parts/FireBrigadeConfiguration';
@@ -20,6 +20,8 @@ import { Camera, isCamera } from '../../model/camera';
 import { CreateCameraModal } from './create_items_modals/CreateCameraModal';
 import { CreateFireBrigadeModal } from './create_items_modals/CreateFireBrigadeModal';
 import { CreateForesterPatrolModal } from './create_items_modals/CreateForesterPatrolModal';
+import { SensorlikeListItem } from './SensorlikeListItem';
+import { PlusOutlined } from '@ant-design/icons';
 
 export const ConfigurationForm: FC = () => {
   const {
@@ -93,6 +95,31 @@ export const ConfigurationForm: FC = () => {
     });
   };
 
+  const objectWithinSelectedSector = (object: Sensor | Camera | FireBrigade | ForesterPatrol) => {
+    if (currentSectorId === null || idx === undefined) return false;
+
+    const lon_min = mapConfiguration.sectors[idx].contours[0][0];
+    const lon_max = mapConfiguration.sectors[idx].contours[2][0];
+    const lat_min = mapConfiguration.sectors[idx].contours[0][1];
+    const lat_max = mapConfiguration.sectors[idx].contours[2][1];
+
+    if (isSensor(object) || isCamera(object)) {
+      return (
+        lon_min <= object.location.longitude &&
+        object.location.longitude <= lon_max &&
+        lat_min <= object.location.latitude &&
+        object.location.latitude <= lat_max
+      );
+    } else {
+      return (
+        lon_min <= object.currentLocation.longitude &&
+        object.currentLocation.longitude <= lon_max &&
+        lat_min <= object.currentLocation.latitude &&
+        object.currentLocation.latitude <= lat_max
+      );
+    }
+  };
+
   if (currentSectorId === null || idx === undefined) return null;
 
   return (
@@ -139,69 +166,98 @@ export const ConfigurationForm: FC = () => {
             >
               Save
             </Button>
-            <Divider>Sensors</Divider>
-            <CreateSensorModal
-              isOpen={isCreateSensorModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateSensorModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateSensorModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Cameras</Divider>
-            <CreateCameraModal
-              isOpen={isCreateCameraModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateCameraModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateCameraModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Fire Brigades</Divider>
-            <CreateFireBrigadeModal
-              isOpen={isCreateFireBrigadeModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateFireBrigadeModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateFireBrigadeModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Forester Patrols</Divider>
-            <CreateForesterPatrolModal
-              isOpen={isCreateForesterPatrolModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateForesterPatrolModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateForesterPatrolModalOpen(true)}
-            >
-              Add
-            </Button>
           </Stack>
         </Form>
       </Formik>
+      <Divider>Sensors</Divider>
+      <Button
+        color="primary"
+        variant="outlined"
+        type="button"
+        onClick={() => setIsCreateSensorModalOpen(true)}
+      >
+        <PlusOutlined />
+      </Button>
+      <CreateSensorModal
+        isOpen={isCreateSensorModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateSensorModal}
+        handleSubmit={handleCreate}
+      />
+      <List>
+        {mapConfiguration.sensors
+          .filter((sensor) => objectWithinSelectedSector(sensor))
+          .map((sensor) => (
+            <SensorlikeListItem
+              key={sensor.sensorId}
+              values={sensor}
+              url={url}
+            />
+          ))}
+      </List>
+      <Divider>Cameras</Divider>
+      <CreateCameraModal
+        isOpen={isCreateCameraModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateCameraModal}
+        handleSubmit={handleCreate}
+      />
+      {mapConfiguration.cameras.map((camera) => (
+        <SensorlikeListItem
+          values={camera}
+          url={url}
+        />
+      ))}
+      <Button
+        color="primary"
+        variant="outlined"
+        type="button"
+        onClick={() => setIsCreateCameraModalOpen(true)}
+      >
+        Add
+      </Button>
+      <Divider>Fire Brigades</Divider>
+      <CreateFireBrigadeModal
+        isOpen={isCreateFireBrigadeModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateFireBrigadeModal}
+        handleSubmit={handleCreate}
+      />
+      {mapConfiguration.fireBrigades.map((fireBrigade) => (
+        <SensorlikeListItem
+          values={fireBrigade}
+          url={url}
+        />
+      ))}
+      <Button
+        color="primary"
+        variant="outlined"
+        type="button"
+        onClick={() => setIsCreateFireBrigadeModalOpen(true)}
+      >
+        Add
+      </Button>
+      <Divider>Forester Patrols</Divider>
+      <CreateForesterPatrolModal
+        isOpen={isCreateForesterPatrolModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateForesterPatrolModal}
+        handleSubmit={handleCreate}
+      />
+      {mapConfiguration.foresterPatrols.map((foresterPatrols) => (
+        <SensorlikeListItem
+          values={foresterPatrols}
+          url={url}
+        />
+      ))}
+      <Button
+        color="primary"
+        variant="outlined"
+        type="button"
+        onClick={() => setIsCreateForesterPatrolModalOpen(true)}
+      >
+        Add
+      </Button>
     </MainCard>
   );
 };
