@@ -1,11 +1,15 @@
 import { MapLocation } from './geography';
 
-export interface Camera {
+export type Camera = {
   cameraId: number;
   location: MapLocation;
   range: number;
   timestamp: Date;
-}
+};
+
+export const isCamera = (obj: unknown): obj is Camera => {
+  return (obj as Camera).cameraId !== undefined;
+};
 
 export const getDefaultCamera = (): Camera => {
   return {

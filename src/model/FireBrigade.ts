@@ -4,13 +4,17 @@ export const FireBrigadeStates = ['AVAILABLE', 'TRAVELLING', 'EXTINGUISHING'] as
 
 export type FireBrigadeState = (typeof FireBrigadeStates)[number];
 
-export interface FireBrigade {
+export type FireBrigade = {
   fireBrigadeId: number;
   timestamp: Date;
   state: FireBrigadeState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
-}
+};
+
+export const isFireBrigade = (obj: unknown): obj is FireBrigade => {
+  return (obj as FireBrigade).fireBrigadeId !== undefined;
+};
 
 export const getDefaultFireBrigade = (): FireBrigade => {
   return {
