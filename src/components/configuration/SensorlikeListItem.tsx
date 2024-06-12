@@ -1,11 +1,9 @@
 import { FC, ReactNode } from 'react';
-import { Sensor, SensorTypes, isSensor } from '../../model/sensor';
+import { Sensor, isSensor } from '../../model/sensor';
 import { FireBrigade } from '../../model/FireBrigade';
 import { ForesterPatrol, isForesterPatrol } from '../../model/ForesterPatrol';
 import { Camera, isCamera } from '../../model/camera';
-import { ConfigFormDropDown, ConfigFormTextField } from './configuration';
-import { Box, Button, ListItem, Typography } from '@mui/material';
-import { Height } from '@mui/icons-material';
+import { Box, Button, ListItem, Typography, useTheme } from '@mui/material';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { RootState, dispatch } from '../../store/reduxStore';
@@ -20,6 +18,7 @@ type SensorlikeListItemProps = {
 
 export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }: SensorlikeListItemProps) => {
   const { configuration: mapConfiguration, fileSystemNode } = useSelector((state: RootState) => state.mapConfiguration);
+  const theme = useTheme();
 
   const deleteItem = () => {
     const newConfiguration = { ...mapConfiguration };
@@ -127,6 +126,8 @@ export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }:
         display: 'inline-flex',
         justifyContent: 'space-between',
         p: '2px',
+        borderRadius: '4px',
+        transition: 'all 0.25s',
         '&:hover': {
           bgcolor: 'secondary.lighter',
         },
@@ -139,7 +140,6 @@ export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }:
           width: 24,
           alignSelf: 'center',
           p: 0,
-          display: 'block',
           minWidth: 0,
           bgcolor: 'secondary.A100',
         }}

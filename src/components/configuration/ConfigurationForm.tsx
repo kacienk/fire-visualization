@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { SectorFormPart } from './SectorConfiguration';
-import { Button, Divider, List, Stack } from '@mui/material';
+import { Button, Divider, List, ListItem, Stack } from '@mui/material';
 import { SensorsFormPart } from './form_parts/SensorConfiguration';
 import { CamerasFormPart } from './form_parts/CameraConfiguration';
 import { FireBrigadesFormPart } from './form_parts/FireBrigadeConfiguration';
@@ -170,14 +170,6 @@ export const ConfigurationForm: FC = () => {
         </Form>
       </Formik>
       <Divider>Sensors</Divider>
-      <Button
-        color="primary"
-        variant="outlined"
-        type="button"
-        onClick={() => setIsCreateSensorModalOpen(true)}
-      >
-        <PlusOutlined />
-      </Button>
       <CreateSensorModal
         isOpen={isCreateSensorModalOpen}
         currentSectorId={currentSectorId}
@@ -185,6 +177,35 @@ export const ConfigurationForm: FC = () => {
         handleSubmit={handleCreate}
       />
       <List>
+        <ListItem
+          sx={{
+            p: '2px',
+            borderRadius: '4px',
+            transition: 'all 0.25s',
+            '&:hover': {
+              bgcolor: 'secondary.lighter',
+            },
+          }}
+        >
+          <Button
+            sx={{
+              display: 'inline-flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 24,
+              backgroundColor: 'transparent',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+            }}
+            type="button"
+            color="secondary"
+            onClick={() => setIsCreateSensorModalOpen(true)}
+          >
+            <PlusOutlined />
+          </Button>
+        </ListItem>
         {mapConfiguration.sensors
           .filter((sensor) => objectWithinSelectedSector(sensor))
           .map((sensor) => (
@@ -202,20 +223,46 @@ export const ConfigurationForm: FC = () => {
         closeModal={closeCreateCameraModal}
         handleSubmit={handleCreate}
       />
-      {mapConfiguration.cameras.map((camera) => (
-        <SensorlikeListItem
-          values={camera}
-          url={url}
-        />
-      ))}
-      <Button
-        color="primary"
-        variant="outlined"
-        type="button"
-        onClick={() => setIsCreateCameraModalOpen(true)}
-      >
-        Add
-      </Button>
+      <List>
+        <ListItem
+          sx={{
+            p: '2px',
+            borderRadius: '4px',
+            transition: 'all 0.25s',
+            '&:hover': {
+              bgcolor: 'secondary.lighter',
+            },
+          }}
+        >
+          <Button
+            sx={{
+              display: 'inline-flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 24,
+              backgroundColor: 'transparent',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+            }}
+            type="button"
+            color="secondary"
+            onClick={() => setIsCreateCameraModalOpen(true)}
+          >
+            <PlusOutlined />
+          </Button>
+        </ListItem>
+        {mapConfiguration.cameras
+          .filter((camera) => objectWithinSelectedSector(camera))
+          .map((camera) => (
+            <SensorlikeListItem
+              key={camera.cameraId}
+              values={camera}
+              url={url}
+            />
+          ))}
+      </List>
       <Divider>Fire Brigades</Divider>
       <CreateFireBrigadeModal
         isOpen={isCreateFireBrigadeModalOpen}
@@ -223,20 +270,46 @@ export const ConfigurationForm: FC = () => {
         closeModal={closeCreateFireBrigadeModal}
         handleSubmit={handleCreate}
       />
-      {mapConfiguration.fireBrigades.map((fireBrigade) => (
-        <SensorlikeListItem
-          values={fireBrigade}
-          url={url}
-        />
-      ))}
-      <Button
-        color="primary"
-        variant="outlined"
-        type="button"
-        onClick={() => setIsCreateFireBrigadeModalOpen(true)}
-      >
-        Add
-      </Button>
+      <List>
+        <ListItem
+          sx={{
+            p: '2px',
+            borderRadius: '4px',
+            transition: 'all 0.25s',
+            '&:hover': {
+              bgcolor: 'secondary.lighter',
+            },
+          }}
+        >
+          <Button
+            sx={{
+              display: 'inline-flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 24,
+              backgroundColor: 'transparent',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+            }}
+            type="button"
+            color="secondary"
+            onClick={() => setIsCreateFireBrigadeModalOpen(true)}
+          >
+            <PlusOutlined />
+          </Button>
+        </ListItem>
+        {mapConfiguration.fireBrigades
+          .filter((fireBrigade) => objectWithinSelectedSector(fireBrigade))
+          .map((fireBrigade) => (
+            <SensorlikeListItem
+              key={fireBrigade.fireBrigadeId}
+              values={fireBrigade}
+              url={url}
+            />
+          ))}
+      </List>
       <Divider>Forester Patrols</Divider>
       <CreateForesterPatrolModal
         isOpen={isCreateForesterPatrolModalOpen}
@@ -244,20 +317,46 @@ export const ConfigurationForm: FC = () => {
         closeModal={closeCreateForesterPatrolModal}
         handleSubmit={handleCreate}
       />
-      {mapConfiguration.foresterPatrols.map((foresterPatrols) => (
-        <SensorlikeListItem
-          values={foresterPatrols}
-          url={url}
-        />
-      ))}
-      <Button
-        color="primary"
-        variant="outlined"
-        type="button"
-        onClick={() => setIsCreateForesterPatrolModalOpen(true)}
-      >
-        Add
-      </Button>
+      <List>
+        <ListItem
+          sx={{
+            p: '2px',
+            borderRadius: '4px',
+            transition: 'all 0.25s',
+            '&:hover': {
+              bgcolor: 'secondary.lighter',
+            },
+          }}
+        >
+          <Button
+            sx={{
+              display: 'inline-flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 24,
+              backgroundColor: 'transparent',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+            }}
+            type="button"
+            color="secondary"
+            onClick={() => setIsCreateForesterPatrolModalOpen(true)}
+          >
+            <PlusOutlined />
+          </Button>
+        </ListItem>
+        {mapConfiguration.foresterPatrols
+          .filter((foresterPatrol) => objectWithinSelectedSector(foresterPatrol))
+          .map((foresterPatrol) => (
+            <SensorlikeListItem
+              key={foresterPatrol.foresterPatrolId}
+              values={foresterPatrol}
+              url={url}
+            />
+          ))}
+      </List>
     </MainCard>
   );
 };

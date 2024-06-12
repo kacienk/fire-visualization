@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import { Modal, Typography, Stack, Button, Box } from '@mui/material';
+import { Modal, Typography, Button, Box } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
-import { SensorForm } from '../sensorlike_forms/SensorForm';
 import { Camera, getDefaultCamera } from '../../../model/camera';
+import { CameraForm } from '../sensorlike_forms/CameraForm';
 
 type CreateCameraModalProps = {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export const CreateCameraModal = ({ isOpen, currentSectorId, handleSubmit, close
           borderRadius: 2,
         }}
       >
-        <Typography variant="h2">New sensor</Typography>
+        <Typography variant="h2">New camera</Typography>
 
         <Box
           sx={{
@@ -51,9 +51,7 @@ export const CreateCameraModal = ({ isOpen, currentSectorId, handleSubmit, close
             onSubmit={handleSubmit}
           >
             <Form>
-              <Stack spacing={2}>
-                <SensorForm />
-              </Stack>
+              <CameraForm />
 
               <MapWrapper>
                 <NewConfigurationMap />
