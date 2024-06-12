@@ -5,12 +5,12 @@ import {
   ConfigFormTextField,
   ConfigGridContainer,
   ItemFormPartProps,
-} from './configuration';
+} from '../configuration';
 import { useFormikContext } from 'formik';
-import { Configuration } from '../../model/configuration/configuration';
-import { FireBrigade, FireBrigadeStates, getDefaultFireBrigade } from '../../model/FireBrigade';
+import { Configuration } from '../../../model/configuration/configuration';
+import { FireBrigade, FireBrigadeStates, getDefaultFireBrigade } from '../../../model/FireBrigade';
 import { Typography } from '@mui/material';
-import { Booleanify } from '../../utils/Booleanify';
+import { Booleanify } from '../../../utils/Booleanify';
 
 const objectName = 'fireBrigades';
 

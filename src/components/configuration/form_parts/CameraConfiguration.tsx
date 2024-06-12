@@ -1,10 +1,10 @@
-import { ConfigArrayForm, ConfigFormTextField, ConfigGridContainer, ItemFormPartProps } from './configuration';
-import { Camera, getDefaultCamera } from '../../model/camera';
+import { ConfigArrayForm, ConfigFormTextField, ConfigGridContainer, ItemFormPartProps } from '../configuration';
+import { Camera, getDefaultCamera } from '../../../model/camera';
 import { useFormikContext } from 'formik';
-import { Configuration } from '../../model/configuration/configuration';
+import { Configuration } from '../../../model/configuration/configuration';
 import { FC } from 'react';
 import { Typography } from '@mui/material';
-import { Booleanify } from '../../utils/Booleanify';
+import { Booleanify } from '../../../utils/Booleanify';
 
 const objectName = 'cameras';
 

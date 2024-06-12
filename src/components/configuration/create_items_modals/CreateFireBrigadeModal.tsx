@@ -3,18 +3,23 @@ import { Modal, Typography, Stack, Button, Box } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
-import { Sensor, getDefaultSensor } from '../../../model/sensor';
-import { SensorForm } from '../SensorlikeForms/SensorForm';
+import { FireBrigade, getDefaultFireBrigade } from '../../../model/FireBrigade';
+import { FireBrigadeForm } from '../sensorlike_forms/FireBrigadeForm';
 
-type CreateSensorModalProps = {
+type CreateFireBrigadeModalProps = {
   isOpen: boolean;
   currentSectorId: number;
-  handleSubmit: (values: Sensor) => Promise<void>;
+  handleSubmit: (values: FireBrigade) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, closeModal }: CreateSensorModalProps) => {
-  const sensorFormRef = useRef<FormikProps<Sensor> | null>(null);
+export const CreateFireBrigadeModal = ({
+  isOpen,
+  currentSectorId,
+  handleSubmit,
+  closeModal,
+}: CreateFireBrigadeModalProps) => {
+  const fireBrigadeFormRef = useRef<FormikProps<FireBrigade> | null>(null);
 
   return (
     <Modal
@@ -32,7 +37,7 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           borderRadius: 2,
         }}
       >
-        <Typography variant="h2">New sensor</Typography>
+        <Typography variant="h2">New fire brigade</Typography>
 
         <Box
           sx={{
@@ -46,13 +51,13 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           }}
         >
           <Formik
-            initialValues={{ ...getDefaultSensor() }}
-            innerRef={sensorFormRef}
+            initialValues={{ ...getDefaultFireBrigade() }}
+            innerRef={fireBrigadeFormRef}
             onSubmit={handleSubmit}
           >
             <Form>
               <Stack spacing={2}>
-                <SensorForm />
+                <FireBrigadeForm />
               </Stack>
 
               <MapWrapper>
@@ -62,7 +67,7 @@ export const CreateSensorModal = ({ isOpen, currentSectorId, handleSubmit, close
           </Formik>
         </Box>
 
-        <Button onClick={async () => await sensorFormRef.current?.submitForm()}>Create</Button>
+        <Button onClick={async () => await fireBrigadeFormRef.current?.submitForm()}>Create</Button>
         <Button onClick={closeModal}>Cancel</Button>
       </Box>
     </Modal>

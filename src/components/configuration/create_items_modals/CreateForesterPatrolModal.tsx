@@ -4,7 +4,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
 import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { ForesterPatrol, getDefaultForesterPatrol } from '../../../model/ForesterPatrol';
-import { ForesterPatrolForm } from '../SensorlikeForms/ForesterPatrolForm';
+import { ForesterPatrolForm } from '../sensorlike_forms/ForesterPatrolForm';
 
 type CreateForesterPatrolModalProps = {
   isOpen: boolean;
