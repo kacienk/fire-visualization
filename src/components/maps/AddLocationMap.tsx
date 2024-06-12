@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reduxStore';
 
 // Maps handling
 import { limitTiltRange, Map } from '@vis.gl/react-google-maps';
 import DeckGL from '@deck.gl/react';
-import { MapViewState } from '@deck.gl/core';
+import { MapViewState, WebMercatorViewport } from '@deck.gl/core';
 import {
   DrawPointMode,
   EditableGeoJsonLayer,
@@ -11,6 +13,7 @@ import {
   Position,
   ViewMode,
 } from '@deck.gl-community/editable-layers';
+import { useSelectedSectorLayer } from '../../hooks/maps/useSelectedSectorLayer';
 
 // MUI components
 import { MainCard } from '../MainCard';
@@ -19,13 +22,8 @@ import { Box, Button } from '@mui/material';
 // Map types and default map location getter
 import { MapLocation } from '../../model/geography';
 import { getDefaultMapLocation } from '../../model/common';
-
-// Initial state to display the whole Poland
-const INITIAL_VIEW_STATE: MapViewState = {
-  longitude: 18.85762440671972,
-  latitude: 52.17435627305249,
-  zoom: 5,
-};
+import { Sector } from '../../model/sector';
+import { isPointInBounds } from '../../utils/isPointInBounds';
 
 const parsePositionToMapLocation = (position: Position): MapLocation => ({
   longitude: position[0],
@@ -37,6 +35,24 @@ type AddLocationMapProps = {
 };
 
 export const AddLocationMap = ({ handleSelectedLocation }: AddLocationMapProps) => {
+  const { configuration: mapConfiguration, currentSectorId } = useSelector(
+    (state: RootState) => state.mapConfiguration,
+  );
+  const [currentSector, setCurrentSector] = useState<Sector | undefined>(undefined);
+  useEffect(() => {
+    if (currentSectorId === null) {
+      setCurrentSector(undefined);
+      return;
+    }
+    setCurrentSector(mapConfiguration.sectors.find(({ sectorId }) => sectorId === currentSectorId));
+  }, [mapConfiguration, currentSectorId]);
+
+  const [initialViewState, setInitialViewState] = useState<MapViewState>({
+    longitude: 18.85762440671972,
+    latitude: 52.17435627305249,
+    zoom: 5,
+  });
+
   const [features, setFeatures] = useState<FeatureCollection>({
     type: 'FeatureCollection',
     features: [],
@@ -59,6 +75,8 @@ export const AddLocationMap = ({ handleSelectedLocation }: AddLocationMapProps) 
     getFillColor: [194, 13, 0, 80],
     getLineWidth: 20,
     onEdit: ({ updatedData }) => {
+      if (!currentSector) return;
+
       const featureCollection = updatedData as FeatureCollection;
 
       if (
@@ -66,13 +84,14 @@ export const AddLocationMap = ({ handleSelectedLocation }: AddLocationMapProps) 
         featureCollection.features.length === 1 &&
         featureCollection.features[0].geometry.type === 'Point'
       ) {
-        setFeatures(updatedData);
-
         // Parse and save point coordinates as a location
         const locationCoords = featureCollection.features[0].geometry.coordinates;
         const location = parsePositionToMapLocation(locationCoords);
 
-        handleSelectedLocation(location);
+        if (isPointInBounds(location, Sector.getBoundsFromContours(currentSector))) {
+          setFeatures(updatedData);
+          handleSelectedLocation(location);
+        }
       }
     },
     selectedFeatureIndexes: [], // IDK why this is necessary, but without this drawing fails
@@ -91,6 +110,8 @@ export const AddLocationMap = ({ handleSelectedLocation }: AddLocationMapProps) 
     setIsDrawing(false);
   };
 
+  const selectedSectorLayer = useSelectedSectorLayer(currentSector);
+
   return (
     <MainCard
       hasContent={false}
@@ -98,10 +119,25 @@ export const AddLocationMap = ({ handleSelectedLocation }: AddLocationMapProps) 
     >
       <Box sx={{ position: 'relative', width: '100%', height: '500px' /* TODO fix fixed height */ }}>
         <DeckGL
-          initialViewState={INITIAL_VIEW_STATE}
+          initialViewState={initialViewState}
           controller={true}
-          layers={[drawLocationLayer]}
+          layers={[selectedSectorLayer, drawLocationLayer]}
           onViewStateChange={limitTiltRange}
+          onAfterRender={() => {
+            if (!selectedSectorLayer || !selectedSectorLayer.isLoaded || !currentSector) return;
+
+            const viewport = selectedSectorLayer.context.viewport as WebMercatorViewport;
+
+            const currentSectorBounds = Sector.getBoundsFromContours(currentSector);
+            const { longitude, latitude, zoom } = viewport.fitBounds(
+              [
+                [currentSectorBounds.west, currentSectorBounds.north],
+                [currentSectorBounds.east, currentSectorBounds.south],
+              ],
+              { padding: 50 /* in px */ },
+            );
+            setInitialViewState({ longitude, latitude, zoom });
+          }}
         >
           <Map />
         </DeckGL>
