@@ -4,13 +4,13 @@ import {
   ConfigFormTextField,
   ConfigGridContainer,
   ItemFormPartProps,
-} from './configuration';
+} from '../configuration';
 import { FC } from 'react';
-import { ForesterPatrol, ForesterPatrolStates, getDefaultForesterPatrol } from '../../model/ForesterPatrol';
+import { ForesterPatrol, ForesterPatrolStates, getDefaultForesterPatrol } from '../../../model/ForesterPatrol';
 import { useFormikContext } from 'formik';
-import { Configuration } from '../../model/configuration/configuration';
+import { Configuration } from '../../../model/configuration/configuration';
 import { Typography } from '@mui/material';
-import { Booleanify } from '../../utils/Booleanify';
+import { Booleanify } from '../../../utils/Booleanify';
 
 const objectName = 'foresterPatrols';
 

@@ -5,12 +5,12 @@ import {
   ConfigFormTextField,
   ConfigGridContainer,
   ItemFormPartProps,
-} from './configuration';
+} from '../configuration';
 import { useFormikContext } from 'formik';
-import { Configuration } from '../../model/configuration/configuration';
-import { getDefaultSensor, Sensor, SensorTypes } from '../../model/sensor';
+import { Configuration } from '../../../model/configuration/configuration';
+import { getDefaultSensor, Sensor, SensorTypes } from '../../../model/sensor';
 import { Typography } from '@mui/material';
-import { Booleanify } from '../../utils/Booleanify';
+import { Booleanify } from '../../../utils/Booleanify';
 
 const objectName = 'sensors';
 
