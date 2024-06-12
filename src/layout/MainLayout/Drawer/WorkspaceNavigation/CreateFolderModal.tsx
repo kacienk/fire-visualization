@@ -69,6 +69,7 @@ export const CreateFolderModal = ({
             selected={selectedNode}
             onItemSelected={setSelectedNode}
             inSelectWorkspace={true}
+            onFileDoubleClick={async () => {}}
           />
         </Box>
 

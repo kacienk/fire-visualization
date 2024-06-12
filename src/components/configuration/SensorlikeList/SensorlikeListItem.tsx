@@ -1,15 +1,15 @@
 import { FC, ReactNode } from 'react';
-import { Sensor, isSensor } from '../../model/sensor';
-import { FireBrigade } from '../../model/FireBrigade';
-import { ForesterPatrol, isForesterPatrol } from '../../model/ForesterPatrol';
-import { Camera, isCamera } from '../../model/camera';
-import { Box, Button, ListItem, Typography, useTheme } from '@mui/material';
+import { Sensor, isSensor } from '../../../model/sensor';
+import { FireBrigade } from '../../../model/FireBrigade';
+import { ForesterPatrol, isForesterPatrol } from '../../../model/ForesterPatrol';
+import { Camera, isCamera } from '../../../model/camera';
+import { Box, Button, ListItem, Typography } from '@mui/material';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
-import { RootState, dispatch } from '../../store/reduxStore';
-import { mapFileSystemNodeToApiDataNode } from '../../model/FileSystemModel/FileSystemNode';
-import { updateNode } from '../apiService';
-import { setConfiguration } from '../../store/reducers/mapConfigurationSlice';
+import { RootState, dispatch } from '../../../store/reduxStore';
+import { mapFileSystemNodeToApiDataNode } from '../../../model/FileSystemModel/FileSystemNode';
+import { updateNode } from '../../apiService';
+import { setConfiguration } from '../../../store/reducers/mapConfigurationSlice';
 
 type SensorlikeListItemProps = {
   values: Sensor | Camera | ForesterPatrol | FireBrigade;
@@ -18,7 +18,6 @@ type SensorlikeListItemProps = {
 
 export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }: SensorlikeListItemProps) => {
   const { configuration: mapConfiguration, fileSystemNode } = useSelector((state: RootState) => state.mapConfiguration);
-  const theme = useTheme();
 
   const deleteItem = () => {
     const newConfiguration = { ...mapConfiguration };
@@ -52,68 +51,32 @@ export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }:
   const renderItem = (): ReactNode => {
     if (isSensor(values)) {
       return (
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexGrow: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            alignSelf: 'flex-start',
-            height: 24,
-          }}
-        >
+        <>
           <Typography sx={{ width: 50 }}>ID: {values.sensorId}</Typography>
           <Typography>Type: {values.sensorType}</Typography>
-        </Box>
+        </>
       );
     } else if (isCamera(values)) {
       return (
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexGrow: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            alignSelf: 'flex-start',
-            height: 24,
-          }}
-        >
+        <>
           <Typography sx={{ width: 50 }}>ID: {values.cameraId}</Typography>
           <Typography>Range: {values.range}</Typography>
-        </Box>
+        </>
       );
     } else if (isForesterPatrol(values)) {
       return (
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexGrow: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            alignSelf: 'flex-start',
-            height: 24,
-          }}
-        >
+        <>
           <Typography sx={{ width: 50 }}>ID: {values.foresterPatrolId}</Typography>
           <Typography>State: {values.state}</Typography>
-        </Box>
+        </>
       );
     } else {
       // if (isFireBrigade(values))
       return (
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexGrow: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            alignSelf: 'flex-start',
-            height: 24,
-          }}
-        >
+        <>
           <Typography sx={{ width: 50 }}>ID: {values.fireBrigadeId}</Typography>
           <Typography>State: {values.state}</Typography>
-        </Box>
+        </>
       );
     }
   };
@@ -133,7 +96,19 @@ export const SensorlikeListItem: FC<SensorlikeListItemProps> = ({ values, url }:
         },
       }}
     >
-      {renderItem()}
+      <Box
+        sx={{
+          display: 'inline-flex',
+          flexGrow: 1,
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          alignSelf: 'flex-start',
+          height: 24,
+        }}
+      >
+        {renderItem()}
+      </Box>
+
       <Button
         sx={{
           height: 24,
