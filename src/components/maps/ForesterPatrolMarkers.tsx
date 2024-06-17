@@ -61,7 +61,7 @@ export const ForesterPatrolMarkers = () => {
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">{foresterPatrolStateToEmoji(state)}</span>
+            <span className="forester-patrol-marker">{foresterPatrolStateToEmoji(state)}</span>
           </AdvancedMarker>
         );
       })}

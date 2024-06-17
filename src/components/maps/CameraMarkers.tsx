@@ -60,7 +60,7 @@ export const CameraMarkers = () => {
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">📹</span>
+            <span className="camera-marker">📹</span>
           </AdvancedMarker>
         );
       })}

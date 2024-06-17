@@ -61,7 +61,7 @@ export const FireBrigadeMarkers = () => {
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">{fireBrigadeStateToEmoji(state)}</span>
+            <span className="fire-brigade-marker">{fireBrigadeStateToEmoji(state)}</span>
           </AdvancedMarker>
         );
       })}
