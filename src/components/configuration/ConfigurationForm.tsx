@@ -2,10 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { SectorFormPart } from './SectorConfiguration';
 import { Button, Divider, Stack } from '@mui/material';
-import { SensorsFormPart } from './form_parts/SensorConfiguration';
-import { CamerasFormPart } from './form_parts/CameraConfiguration';
-import { FireBrigadesFormPart } from './form_parts/FireBrigadeConfiguration';
-import { ForesterPatrolsFormPart } from './form_parts/ForesterPatrolConfiguration';
 import { useSelector } from 'react-redux';
 import { RootState, dispatch } from '../../store/reduxStore';
 import { MainCard } from '../MainCard';
@@ -20,6 +16,7 @@ import { Camera, isCamera } from '../../model/camera';
 import { CreateCameraModal } from './create_items_modals/CreateCameraModal';
 import { CreateFireBrigadeModal } from './create_items_modals/CreateFireBrigadeModal';
 import { CreateForesterPatrolModal } from './create_items_modals/CreateForesterPatrolModal';
+import { SensorlikeList } from './SensorlikeList/SensorlikeList';
 
 export const ConfigurationForm: FC = () => {
   const {
@@ -139,69 +136,57 @@ export const ConfigurationForm: FC = () => {
             >
               Save
             </Button>
-            <Divider>Sensors</Divider>
-            <CreateSensorModal
-              isOpen={isCreateSensorModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateSensorModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateSensorModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Cameras</Divider>
-            <CreateCameraModal
-              isOpen={isCreateCameraModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateCameraModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateCameraModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Fire Brigades</Divider>
-            <CreateFireBrigadeModal
-              isOpen={isCreateFireBrigadeModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateFireBrigadeModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateFireBrigadeModalOpen(true)}
-            >
-              Add
-            </Button>
-            <Divider>Forester Patrols</Divider>
-            <CreateForesterPatrolModal
-              isOpen={isCreateForesterPatrolModalOpen}
-              currentSectorId={currentSectorId}
-              closeModal={closeCreateForesterPatrolModal}
-              handleSubmit={handleCreate}
-            />
-            <Button
-              color="primary"
-              variant="outlined"
-              type="button"
-              onClick={() => setIsCreateForesterPatrolModalOpen(true)}
-            >
-              Add
-            </Button>
           </Stack>
         </Form>
       </Formik>
+      <Divider>Sensors</Divider>
+      <CreateSensorModal
+        isOpen={isCreateSensorModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateSensorModal}
+        handleSubmit={handleCreate}
+      />
+      <SensorlikeList
+        sensorlikeItems={mapConfiguration.sensors}
+        url={url}
+        openModal={setIsCreateSensorModalOpen}
+      />
+      <Divider>Cameras</Divider>
+      <CreateCameraModal
+        isOpen={isCreateCameraModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateCameraModal}
+        handleSubmit={handleCreate}
+      />
+      <SensorlikeList
+        sensorlikeItems={mapConfiguration.cameras}
+        url={url}
+        openModal={setIsCreateCameraModalOpen}
+      />
+      <Divider>Fire Brigades</Divider>
+      <CreateFireBrigadeModal
+        isOpen={isCreateFireBrigadeModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateFireBrigadeModal}
+        handleSubmit={handleCreate}
+      />
+      <SensorlikeList
+        sensorlikeItems={mapConfiguration.fireBrigades}
+        url={url}
+        openModal={setIsCreateFireBrigadeModalOpen}
+      />
+      <Divider>Forester Patrols</Divider>
+      <CreateForesterPatrolModal
+        isOpen={isCreateForesterPatrolModalOpen}
+        currentSectorId={currentSectorId}
+        closeModal={closeCreateForesterPatrolModal}
+        handleSubmit={handleCreate}
+      />
+      <SensorlikeList
+        sensorlikeItems={mapConfiguration.foresterPatrols}
+        url={url}
+        openModal={setIsCreateForesterPatrolModalOpen}
+      />
     </MainCard>
   );
 };

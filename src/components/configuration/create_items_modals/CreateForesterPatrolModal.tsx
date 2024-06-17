@@ -37,7 +37,7 @@ export const CreateForesterPatrolModal = ({
           borderRadius: 2,
         }}
       >
-        <Typography variant="h2">New fire brigade</Typography>
+        <Typography variant="h2">New forester patrol</Typography>
 
         <Box
           sx={{
