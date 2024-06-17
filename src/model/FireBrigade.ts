@@ -7,7 +7,7 @@ export type FireBrigadeState = (typeof FireBrigadeStates)[number];
 
 export type FireBrigade = {
   fireBrigadeId: number;
-  timestamp: Date;
+  timestamp: number;
   state: FireBrigadeState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
@@ -20,7 +20,7 @@ export const isFireBrigade = (obj: unknown): obj is FireBrigade => {
 export const getDefaultFireBrigade = (): FireBrigade => {
   return {
     fireBrigadeId: 0,
-    timestamp: new Date(),
+    timestamp: Date.now(),
     state: 'AVAILABLE',
     baseLocation: getDefaultMapLocation(),
     currentLocation: getDefaultMapLocation(),

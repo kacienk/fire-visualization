@@ -5,7 +5,7 @@ export type Camera = {
   cameraId: number;
   location: MapLocation;
   range: number;
-  timestamp: Date;
+  timestamp: number;
 };
 
 export const isCamera = (obj: unknown): obj is Camera => {
@@ -17,6 +17,6 @@ export const getDefaultCamera = (): Camera => {
     cameraId: 0,
     location: getDefaultMapLocation(),
     range: 1,
-    timestamp: new Date(Date.now()),
+    timestamp: Date.now(),
   };
 };

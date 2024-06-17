@@ -7,7 +7,7 @@ export type ForesterPatrolState = (typeof ForesterPatrolStates)[number];
 
 export type ForesterPatrol = {
   foresterPatrolId: number;
-  timestamp: Date;
+  timestamp: number;
   state: ForesterPatrolState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
@@ -20,7 +20,7 @@ export const isForesterPatrol = (obj: unknown): obj is ForesterPatrol => {
 export const getDefaultForesterPatrol = (): ForesterPatrol => {
   return {
     foresterPatrolId: 0,
-    timestamp: new Date(),
+    timestamp: Date.now(),
     state: 'AVAILABLE',
     baseLocation: getDefaultMapLocation(),
     currentLocation: getDefaultMapLocation(),

@@ -17,7 +17,7 @@ export type Sensor = {
   sensorId: number;
   sensorType: SensorType;
   location: MapLocation;
-  timestamp: Date;
+  timestamp: number;
 };
 
 export const Sensor = {
@@ -39,6 +39,6 @@ export const getDefaultSensor = (): Sensor => {
     sensorId: 0,
     sensorType: 'CO2',
     location: getDefaultMapLocation(),
-    timestamp: new Date(),
+    timestamp: Date.now(),
   };
 };
