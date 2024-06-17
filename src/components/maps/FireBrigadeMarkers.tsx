@@ -1,21 +1,21 @@
-import { useRef, useEffect, memo } from 'react';
+import { useRef, useEffect } from 'react';
 
 // maps
 import { useMap, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import type { Marker } from '@googlemaps/markerclusterer';
 
-import { Sensor, SensorType } from '../../model/sensor';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { FireBrigade, FireBrigadeState } from '../../model/FireBrigade';
 
-export type SensorMarker = {
+export type FireBrigadeMarker = {
   location: google.maps.LatLngLiteral;
   key: string;
-  type: SensorType;
+  state: FireBrigadeState;
 };
 
-export const SensorMarkers = memo(() => {
+export const FireBrigadeMarkers = () => {
   const map = useMap('main-map');
 
   // This has to be ref, not state because
@@ -24,7 +24,7 @@ export const SensorMarkers = memo(() => {
 
   const clusterer = useRef<MarkerClusterer | null>(null);
 
-  const sensors = useSelector((state: RootState) => state.mapConfiguration.configuration.sensors);
+  const fireBrigades = useSelector((state: RootState) => state.mapConfiguration.configuration.fireBrigades);
 
   // Initialize MarkerClusterer
   useEffect(() => {
@@ -53,37 +53,30 @@ export const SensorMarkers = memo(() => {
 
   return (
     <>
-      {sensors.map((sensor) => {
-        const { location, key, type } = Sensor.toMarkerProps(sensor);
+      {fireBrigades.map((fireBrigade) => {
+        const { location, key, state } = FireBrigade.toMarkerProps(fireBrigade);
         return (
           <AdvancedMarker
             position={location}
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">{sensorTypeToEmoji(type)}</span>
+            <span className="fire-brigade-marker">{fireBrigadeStateToEmoji(state)}</span>
           </AdvancedMarker>
         );
       })}
     </>
   );
-});
-SensorMarkers.displayName = 'SensorMarkers';
+};
 
-const sensorTypeToEmoji = (sensorType: SensorType) => {
-  switch (sensorType) {
-    case 'TEMPERATURE_AND_AIR_HUMIDITY':
-      return '🌡️';
-    case 'WIND_SPEED':
-      return '🌪';
-    case 'WIND_DIRECTION':
-      return '🧭';
-    case 'LITTER_MOISTURE':
-      return '🌿';
-    case 'PM2_5':
-      return '🫁';
-    case 'CO2':
-      return '💨';
+const fireBrigadeStateToEmoji = (fireBrigadeState: FireBrigadeState) => {
+  switch (fireBrigadeState) {
+    case 'AVAILABLE':
+      return '👨🏻‍🚒';
+    case 'TRAVELLING':
+      return '🚒';
+    case 'EXTINGUISHING':
+      return '🧯';
     default:
       return '❌';
   }

@@ -1,21 +1,21 @@
-import { useRef, useEffect, memo } from 'react';
+import { useRef, useEffect } from 'react';
 
 // maps
 import { useMap, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import type { Marker } from '@googlemaps/markerclusterer';
 
-import { Sensor, SensorType } from '../../model/sensor';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { ForesterPatrol, ForesterPatrolState } from '../../model/ForesterPatrol';
 
-export type SensorMarker = {
+export type ForesterPatrolMarker = {
   location: google.maps.LatLngLiteral;
   key: string;
-  type: SensorType;
+  state: ForesterPatrolState;
 };
 
-export const SensorMarkers = memo(() => {
+export const ForesterPatrolMarkers = () => {
   const map = useMap('main-map');
 
   // This has to be ref, not state because
@@ -24,7 +24,7 @@ export const SensorMarkers = memo(() => {
 
   const clusterer = useRef<MarkerClusterer | null>(null);
 
-  const sensors = useSelector((state: RootState) => state.mapConfiguration.configuration.sensors);
+  const foresterPatrols = useSelector((state: RootState) => state.mapConfiguration.configuration.foresterPatrols);
 
   // Initialize MarkerClusterer
   useEffect(() => {
@@ -53,37 +53,32 @@ export const SensorMarkers = memo(() => {
 
   return (
     <>
-      {sensors.map((sensor) => {
-        const { location, key, type } = Sensor.toMarkerProps(sensor);
+      {foresterPatrols.map((foresterPatrol) => {
+        const { location, key, state } = ForesterPatrol.toMarkerProps(foresterPatrol);
         return (
           <AdvancedMarker
             position={location}
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">{sensorTypeToEmoji(type)}</span>
+            <span className="forester-patrol-marker">{foresterPatrolStateToEmoji(state)}</span>
           </AdvancedMarker>
         );
       })}
     </>
   );
-});
-SensorMarkers.displayName = 'SensorMarkers';
+};
 
-const sensorTypeToEmoji = (sensorType: SensorType) => {
-  switch (sensorType) {
-    case 'TEMPERATURE_AND_AIR_HUMIDITY':
-      return '🌡️';
-    case 'WIND_SPEED':
-      return '🌪';
-    case 'WIND_DIRECTION':
-      return '🧭';
-    case 'LITTER_MOISTURE':
-      return '🌿';
-    case 'PM2_5':
-      return '🫁';
-    case 'CO2':
-      return '💨';
+const foresterPatrolStateToEmoji = (foresterPatrolState: ForesterPatrolState) => {
+  switch (foresterPatrolState) {
+    case 'AVAILABLE':
+      return '🏕';
+    case 'TRAVELLING':
+      return '🥾';
+    case 'PATROLLING':
+      return '🧗‍♂️';
+    case 'FORRESTING':
+      return '🏞';
     default:
       return '❌';
   }

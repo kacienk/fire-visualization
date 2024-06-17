@@ -1,3 +1,5 @@
+import { ForesterPatrolMarker } from '../components/maps/ForesterPatrolMarkers';
+import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
 export const ForesterPatrolStates = ['AVAILABLE', 'TRAVELLING', 'PATROLLING', 'FORRESTING'] as const;
@@ -6,10 +8,20 @@ export type ForesterPatrolState = (typeof ForesterPatrolStates)[number];
 
 export type ForesterPatrol = {
   foresterPatrolId: number;
-  timestamp: Date;
+  timestamp: number;
   state: ForesterPatrolState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
+};
+
+export const ForesterPatrol = {
+  toMarkerProps: (foresterPatrol: ForesterPatrol): ForesterPatrolMarker => {
+    return {
+      location: { lng: foresterPatrol.currentLocation.longitude, lat: foresterPatrol.currentLocation.latitude },
+      key: `foresterPatrol-${foresterPatrol.foresterPatrolId}`,
+      state: foresterPatrol.state,
+    };
+  },
 };
 
 export const isForesterPatrol = (obj: unknown): obj is ForesterPatrol => {
@@ -19,15 +31,9 @@ export const isForesterPatrol = (obj: unknown): obj is ForesterPatrol => {
 export const getDefaultForesterPatrol = (): ForesterPatrol => {
   return {
     foresterPatrolId: 0,
-    timestamp: new Date(),
+    timestamp: Date.now(),
     state: 'AVAILABLE',
-    baseLocation: {
-      latitude: 0,
-      longitude: 0,
-    },
-    currentLocation: {
-      latitude: 0,
-      longitude: 0,
-    },
+    baseLocation: getDefaultMapLocation(),
+    currentLocation: getDefaultMapLocation(),
   };
 };

@@ -5,7 +5,13 @@ import { Button, Divider, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState, dispatch } from '../../store/reduxStore';
 import { MainCard } from '../MainCard';
-import { setConfiguration } from '../../store/reducers/mapConfigurationSlice';
+import {
+  addCamera,
+  addFireBrigade,
+  addForesterPatrol,
+  addSensor,
+  setConfiguration,
+} from '../../store/reducers/mapConfigurationSlice';
 import { updateNode } from '../apiService';
 import { mapFileSystemNodeToApiDataNode } from '../../model/FileSystemModel/FileSystemNode';
 import { CreateSensorModal } from './create_items_modals/CreateSensorModal';
@@ -17,6 +23,7 @@ import { CreateCameraModal } from './create_items_modals/CreateCameraModal';
 import { CreateFireBrigadeModal } from './create_items_modals/CreateFireBrigadeModal';
 import { CreateForesterPatrolModal } from './create_items_modals/CreateForesterPatrolModal';
 import { SensorlikeList } from './SensorlikeList/SensorlikeList';
+import { Configuration } from '../../model/configuration/configuration';
 
 export const ConfigurationForm: FC = () => {
   const {
@@ -56,38 +63,93 @@ export const ConfigurationForm: FC = () => {
   const handleCreate = async (values: Sensor | Camera | FireBrigade | ForesterPatrol) => {
     if (currentSectorId === null || idx === undefined) return;
 
-    const newConfiguration = { ...mapConfiguration };
     if (isSensor(values)) {
       closeCreateSensorModal();
-      values.sensorId = Math.max(...newConfiguration.sensors.map((sensor) => sensor.sensorId)) + 1;
-      newConfiguration.sensors.push(values);
+
+      // Assign new sensorId based on the current list of sensors
+      if (mapConfiguration.sensors.length > 0) {
+        values.sensorId = Math.max(...mapConfiguration.sensors.map((sensor) => sensor.sensorId)) + 1;
+      } else {
+        values.sensorId = 0;
+      }
+
+      // Update the configuration file/document with the new sensor
+      const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+      apiNode.data = JSON.stringify({
+        ...mapConfiguration,
+        sensors: [...mapConfiguration.sensors, values],
+      } satisfies Configuration);
+
+      await updateNode(url, fileSystemNode.id, apiNode);
+
+      // Add sensor to the mapConfiguration stored in the redux state
+      dispatch(addSensor({ sensor: values }));
     } else if (isCamera(values)) {
       closeCreateCameraModal();
-      values.cameraId = Math.max(...newConfiguration.cameras.map((camera) => camera.cameraId)) + 1;
-      newConfiguration.cameras.push(values);
+
+      // Assign new cameraId based on the current list of cameras
+      if (mapConfiguration.cameras.length > 0) {
+        values.cameraId = Math.max(...mapConfiguration.cameras.map((camera) => camera.cameraId)) + 1;
+      } else {
+        values.cameraId = 0;
+      }
+
+      // Update the configuration file/document with the new camera
+      const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+      apiNode.data = JSON.stringify({
+        ...mapConfiguration,
+        cameras: [...mapConfiguration.cameras, values],
+      } satisfies Configuration);
+
+      await updateNode(url, fileSystemNode.id, apiNode);
+
+      // Add camera to the mapConfiguration stored in the redux state
+      dispatch(addCamera({ camera: values }));
     } else if (isFireBrigade(values)) {
       closeCreateFireBrigadeModal();
-      values.fireBrigadeId =
-        Math.max(...newConfiguration.fireBrigades.map((fireBrigade) => fireBrigade.fireBrigadeId)) + 1;
-      newConfiguration.fireBrigades.push(values);
+
+      // Assign new fireBrigadeId based on the current list of fire brigades
+      if (mapConfiguration.fireBrigades.length > 0) {
+        values.fireBrigadeId =
+          Math.max(...mapConfiguration.fireBrigades.map((fireBrigade) => fireBrigade.fireBrigadeId)) + 1;
+      } else {
+        values.fireBrigadeId = 0;
+      }
+
+      // Update the configuration file/document with the new fire brigade
+      const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+      apiNode.data = JSON.stringify({
+        ...mapConfiguration,
+        fireBrigades: [...mapConfiguration.fireBrigades, values],
+      } satisfies Configuration);
+
+      await updateNode(url, fileSystemNode.id, apiNode);
+
+      // Add fire brigade to the mapConfiguration stored in the redux state
+      dispatch(addFireBrigade({ fireBrigade: values }));
     } else if (isForesterPatrol(values)) {
       closeCreateForesterPatrolModal();
-      values.foresterPatrolId =
-        Math.max(...newConfiguration.foresterPatrols.map((foresterPatrol) => foresterPatrol.foresterPatrolId)) + 1;
-      newConfiguration.foresterPatrols.push(values);
+
+      // Assign new foresterPatrolId based on the current list of forester patrols
+      if (mapConfiguration.foresterPatrols.length > 0) {
+        values.foresterPatrolId =
+          Math.max(...mapConfiguration.foresterPatrols.map((foresterPatrol) => foresterPatrol.foresterPatrolId)) + 1;
+      } else {
+        values.foresterPatrolId = 0;
+      }
+
+      // Update the configuration file/document with the new forester patrol
+      const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+      apiNode.data = JSON.stringify({
+        ...mapConfiguration,
+        foresterPatrols: [...mapConfiguration.foresterPatrols, values],
+      } satisfies Configuration);
+
+      await updateNode(url, fileSystemNode.id, apiNode);
+
+      // Add forester patrol to the mapConfiguration stored in the redux state
+      dispatch(addForesterPatrol({ foresterPatrol: values }));
     }
-
-    const stringifiedConfiguration = JSON.stringify(newConfiguration);
-    const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
-    apiNode.data = stringifiedConfiguration;
-
-    updateNode(url, fileSystemNode.id, apiNode).then(() => {
-      dispatch(
-        setConfiguration({
-          configuration: newConfiguration,
-        }),
-      );
-    });
   };
 
   if (currentSectorId === null || idx === undefined) return null;
@@ -142,7 +204,6 @@ export const ConfigurationForm: FC = () => {
       <Divider>Sensors</Divider>
       <CreateSensorModal
         isOpen={isCreateSensorModalOpen}
-        currentSectorId={currentSectorId}
         closeModal={closeCreateSensorModal}
         handleSubmit={handleCreate}
       />
@@ -154,7 +215,6 @@ export const ConfigurationForm: FC = () => {
       <Divider>Cameras</Divider>
       <CreateCameraModal
         isOpen={isCreateCameraModalOpen}
-        currentSectorId={currentSectorId}
         closeModal={closeCreateCameraModal}
         handleSubmit={handleCreate}
       />
@@ -166,7 +226,6 @@ export const ConfigurationForm: FC = () => {
       <Divider>Fire Brigades</Divider>
       <CreateFireBrigadeModal
         isOpen={isCreateFireBrigadeModalOpen}
-        currentSectorId={currentSectorId}
         closeModal={closeCreateFireBrigadeModal}
         handleSubmit={handleCreate}
       />
@@ -178,7 +237,6 @@ export const ConfigurationForm: FC = () => {
       <Divider>Forester Patrols</Divider>
       <CreateForesterPatrolModal
         isOpen={isCreateForesterPatrolModalOpen}
-        currentSectorId={currentSectorId}
         closeModal={closeCreateForesterPatrolModal}
         handleSubmit={handleCreate}
       />

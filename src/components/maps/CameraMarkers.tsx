@@ -1,21 +1,20 @@
-import { useRef, useEffect, memo } from 'react';
+import { useRef, useEffect } from 'react';
 
 // maps
 import { useMap, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import type { Marker } from '@googlemaps/markerclusterer';
 
-import { Sensor, SensorType } from '../../model/sensor';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
+import { Camera } from '../../model/camera';
 
-export type SensorMarker = {
+export type CameraMarker = {
   location: google.maps.LatLngLiteral;
   key: string;
-  type: SensorType;
 };
 
-export const SensorMarkers = memo(() => {
+export const CameraMarkers = () => {
   const map = useMap('main-map');
 
   // This has to be ref, not state because
@@ -24,7 +23,7 @@ export const SensorMarkers = memo(() => {
 
   const clusterer = useRef<MarkerClusterer | null>(null);
 
-  const sensors = useSelector((state: RootState) => state.mapConfiguration.configuration.sensors);
+  const cameras = useSelector((state: RootState) => state.mapConfiguration.configuration.cameras);
 
   // Initialize MarkerClusterer
   useEffect(() => {
@@ -53,38 +52,18 @@ export const SensorMarkers = memo(() => {
 
   return (
     <>
-      {sensors.map((sensor) => {
-        const { location, key, type } = Sensor.toMarkerProps(sensor);
+      {cameras.map((camera) => {
+        const { location, key } = Camera.toMarkerProps(camera);
         return (
           <AdvancedMarker
             position={location}
             key={key}
             ref={(marker: Marker | null) => setMarkerRef(marker, key)}
           >
-            <span className="sensor-marker">{sensorTypeToEmoji(type)}</span>
+            <span className="camera-marker">📹</span>
           </AdvancedMarker>
         );
       })}
     </>
   );
-});
-SensorMarkers.displayName = 'SensorMarkers';
-
-const sensorTypeToEmoji = (sensorType: SensorType) => {
-  switch (sensorType) {
-    case 'TEMPERATURE_AND_AIR_HUMIDITY':
-      return '🌡️';
-    case 'WIND_SPEED':
-      return '🌪';
-    case 'WIND_DIRECTION':
-      return '🧭';
-    case 'LITTER_MOISTURE':
-      return '🌿';
-    case 'PM2_5':
-      return '🫁';
-    case 'CO2':
-      return '💨';
-    default:
-      return '❌';
-  }
 };

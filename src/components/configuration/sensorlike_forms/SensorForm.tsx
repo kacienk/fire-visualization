@@ -10,7 +10,6 @@ export const SensorForm: FC = () => {
     <>
       <ConfigFormDropDown
         allVariants={SensorTypes}
-        objectName={'sensor'}
         propertyName={'sensorType'}
         readOnly={false}
       />

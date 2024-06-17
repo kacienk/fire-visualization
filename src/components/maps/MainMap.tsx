@@ -12,7 +12,7 @@ import './maps-styles-overrides.css';
 // material-ui
 import { Grid, Box, Typography } from '@mui/material';
 import { MainCard } from '../MainCard';
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { Configuration } from '../../model/configuration/configuration';
 import { useForestBorderLayer } from '../../hooks/maps/useForestBorderLayer';
 import { useSectorsLayer } from '../../hooks/maps/useSectorsLayer';
@@ -22,8 +22,10 @@ import { useOnTooltipChange } from '../../hooks/maps/useOnTooltipChange';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
 import { setCurrentSectorId } from '../../store/reducers/mapConfigurationSlice';
-import { Sensor } from '../../model/sensor';
 import { SensorMarkers } from './SensorMarkers';
+import { CameraMarkers } from './CameraMarkers';
+import { ForesterPatrolMarkers } from './ForesterPatrolMarkers';
+import { FireBrigadeMarkers } from './FireBrigadeMarkers';
 
 export const MainMap = () => {
   const map = useMap('main-map');
@@ -42,9 +44,6 @@ export const MainMap = () => {
     if (!map) return;
     map.fitBounds(bounds);
   }, [bounds, map]);
-
-  const sensorMarkers = useMemo(() => mapConfiguration.sensors.map(Sensor.toMarkerProps), [mapConfiguration.sensors]);
-  useEffect(() => console.debug('changing sensorMarkers'), [sensorMarkers]);
 
   const forestBorderLayer = useForestBorderLayer(mapConfiguration);
   const sectorsLayer = useSectorsLayer(mapConfiguration);
@@ -112,7 +111,10 @@ export const MainMap = () => {
           >
             {tooltip}
             <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer]} />
-            <SensorMarkers sensors={sensorMarkers} />
+            <FireBrigadeMarkers />
+            <ForesterPatrolMarkers />
+            <CameraMarkers />
+            <SensorMarkers />
           </Map>
         </Box>
       </MainCard>

@@ -2,23 +2,17 @@ import { useRef } from 'react';
 import { Modal, Typography, Stack, Button, Box } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
-import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { FireBrigade, getDefaultFireBrigade } from '../../../model/FireBrigade';
 import { FireBrigadeForm } from '../sensorlike_forms/FireBrigadeForm';
+import { AddLocationMap } from '../../maps/AddLocationMap';
 
 type CreateFireBrigadeModalProps = {
   isOpen: boolean;
-  currentSectorId: number;
   handleSubmit: (values: FireBrigade) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateFireBrigadeModal = ({
-  isOpen,
-  currentSectorId,
-  handleSubmit,
-  closeModal,
-}: CreateFireBrigadeModalProps) => {
+export const CreateFireBrigadeModal = ({ isOpen, handleSubmit, closeModal }: CreateFireBrigadeModalProps) => {
   const fireBrigadeFormRef = useRef<FormikProps<FireBrigade> | null>(null);
 
   return (
@@ -55,15 +49,23 @@ export const CreateFireBrigadeModal = ({
             innerRef={fireBrigadeFormRef}
             onSubmit={handleSubmit}
           >
-            <Form>
-              <Stack spacing={2}>
-                <FireBrigadeForm />
-              </Stack>
+            {({ setFieldValue }) => (
+              <Form>
+                <Stack spacing={2}>
+                  <FireBrigadeForm />
 
-              <MapWrapper>
-                <NewConfigurationMap />
-              </MapWrapper>
-            </Form>
+                  <Typography variant="h4">Fire brigade base location</Typography>
+                  <MapWrapper>
+                    <AddLocationMap
+                      handleSelectedLocation={(location) => {
+                        setFieldValue('baseLocation', location);
+                        setFieldValue('currentLocation', location);
+                      }}
+                    />
+                  </MapWrapper>
+                </Stack>
+              </Form>
+            )}
           </Formik>
         </Box>
 
