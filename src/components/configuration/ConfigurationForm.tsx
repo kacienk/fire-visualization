@@ -94,22 +94,6 @@ export const ConfigurationForm: FC = () => {
         Math.max(...newConfiguration.foresterPatrols.map((foresterPatrol) => foresterPatrol.foresterPatrolId)) + 1;
       newConfiguration.foresterPatrols.push(values);
     }
-
-    // console.debug('newConfiguration', newConfiguration);
-
-    // const stringifiedConfiguration = JSON.stringify(newConfiguration);
-    // const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
-    // console.debug('dupa5');
-    // apiNode.data = stringifiedConfiguration;
-
-    // const res = await updateNode(url, fileSystemNode.id, apiNode);
-    // console.debug('res', res);
-
-    // dispatch(
-    //   setConfiguration({
-    //     configuration: newConfiguration,
-    //   }),
-    // );
   };
 
   if (currentSectorId === null || idx === undefined) return null;
