@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Configuration, getDefaultConfiguration } from '../../model/configuration/configuration';
 import { FileSystemNode } from '../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
+import { Sensor } from '../../model/sensor';
 
 type mapConfigurationState = {
   fileSystemNode: FileSystemNode;
@@ -37,8 +38,12 @@ export const mapConfigurationSlice = createSlice({
       const { fileSystemNode } = action.payload;
       state.fileSystemNode = fileSystemNode;
     },
+    addSensor: (state, action: { payload: { sensor: Sensor }; type: string }) => {
+      const { sensor } = action.payload;
+      state.configuration.sensors.push(sensor);
+    },
   },
 });
 
-export const { setConfiguration, setCurrentSectorId, setFileSystemNode } = mapConfigurationSlice.actions;
+export const { setConfiguration, setCurrentSectorId, setFileSystemNode, addSensor } = mapConfigurationSlice.actions;
 export const { reducer: mapConfigurationReducer } = mapConfigurationSlice;

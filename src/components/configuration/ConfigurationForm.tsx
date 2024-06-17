@@ -5,7 +5,7 @@ import { Button, Divider, Stack } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState, dispatch } from '../../store/reduxStore';
 import { MainCard } from '../MainCard';
-import { setConfiguration } from '../../store/reducers/mapConfigurationSlice';
+import { addSensor, setConfiguration } from '../../store/reducers/mapConfigurationSlice';
 import { updateNode } from '../apiService';
 import { mapFileSystemNodeToApiDataNode } from '../../model/FileSystemModel/FileSystemNode';
 import { CreateSensorModal } from './create_items_modals/CreateSensorModal';
@@ -17,6 +17,7 @@ import { CreateCameraModal } from './create_items_modals/CreateCameraModal';
 import { CreateFireBrigadeModal } from './create_items_modals/CreateFireBrigadeModal';
 import { CreateForesterPatrolModal } from './create_items_modals/CreateForesterPatrolModal';
 import { SensorlikeList } from './SensorlikeList/SensorlikeList';
+import { Configuration } from '../../model/configuration/configuration';
 
 export const ConfigurationForm: FC = () => {
   const {
@@ -59,8 +60,25 @@ export const ConfigurationForm: FC = () => {
     const newConfiguration = { ...mapConfiguration };
     if (isSensor(values)) {
       closeCreateSensorModal();
-      values.sensorId = Math.max(...newConfiguration.sensors.map((sensor) => sensor.sensorId)) + 1;
-      newConfiguration.sensors.push(values);
+
+      // Assign new sensorId based on the current list of sensors
+      if (mapConfiguration.sensors.length > 0) {
+        values.sensorId = Math.max(...mapConfiguration.sensors.map((sensor) => sensor.sensorId)) + 1;
+      } else {
+        values.sensorId = 0;
+      }
+
+      // Update the configuration file/document with the new sensor
+      const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+      apiNode.data = JSON.stringify({
+        ...mapConfiguration,
+        sensors: [...mapConfiguration.sensors, values],
+      } satisfies Configuration);
+
+      await updateNode(url, fileSystemNode.id, apiNode);
+
+      // Add sensor to the mapConfiguration stored in the redux state
+      dispatch(addSensor({ sensor: values }));
     } else if (isCamera(values)) {
       closeCreateCameraModal();
       values.cameraId = Math.max(...newConfiguration.cameras.map((camera) => camera.cameraId)) + 1;
@@ -77,17 +95,21 @@ export const ConfigurationForm: FC = () => {
       newConfiguration.foresterPatrols.push(values);
     }
 
-    const stringifiedConfiguration = JSON.stringify(newConfiguration);
-    const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
-    apiNode.data = stringifiedConfiguration;
+    // console.debug('newConfiguration', newConfiguration);
 
-    updateNode(url, fileSystemNode.id, apiNode).then(() => {
-      dispatch(
-        setConfiguration({
-          configuration: newConfiguration,
-        }),
-      );
-    });
+    // const stringifiedConfiguration = JSON.stringify(newConfiguration);
+    // const apiNode = mapFileSystemNodeToApiDataNode(fileSystemNode, null);
+    // console.debug('dupa5');
+    // apiNode.data = stringifiedConfiguration;
+
+    // const res = await updateNode(url, fileSystemNode.id, apiNode);
+    // console.debug('res', res);
+
+    // dispatch(
+    //   setConfiguration({
+    //     configuration: newConfiguration,
+    //   }),
+    // );
   };
 
   if (currentSectorId === null || idx === undefined) return null;
@@ -142,7 +164,6 @@ export const ConfigurationForm: FC = () => {
       <Divider>Sensors</Divider>
       <CreateSensorModal
         isOpen={isCreateSensorModalOpen}
-        currentSectorId={currentSectorId}
         closeModal={closeCreateSensorModal}
         handleSubmit={handleCreate}
       />
