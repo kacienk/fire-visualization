@@ -23,6 +23,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reduxStore';
 import { setCurrentSectorId } from '../../store/reducers/mapConfigurationSlice';
 import { SensorMarkers } from './SensorMarkers';
+import { CameraMarkers } from './CameraMarkers';
+import { ForesterPatrolMarkers } from './ForesterPatrolMarkers';
+import { FireBrigadeMarkers } from './FireBrigadeMarkers';
 
 export const MainMap = () => {
   const map = useMap('main-map');
@@ -108,6 +111,9 @@ export const MainMap = () => {
           >
             {tooltip}
             <DeckGlOverlay layers={[forestBorderLayer, sectorsLayer, selectedSectorLayer]} />
+            <FireBrigadeMarkers />
+            <ForesterPatrolMarkers />
+            <CameraMarkers />
             <SensorMarkers />
           </Map>
         </Box>

@@ -1,3 +1,4 @@
+import { ForesterPatrolMarker } from '../components/maps/ForesterPatrolMarkers';
 import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
@@ -11,6 +12,16 @@ export type ForesterPatrol = {
   state: ForesterPatrolState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
+};
+
+export const ForesterPatrol = {
+  toMarkerProps: (foresterPatrol: ForesterPatrol): ForesterPatrolMarker => {
+    return {
+      location: { lng: foresterPatrol.currentLocation.longitude, lat: foresterPatrol.currentLocation.latitude },
+      key: `foresterPatrol-${foresterPatrol.foresterPatrolId}`,
+      state: foresterPatrol.state,
+    };
+  },
 };
 
 export const isForesterPatrol = (obj: unknown): obj is ForesterPatrol => {

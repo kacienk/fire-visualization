@@ -2,23 +2,17 @@ import { useRef } from 'react';
 import { Modal, Typography, Stack, Button, Box } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
-import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { ForesterPatrol, getDefaultForesterPatrol } from '../../../model/ForesterPatrol';
 import { ForesterPatrolForm } from '../sensorlike_forms/ForesterPatrolForm';
+import { AddLocationMap } from '../../maps/AddLocationMap';
 
 type CreateForesterPatrolModalProps = {
   isOpen: boolean;
-  currentSectorId: number;
   handleSubmit: (values: ForesterPatrol) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateForesterPatrolModal = ({
-  isOpen,
-  currentSectorId,
-  handleSubmit,
-  closeModal,
-}: CreateForesterPatrolModalProps) => {
+export const CreateForesterPatrolModal = ({ isOpen, handleSubmit, closeModal }: CreateForesterPatrolModalProps) => {
   const foresterPatrolFormRef = useRef<FormikProps<ForesterPatrol> | null>(null);
 
   return (
@@ -55,15 +49,23 @@ export const CreateForesterPatrolModal = ({
             innerRef={foresterPatrolFormRef}
             onSubmit={handleSubmit}
           >
-            <Form>
-              <Stack spacing={2}>
-                <ForesterPatrolForm />
-              </Stack>
+            {({ setFieldValue }) => (
+              <Form>
+                <Stack spacing={2}>
+                  <ForesterPatrolForm />
 
-              <MapWrapper>
-                <NewConfigurationMap />
-              </MapWrapper>
-            </Form>
+                  <Typography variant="h4">Forester patrol base location</Typography>
+                  <MapWrapper>
+                    <AddLocationMap
+                      handleSelectedLocation={(location) => {
+                        setFieldValue('baseLocation', location);
+                        setFieldValue('currentLocation', location);
+                      }}
+                    />
+                  </MapWrapper>
+                </Stack>
+              </Form>
+            )}
           </Formik>
         </Box>
 

@@ -9,7 +9,6 @@ export const CameraForm: FC = () => {
   return (
     <>
       <ConfigFormTextField
-        objectName={'camera'}
         propertyName={'range'}
         type={'number'}
       />

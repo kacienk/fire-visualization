@@ -1,19 +1,18 @@
 import { useRef } from 'react';
-import { Modal, Typography, Button, Box } from '@mui/material';
+import { Modal, Typography, Button, Box, Stack } from '@mui/material';
 import { Form, Formik, FormikProps } from 'formik';
 import { MapWrapper } from '../../maps/MapWrapper';
-import { NewConfigurationMap } from '../../maps/NewConfigurationMap';
 import { Camera, getDefaultCamera } from '../../../model/camera';
 import { CameraForm } from '../sensorlike_forms/CameraForm';
+import { AddLocationMap } from '../../maps/AddLocationMap';
 
 type CreateCameraModalProps = {
   isOpen: boolean;
-  currentSectorId: number;
   handleSubmit: (values: Camera) => Promise<void>;
   closeModal: () => void;
 };
 
-export const CreateCameraModal = ({ isOpen, currentSectorId, handleSubmit, closeModal }: CreateCameraModalProps) => {
+export const CreateCameraModal = ({ isOpen, handleSubmit, closeModal }: CreateCameraModalProps) => {
   const cameraFormRef = useRef<FormikProps<Camera> | null>(null);
 
   return (
@@ -50,13 +49,22 @@ export const CreateCameraModal = ({ isOpen, currentSectorId, handleSubmit, close
             innerRef={cameraFormRef}
             onSubmit={handleSubmit}
           >
-            <Form>
-              <CameraForm />
+            {({ setFieldValue }) => (
+              <Form>
+                <Stack spacing={2}>
+                  <CameraForm />
 
-              <MapWrapper>
-                <NewConfigurationMap />
-              </MapWrapper>
-            </Form>
+                  <Typography variant="h4">Camera location</Typography>
+                  <MapWrapper>
+                    <AddLocationMap
+                      handleSelectedLocation={(location) => {
+                        setFieldValue('location', location);
+                      }}
+                    />
+                  </MapWrapper>
+                </Stack>
+              </Form>
+            )}
           </Formik>
         </Box>
 

@@ -1,3 +1,4 @@
+import { FireBrigadeMarker } from '../components/maps/FireBrigadeMarkers';
 import { getDefaultMapLocation } from './common';
 import { MapLocation } from './geography';
 
@@ -11,6 +12,16 @@ export type FireBrigade = {
   state: FireBrigadeState;
   baseLocation: MapLocation;
   currentLocation: MapLocation;
+};
+
+export const FireBrigade = {
+  toMarkerProps: (fireBrigade: FireBrigade): FireBrigadeMarker => {
+    return {
+      location: { lng: fireBrigade.currentLocation.longitude, lat: fireBrigade.currentLocation.latitude },
+      key: `fireBrigade-${fireBrigade.fireBrigadeId}`,
+      state: fireBrigade.state,
+    };
+  },
 };
 
 export const isFireBrigade = (obj: unknown): obj is FireBrigade => {

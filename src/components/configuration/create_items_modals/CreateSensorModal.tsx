@@ -53,15 +53,16 @@ export const CreateSensorModal = ({ isOpen, handleSubmit, closeModal }: CreateSe
               <Form>
                 <Stack spacing={2}>
                   <SensorForm />
-                </Stack>
 
-                <MapWrapper>
-                  <AddLocationMap
-                    handleSelectedLocation={(location) => {
-                      setFieldValue('location', location);
-                    }}
-                  />
-                </MapWrapper>
+                  <Typography variant="h4">Sensor location</Typography>
+                  <MapWrapper>
+                    <AddLocationMap
+                      handleSelectedLocation={(location) => {
+                        setFieldValue('location', location);
+                      }}
+                    />
+                  </MapWrapper>
+                </Stack>
               </Form>
             )}
           </Formik>
