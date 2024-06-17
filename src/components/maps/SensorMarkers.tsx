@@ -1,11 +1,13 @@
-import { useState, useRef, useEffect, memo } from 'react';
+import { useRef, useEffect, memo } from 'react';
 
 // maps
 import { useMap, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import type { Marker } from '@googlemaps/markerclusterer';
 
-import { SensorType } from '../../model/sensor';
+import { Sensor, SensorType } from '../../model/sensor';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reduxStore';
 
 export type SensorMarker = {
   location: google.maps.LatLngLiteral;
@@ -13,14 +15,16 @@ export type SensorMarker = {
   type: SensorType;
 };
 
-type SensorMarkersProps = {
-  sensors: SensorMarker[];
-};
-
-export const SensorMarkers = memo(({ sensors }: SensorMarkersProps) => {
+export const SensorMarkers = memo(() => {
   const map = useMap('main-map');
-  const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
+
+  // This has to be ref, not state because
+  // state causes to the app to crash due to too many rerenders
+  const markers = useRef<{ [key: string]: Marker }>({});
+
   const clusterer = useRef<MarkerClusterer | null>(null);
+
+  const sensors = useSelector((state: RootState) => state.mapConfiguration.configuration.sensors);
 
   // Initialize MarkerClusterer
   useEffect(() => {
@@ -33,35 +37,34 @@ export const SensorMarkers = memo(({ sensors }: SensorMarkersProps) => {
   // Update markers
   useEffect(() => {
     clusterer.current?.clearMarkers();
-    clusterer.current?.addMarkers(Object.values(markers));
+    clusterer.current?.addMarkers(Object.values(markers.current));
   }, [markers]);
 
   const setMarkerRef = (marker: Marker | null, key: string) => {
-    if (marker && markers[key]) return;
-    if (!marker && !markers[key]) return;
+    if (marker && markers.current[key]) return;
+    if (!marker && !markers.current[key]) return;
 
-    setMarkers((prev) => {
-      if (marker) {
-        return { ...prev, [key]: marker };
-      } else {
-        const newMarkers = { ...prev };
-        delete newMarkers[key];
-        return newMarkers;
-      }
-    });
+    if (marker) {
+      markers.current[key] = marker;
+    } else {
+      delete markers.current[key];
+    }
   };
 
   return (
     <>
-      {sensors.map(({ location, key, type }) => (
-        <AdvancedMarker
-          position={location}
-          key={key}
-          ref={(marker: Marker | null) => setMarkerRef(marker, key)}
-        >
-          <span className="sensor-marker">{sensorTypeToEmoji(type)}</span>
-        </AdvancedMarker>
-      ))}
+      {sensors.map((sensor) => {
+        const { location, key, type } = Sensor.toMarkerProps(sensor);
+        return (
+          <AdvancedMarker
+            position={location}
+            key={key}
+            ref={(marker: Marker | null) => setMarkerRef(marker, key)}
+          >
+            <span className="sensor-marker">{sensorTypeToEmoji(type)}</span>
+          </AdvancedMarker>
+        );
+      })}
     </>
   );
 });
