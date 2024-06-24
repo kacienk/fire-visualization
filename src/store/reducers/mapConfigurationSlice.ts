@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Configuration, getDefaultConfiguration } from '../../model/configuration/configuration';
+import { Configuration, ConfigurationUpdate, getDefaultConfiguration } from '../../model/configuration/configuration';
 import { FileSystemNode } from '../../model/FileSystemModel/FileSystemNode';
 import { NodeTypeEnum } from '../../model/FileSystemModel/NodeTypeEnum';
 import { Sensor } from '../../model/sensor';
@@ -32,6 +32,10 @@ export const mapConfigurationSlice = createSlice({
       const processedSectors = Configuration.preprocessSectors(configuration);
       state.configuration = { ...configuration, sectors: processedSectors };
     },
+    updateConfiguration: (state, action: { payload: { configurationUpdate: ConfigurationUpdate }; type: string }) => {
+      const { configurationUpdate } = action.payload;
+      state.configuration = Configuration.updateConfiguration(state.configuration, configurationUpdate);
+    },
     setCurrentSectorId: (state, action) => {
       const { currentSectorId: prevSectorId } = state;
       const { currentSectorId: nextSectorId } = action.payload;
@@ -62,6 +66,7 @@ export const mapConfigurationSlice = createSlice({
 
 export const {
   setConfiguration,
+  updateConfiguration,
   setCurrentSectorId,
   setFileSystemNode,
   addSensor,

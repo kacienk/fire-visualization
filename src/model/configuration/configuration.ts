@@ -1,8 +1,8 @@
-import { getDefaultSector, Sector } from '../sector';
+import { getDefaultSector, Sector, SectorUpdate } from '../sector';
 import { Sensor } from '../sensor';
 import { Camera } from '../camera';
-import { FireBrigade } from '../FireBrigade';
-import { ForesterPatrol } from '../ForesterPatrol';
+import { FireBrigade, FireBrigadeUpdate } from '../FireBrigade';
+import { ForesterPatrol, ForesterPatrolUpdate } from '../ForesterPatrol';
 import { Region } from '../geography';
 import { linspace } from '../../utils/linspace';
 import { ProcessedSector } from '../processedSector';
@@ -23,6 +23,14 @@ export interface Configuration extends Forest {
   fireBrigades: FireBrigade[];
   foresterPatrols: ForesterPatrol[];
 }
+
+export type ConfigurationUpdate = {
+  forestName: string;
+  timestamp: string; // TODO change to number
+  sectors: SectorUpdate[];
+  fireBrigades: FireBrigadeUpdate[];
+  foresterPatrols: ForesterPatrolUpdate[];
+};
 
 export const Configuration = {
   getBounds: ({ location }: Configuration): google.maps.LatLngBoundsLiteral => {
@@ -125,6 +133,50 @@ export const Configuration = {
         PM 2.5 concentration: ${sector.initialState.pm2_5Concentration}`;
     },
   },
+  updateConfiguration: (configuration: Configuration, configurationUpdate: ConfigurationUpdate): Configuration => {
+    return {
+      ...configuration,
+      sectors: configuration.sectors.map((sector) => {
+        const sectorUpdate = configurationUpdate.sectors.find(({ sectorId }) => sectorId === sector.sectorId);
+        if (!sectorUpdate) {
+          console.error(
+            `Configuration.updateConfiguration couldn't find updated sector with provided ID: ${sector.sectorId}`,
+          );
+          return sector;
+        }
+
+        return Sector.updateSector(sector, sectorUpdate);
+      }),
+      fireBrigades: configuration.fireBrigades.map((fireBrigade) => {
+        const fireBrigadeUpdate = configurationUpdate.fireBrigades.find(
+          ({ fireBrigadeId }) => fireBrigadeId === fireBrigade.fireBrigadeId,
+        );
+        if (!fireBrigadeUpdate) {
+          console.error(
+            `Configuration.updateConfiguration couldn't find updated fire brigade with provided ID: ${fireBrigade.fireBrigadeId}`,
+          );
+          return fireBrigade;
+        }
+
+        return FireBrigade.updateFireBrigade(fireBrigade, fireBrigadeUpdate);
+      }),
+      foresterPatrols: configuration.foresterPatrols.map((foresterPatrol) => {
+        const foresterPatrolUpdate = configurationUpdate.foresterPatrols.find(
+          ({ foresterPatrolId }) => foresterPatrolId === foresterPatrol.foresterPatrolId,
+        );
+        if (!foresterPatrolUpdate) {
+          console.error(
+            `Configuration.updateConfiguration couldn't find updated forester patrol with provided ID: ${foresterPatrol.foresterPatrolId}`,
+          );
+          return foresterPatrol;
+        }
+
+        return ForesterPatrol.updateForesterPatrol(foresterPatrol, foresterPatrolUpdate);
+      }),
+      // TODO update timestamp
+      // TODO update rest of the fields?
+    };
+  },
 };
 
 export const getDefaultConfiguration = (): Configuration => {
@@ -157,4 +209,14 @@ export const getDefaultConfiguration = (): Configuration => {
     fireBrigades: [],
     foresterPatrols: [],
   };
+};
+
+export const isDefaultConfiguration = (configuration: Configuration): boolean => {
+  return (
+    configuration.forestId === 0 &&
+    configuration.forestName === 'Wolski' &&
+    configuration.rows === 1 &&
+    configuration.columns === 1 &&
+    configuration.location.every((loc) => loc.latitude === 0 && loc.longitude === 0)
+  );
 };

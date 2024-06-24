@@ -14,12 +14,28 @@ export type FireBrigade = {
   currentLocation: MapLocation;
 };
 
+// TODO adjust this type
+export type FireBrigadeUpdate = {
+  fireBrigadeId: number;
+  action: FireBrigadeState;
+  state: FireBrigadeState;
+  location: MapLocation;
+  sectorId: number;
+};
+
 export const FireBrigade = {
   toMarkerProps: (fireBrigade: FireBrigade): FireBrigadeMarker => {
     return {
       location: { lng: fireBrigade.currentLocation.longitude, lat: fireBrigade.currentLocation.latitude },
       key: `fireBrigade-${fireBrigade.fireBrigadeId}`,
       state: fireBrigade.state,
+    };
+  },
+  updateFireBrigade: (fireBrigade: FireBrigade, update: FireBrigadeUpdate): FireBrigade => {
+    return {
+      ...fireBrigade,
+      state: update.state, // TODO or maybe action?
+      currentLocation: update.location,
     };
   },
 };
