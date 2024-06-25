@@ -26,7 +26,7 @@ export const RunSimulationButton = () => {
       onmessage: (event) => {
         const newState = JSON.parse(event.data) as ConfigurationUpdate;
         console.log('Event received:', newState);
-        dispatch(updateConfiguration({ configurationUpdate: newState }));
+        dispatch(updateConfiguration({ configurationUpdate: newState })); // TODO use timestamp that is being sent
       },
       onerror: (event) => {
         console.error('Event error:', event);
