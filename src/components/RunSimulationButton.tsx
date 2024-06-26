@@ -33,7 +33,7 @@ export const RunSimulationButton = () => {
         setIsRunning(false);
       },
       onclose: () => {
-        console.log('Event source closed');
+        console.log('Event source closed'); // TODO probably ctrl.signal doesn't work
       },
     });
   }, [dispatch, mapConfiguration]);
