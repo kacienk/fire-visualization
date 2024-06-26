@@ -14,12 +14,32 @@ export type ForesterPatrol = {
   currentLocation: MapLocation;
 };
 
+// TODO adjust this type
+export type ForesterPatrolUpdate = {
+  foresterPatrolId: number;
+  timestamp: string; // TODO change to number
+  state: ForesterPatrolState;
+  baseLocation: MapLocation;
+  currentLocation: MapLocation;
+};
+
 export const ForesterPatrol = {
   toMarkerProps: (foresterPatrol: ForesterPatrol): ForesterPatrolMarker => {
     return {
       location: { lng: foresterPatrol.currentLocation.longitude, lat: foresterPatrol.currentLocation.latitude },
       key: `foresterPatrol-${foresterPatrol.foresterPatrolId}`,
       state: foresterPatrol.state,
+    };
+  },
+  updateForesterPatrol: (
+    foresterPatrol: ForesterPatrol,
+    foresterPatrolUpdate: ForesterPatrolUpdate,
+  ): ForesterPatrol => {
+    return {
+      ...foresterPatrol,
+      state: foresterPatrolUpdate.state,
+      currentLocation: foresterPatrolUpdate.currentLocation,
+      // TODO update rest of the fields
     };
   },
 };

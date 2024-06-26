@@ -16,6 +16,28 @@ export interface Sector {
   contours: [number, number][];
 }
 
+// TODO adjust this type
+export type SectorUpdate = {
+  sectorId: number;
+  state: SectorStateUpdate;
+  /**
+   * [lng, lat][]
+   */
+  contours: [number, number][]; // TODO idk why this gets sent
+}
+
+// TODO adjust this type
+type SectorStateUpdate = {
+  temperature: number;
+  windSpeed: number;
+  windDirection: Direction;
+  airHumidity: number;
+  plantLitterMoisture: number;
+  co2Concentration: number;
+  pm2_5Concentration: number;
+  timestamp: number | null; // TODO why this is here and why it is nullable?!
+}
+
 interface SectorState {
   temperature: number;
   windSpeed: number;
@@ -47,6 +69,16 @@ export const Sector = {
         west: -Infinity,
       },
     );
+  },
+  updateSector: (sector: Sector, sectorUpdate: SectorUpdate): Sector => {
+    const { state, contours: _ } = sectorUpdate;
+    return {
+      ...sector,
+      initialState: {
+        ...sector.initialState,
+        ...state,
+      },
+    };
   },
 };
 

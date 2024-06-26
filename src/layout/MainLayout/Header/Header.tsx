@@ -8,6 +8,7 @@ import { HeaderContent } from './HeaderContent';
 
 // assets
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { RunSimulationButton } from '../../../components/RunSimulationButton';
 
 // ==============================|| MAIN LAYOUT - HEADER ||============================== //
 
@@ -25,7 +26,7 @@ export const Header = ({ open, handleDrawerToggle }: HeaderProps) => {
 
   // common header
   const mainHeader = (
-    <Toolbar>
+    <Toolbar sx={{ justifyContent: 'space-between' }}>
       <IconButton
         disableRipple
         aria-label="open drawer"
@@ -36,6 +37,7 @@ export const Header = ({ open, handleDrawerToggle }: HeaderProps) => {
       >
         {!open ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </IconButton>
+      <RunSimulationButton />
     </Toolbar>
   );
 
