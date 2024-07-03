@@ -24,14 +24,6 @@ export const menuSlice = createSlice({
   name: 'menu',
   initialState,
   reducers: {
-    activeItem(state, action) {
-      state.openItem = action.payload.openItem;
-    },
-
-    activeComponent(state, action) {
-      state.openComponent = action.payload.openComponent;
-    },
-
     openDrawer(state, action) {
       state.drawerOpen = action.payload.drawerOpen;
     },
@@ -42,5 +34,5 @@ export const menuSlice = createSlice({
   },
 });
 
-export const { activeItem, activeComponent, openDrawer, openComponentDrawer } = menuSlice.actions;
+export const { openDrawer, openComponentDrawer } = menuSlice.actions;
 export default menuSlice.reducer;

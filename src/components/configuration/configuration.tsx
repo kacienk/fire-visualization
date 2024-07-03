@@ -39,13 +39,13 @@ const conditionalConcat = (delimiter: string, ...parts: (string | undefined)[]):
 
 const constructId = (propertyName: string, objectName?: string, idx?: number) => {
   const result = conditionalConcat('-', objectName, propertyName, idx?.toString());
-  return result !== undefined ? result : '';
+  return result ?? '';
 };
 
 const constructName = (propertyName: string, objectName?: string, idx?: number): string => {
   const indexingPostfix = idx != undefined ? `[${idx}]` : undefined;
   const result = conditionalConcat('.', conditionalConcat('', objectName, indexingPostfix), propertyName);
-  return result !== undefined ? result : '';
+  return result ?? '';
 };
 
 export const ConfigFormTextField: FC<ConfigFormTextFieldProps> = (props) => {
@@ -56,7 +56,7 @@ export const ConfigFormTextField: FC<ConfigFormTextFieldProps> = (props) => {
       name={constructName(props.propertyName, props.objectName, props.idx)}
       label={labelize(props.propertyName)}
       disabled={props.readOnly}
-      type={props.type === undefined ? 'text' : props.type}
+      type={props.type ?? 'text'}
     />
   );
 };

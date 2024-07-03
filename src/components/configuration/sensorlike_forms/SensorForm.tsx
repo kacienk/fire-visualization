@@ -7,12 +7,10 @@ export const SensorForm: FC = () => {
   const { values: _ } = useFormikContext<Sensor>();
 
   return (
-    <>
-      <ConfigFormDropDown
-        allVariants={SensorTypes}
-        propertyName={'sensorType'}
-        readOnly={false}
-      />
-    </>
+    <ConfigFormDropDown
+      allVariants={SensorTypes}
+      propertyName={'sensorType'}
+      readOnly={false}
+    />
   );
 };

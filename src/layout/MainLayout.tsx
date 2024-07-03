@@ -9,10 +9,8 @@ import { Box, Toolbar, useMediaQuery } from '@mui/material';
 // project import
 import { MainDrawer } from './MainLayout/Drawer/MainDrawer';
 import { Header } from './MainLayout/Header/Header';
-import { Breadcrumbs } from '../components/@extended/Breadcrumbs';
 import { RootState } from '../store/reduxStore';
 import { openDrawer } from '../store/reducers/menuSlice';
-import { menuItems } from '../menu-items/menuItems';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -58,10 +56,6 @@ export const MainLayout = () => {
         sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}
       >
         <Toolbar />
-        <Breadcrumbs
-          navigation={menuItems}
-          title
-        />
         <Outlet />
       </Box>
     </Box>

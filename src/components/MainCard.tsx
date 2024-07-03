@@ -55,7 +55,7 @@ export const MainCard = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & M
 
     return (
       <Card
-        elevation={elevation || 0}
+        elevation={elevation ?? 0}
         // component={'div'} // TODO it doesn't work
         ref={ref}
         {...others}
@@ -65,10 +65,10 @@ export const MainCard = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & M
           borderColor: theme.palette.mode === 'dark' ? theme.palette.divider : theme.palette.grey['800'],
           boxShadow:
             hasBoxShadow && (!hasBorder || theme.palette.mode === 'dark')
-              ? shadow || (theme.customShadows?.z1 ?? 'inherit')
+              ? shadow ?? theme.customShadows?.z1 ?? 'inherit'
               : 'inherit',
           ':hover': {
-            boxShadow: hasBoxShadow ? shadow || (theme.customShadows?.z1 ?? 'inherit') : 'inherit',
+            boxShadow: hasBoxShadow ? shadow ?? theme.customShadows?.z1 ?? 'inherit' : 'inherit',
           },
           '& pre': {
             m: 0,
