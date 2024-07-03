@@ -7,11 +7,9 @@ export const CameraForm: FC = () => {
   const { values: _ } = useFormikContext<Camera>();
 
   return (
-    <>
-      <ConfigFormTextField
-        propertyName={'range'}
-        type={'number'}
-      />
-    </>
+    <ConfigFormTextField
+      propertyName={'range'}
+      type={'number'}
+    />
   );
 };

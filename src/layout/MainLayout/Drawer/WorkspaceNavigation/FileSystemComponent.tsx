@@ -28,10 +28,11 @@ export const FileSystemComponent: React.FC<Props> = ({
       const isOpen = openFolders.includes(item.id);
       setOpenFolders(isOpen ? openFolders.filter((f) => f !== item.id) : [...openFolders, item.id]);
       onItemSelected(item);
-    } else {
-      if (!inSelectWorkspace) {
-        onItemSelected(item);
-      }
+      return;
+    }
+
+    if (!inSelectWorkspace) {
+      onItemSelected(item);
     }
   };
 
@@ -78,7 +79,7 @@ export const FileSystemComponent: React.FC<Props> = ({
               component="div"
               disablePadding
             >
-              {item.contents && item.contents.map((childItem) => renderFileOrFolder(childItem, level + 1))}
+              {item.contents && item.contents?.map((childItem) => renderFileOrFolder(childItem, level + 1))}
             </List>
           </Collapse>
         </Box>
