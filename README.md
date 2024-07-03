@@ -49,3 +49,7 @@ and then start electron app:
 ```sh
   npm run electron-start
 ```
+
+# Example forest configurations
+
+There are example forest configurations located in the `assets` directory. To easily insert them into the `fire-configurations` database, you have to replace every `"` with `\"` and then surround the text with `"`. Next, you have to run the project, create forest configuration in the application, go to `http://localhost:31415/docs#/default/get_nodes_api_v1_nodes__get`, find node IDs associated with those configuraitons and go to `http://localhost:31415/docs#/default/update_node_api_v1_nodes__node_id__put` and update the __data__ property for each node ID with the data from the example files.
