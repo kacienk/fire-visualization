@@ -7,7 +7,7 @@
     "postinstall": "patch-package",
     "start": "webpack serve --open --mode development",
     "build": "webpack --mode production",
-    "electron-start": "electron .",
+    "electron-start": "MODE=production electron .",
     "serve": "concurrently \"webpack serve --no-open --mode development\" \"wait-on tcp:8080 && MODE=development electron .\""
   },
   "keywords": [],
